@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.cache/
+.DS_Store
+profiles/
+!profiles/example_profile.md
+my_quotes.csv
+my_quotes.yaml
+*.log
+config.yaml

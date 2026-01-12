@@ -1,0 +1,85 @@
+# Gen-Wal Configuration
+# =====================
+# For detailed documentation, please refer to: docs/CONFIGURATION.md
+
+# -----------------------------------------------------------------------------
+# 1. Profile Settings
+# -----------------------------------------------------------------------------
+# Choose where to load the user profile from.
+# Options: "local_file"
+profile_provider: "local_file"
+profile_path: "profiles/example_profile.md" # Path to your motivation profile
+
+# -----------------------------------------------------------------------------
+# 2. Quote Provider
+# -----------------------------------------------------------------------------
+# Choose how to generate quotes.
+# Options: "llm" (Recommended), "csv", "yaml", "zenquotes" (API)
+quote_provider: "llm"
+
+# -----------------------------------------------------------------------------
+# 3. Image Provider
+# -----------------------------------------------------------------------------
+# Choose how to generate backgrounds.
+# Options: "pollinations" (Free AI generation), "local_dir" (Use your own wallpapers)
+image_provider: "pollinations"
+
+# -----------------------------------------------------------------------------
+# 4. LLM Configuration (For 'llm' provider)
+# -----------------------------------------------------------------------------
+# Supports OpenAI-compatible APIs (Ollama, Llama.cpp, vLLM, OpenAI, etc.)
+
+llm:
+  # Example: Ollama
+  # base_url: "http://localhost:11434/v1"
+  # api_key: "ollama"
+  # model: "llama3"
+
+  # Example: Llama.cpp (Local Server)
+  base_url: "http://localhost:8080/v1"
+  api_key: "sk-no-key-needed"
+  model: "MaziyarPanahi/Qwen3-4B-GGUF:Q6_K" 
+  
+  # Advanced Parameters
+  request_params:
+    temperature: 0.8
+    top_k: 40
+    top_p: 0.9
+    n_predict: 2000 # Increased for models with reasoning/CoT
+    max_tokens: 2000
+
+# -----------------------------------------------------------------------------
+# 5. Image Provider Configuration
+# -----------------------------------------------------------------------------
+
+# Pollinations AI (Free, no key required usually)
+pollinations:
+  model: "flux" # Options: flux, turbo, midjourney-style
+  nologo: true  # Remove watermark
+  api_key: "YOUR_API_KEY_HERE" # Optional: Add key if you have one for better limits
+
+# Local Directory Image Provider
+# local_image_dir: "/home/user/Pictures/Wallpapers"
+
+# -----------------------------------------------------------------------------
+# 6. Output Settings
+# -----------------------------------------------------------------------------
+resolution:
+  width: 1920
+  height: 1080
+
+# -----------------------------------------------------------------------------
+# 7. Text Rendering
+# -----------------------------------------------------------------------------
+# text_position Options: 
+#   center, top_left, top_right, bottom_left, bottom_right, 
+#   top_center, bottom_center, left_center, right_center
+text_position: "bottom_right"
+
+text_padding: 100 # Distance from screen edges in pixels
+font_size: 60     # Size of the quote text
+
+# -----------------------------------------------------------------------------
+# 8. Custom Data Sources (For 'csv' or 'yaml' providers)
+# -----------------------------------------------------------------------------
+quotes_file: "my_quotes.csv"

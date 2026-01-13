@@ -5,10 +5,11 @@ A modular, automated wallpaper generator that keeps you motivated with fresh quo
 ## Features
 - **Daily Updates**: Scheduled automatically via systemd.
 - **Personalized**: Supports custom profiles and themes.
-- **Modular**: Swap out Quote and Image providers easily.
+- **Modular**: Swap out Quote, Image, and Image Prompt providers easily.
 - **Providers**:
-    - **Quotes**: Local LLM (Ollama), CSV/YAML file, ZenQuotes (API).
+    - **Quotes**: LLM (Ollama/Llama.cpp), CSV/YAML file, Pollinations (Text), ZenQuotes (API).
     - **Images**: Pollinations.ai (AI Generated), Local Folder.
+    - **Image Prompts**: Dynamic AI generation of image prompts using your profile.
 - **Smart Rendering**: Auto-contrasting text overlay.
 
 ## Installation
@@ -33,15 +34,23 @@ Edit `config.yaml` to customize your experience.
 ```yaml
 profile_path: "profiles/my_profile.md"
 
+# Choose Providers (Subtype selection available)
+quote_provider: "llm:ollama"
+image_provider: "pollinations:image"
+image_prompt_provider: "pollinations:text" # Generates dynamic image descriptions
 
-# Choose Providers
-quote_provider: "llm" # Options: llm, csv, yaml, zenquotes
-image_provider: "pollinations" # Options: pollinations, local_dir
-
-# LLM Settings (for 'llm' provider)
+# LLM Settings (Defined by profile name)
 llm:
-  base_url: "http://localhost:11434/v1" # Local Ollama
-  model: "llama3"
+  ollama:
+    base_url: "http://localhost:11434/v1" 
+    model: "llama3"
+
+# Pollinations Settings
+pollinations:
+  image:
+    model: "flux"
+  text:
+    model: "openai"
 
 # Image Resolution
 resolution:

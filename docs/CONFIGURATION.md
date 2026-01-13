@@ -2,66 +2,57 @@
 
 This document explains how to configure **Gen-Wal** using `config.yaml`.
 
+## Configuration Logic
+Gen-Wal uses a powerful **path-based** configuration system. You can point any provider to a specific section of your config using `provider:subtype`.
+
+**Example:**
+- `quote_provider: "llm:ollama"` -> Uses config from `llm` -> `ollama`.
+- `quote_provider: "csv:work"` -> Uses config from `csv` -> `work`.
+
 ## Core Settings
 
 | Key | Description | Default |
 | :--- | :--- | :--- |
 | `profile_path` | Path to your personal motivation profile (Markdown). | `profiles/amit_motivation_profile.md` |
-| `quote_provider` | Which service to use for quotes. Options: `llm`, `zenquotes`, `csv`, `yaml`. | `zenquotes` |
-| `image_provider` | Which service to use for background images. Options: `pollinations`, `local_dir`. | `pollinations` |
+| `quote_provider` | Options: `llm:profile`, `pollinations:text`, `csv:profile`, `yaml:profile`. | `zenquotes` |
+| `image_provider` | Options: `pollinations:image`, `local_dir:profile`. | `pollinations:image` |
+| `image_prompt_provider` | Options: `pollinations:text`, `llm:profile`. Optional dynamic prompt generation. | `pollinations:text` |
 
 ## Quote Providers
 
 ### LLM (Local/Cloud)
-Use a Local LLM (like Ollama) or an OpenAI-compatible API to generate personalized quotes.
+Define multiple profiles under the `llm` block and select one.
 
 ```yaml
-quote_provider: "llm"
+quote_provider: "llm:ollama"
+
 llm:
-  base_url: "http://localhost:11434/v1" # Local Ollama URL
-  api_key: "ollama" # Dummy key for local, actual key for cloud
-  model: "llama3.2" # Model name
-  # Optional: Customize the persona
-  prompt_template: "You are a stoic philosopher. Give me a quote based on: {profile_content}"
+  # Profile 1: Local Ollama
+  ollama:
+    base_url: "http://localhost:11434/v1" 
+    api_key: "ollama" 
+    model: "llama3.2" 
+
+  # Profile 2: Llama.cpp or OpenAI
+  openai_cloud:
+    base_url: "https://api.openai.com/v1"
+    api_key: "sk-..."
+    model: "gpt-4"
 ```
 
-### Pollinations AI Options
-Free, high-quality cloud generation.
-```yaml
-pollinations:
-  # Image Generation Settings
-  image:
-    model: "flux" # "flux", "turbo", "midjourney"
-    nologo: true  # Remove Pollinations logo
-    api_key: "..." # Optional
-  
-  # Text/Quote Generation Settings
-  text:
-    model: "openai" # "openai", "mistral"
-    # api_key: "..." # Optional
-```
-
-### Llama.cpp (or other specific APIs)
-You can point to your local `llama-server` (usually port 8080). You can also pass precise parameters in `request_params`.
-
-```yaml
-quote_provider: "llm"
-llm:
-  base_url: "http://localhost:8080/v1"
-  api_key: "any"
-  model: "default"
-  request_params:
-    temperature: 0.9
-    top_k: 40
-    top_p: 0.5
-    n_predict: 50 # llama.cpp specific
-```
-
+### CSV / YAML
 Load your own collection of quotes.
 
 ```yaml
-quote_provider: "csv" # or "yaml"
-quotes_file: "my_quotes.csv" # Path to file
+quote_provider: "csv" 
+csv:
+  file: "my_quotes.csv"
+
+# Or nested:
+# quote_provider: "csv:work"
+# csv:
+#   work:
+#     file: "work_quotes.csv"
 ```
 
 ## Image Providers
@@ -81,7 +72,8 @@ Picks a random image from a folder.
 
 ```yaml
 image_provider: "local_dir"
-local_image_dir: "/path/to/wallpapers"
+local_dir:
+  path: "/path/to/wallpapers"
 ```
 
 ## Rendering & Styling

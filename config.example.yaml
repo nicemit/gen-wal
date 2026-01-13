@@ -3,10 +3,16 @@
 # For detailed documentation, please refer to: docs/CONFIGURATION.md
 
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # 1. Profile Settings
 # -----------------------------------------------------------------------------
-# You can use the "provider:subtype" syntax to traverse nested configurations.
-# Example: "pollinations:text" looks for config['pollinations']['text']
+# POWER USER TIP: You can define custom profiles for ANY provider!
+# 1. Create a new named section under the provider block (e.g., 'csv', 'llm', 'local_dir').
+# 2. Select it using "provider:your_section_name".
+# Example: 
+#   csv:
+#     my_gym_quotes: { file: "gym.csv" }
+#   quote_provider: "csv:my_gym_quotes"
 # -----------------------------------------------------------------------------
 # Choose where to load the user profile from.
 # Options: "local_file"
@@ -99,9 +105,19 @@ font_size: 60     # Size of the quote text
 
 # CSV Quote Provider (Access via 'quote_provider: "csv"')
 csv:
+  # Default
   file: "my_quotes.csv"
+  
+  # Custom Profile Example
+  # work_quotes:
+  #   file: "work.csv" # Access via "csv:work_quotes"
 
 # Local Directory Image Provider (Access via 'image_provider: "local_dir"')
 local_dir:
+  # Default
   path: "/home/user/Pictures/Wallpapers"
+  
+  # Custom Profile Example
+  # nature_shots:
+  #   path: "/home/user/Photos/Nature" # Access via "local_dir:nature_shots"
 

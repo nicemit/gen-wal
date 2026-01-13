@@ -5,10 +5,11 @@ import time
 from src.interfaces import ImageProvider
 
 class PollinationsImageProvider(ImageProvider):
-    def __init__(self, model: str = None, nologo: bool = True, api_key: str = None):
+    def __init__(self, model: str = None, nologo: bool = True, api_key: str = None, seed: int = None):
         self.model = model
         self.nologo = nologo
         self.api_key = api_key
+        self.seed = seed
 
     def get_image(self, prompt: str, width: int, height: int) -> str:
         # Encode prompt slightly? Pollinations handles raw text well.
@@ -20,7 +21,8 @@ class PollinationsImageProvider(ImageProvider):
         # Pollinations API: https://image.pollinations.ai/prompt/{prompt}?width={width}&height={height}
         # Ideally we should clean the prompt to be URL safe-ish, butrequests handles most
         # Add random seed to ensure freshness even with same prompt
-        seed = random.randint(0, 1000000)
+        # Add random seed to ensure freshness even with same prompt
+        seed = self.seed if self.seed is not None else random.randint(0, 1000000)
         url = f"https://image.pollinations.ai/prompt/{prompt}?width={width}&height={height}&seed={seed}"
         if self.nologo:
             url += "&nologo=true"

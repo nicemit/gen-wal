@@ -53,7 +53,7 @@ class YamlQuoteProvider(QuoteProvider):
              return f"Error reading YAML: {e}"
 
 class LLMQuoteProvider(QuoteProvider):
-    def __init__(self, base_url: str, api_key: str, model: str, prompt_template: str = None, request_params: dict = None, image_prompt_template: str = None):
+    def __init__(self, base_url: str, api_key: str, model: str, prompt_template: str = None, request_params: dict = None):
         self.base_url = base_url.rstrip('/')
         self.api_key = api_key
         self.model = model
@@ -65,50 +65,6 @@ class LLMQuoteProvider(QuoteProvider):
         PROFILE:
         {profile_content}
         """
-        self.image_prompt_template = image_prompt_template or """
-        Generate a concise visual description for an image to accompany this motivational quote. 
-        Focus on abstract, nature, or technological themes. No text in the image. 
-        Max 15 words.
-        
-        QUOTE: {quote}
-        PROFILE: {profile_content}
-        """
-
-    def get_image_prompt(self, quote: str, profile_content: str) -> str:
-        prompt = self.image_prompt_template.format(quote=quote, profile_content=profile_content)
-        
-        # Reuse the same logic for calling the LLM
-        # This is a bit duplicative of logic inside get_quote but cleaner to just construct a new call here
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-        url = f"{self.base_url}/chat/completions"
-        payload = {
-            "model": self.model,
-            "messages": [
-                {"role": "system", "content": "You are a creative director."},
-                {"role": "user", "content": prompt}
-            ],
-            "stream": False
-        }
-        payload.update(self.request_params) # Reuse params
-        
-        try:
-             response = requests.post(url, headers=headers, json=payload, timeout=120) # Increased timeout for reasoning models
-             if response.status_code == 404 and "localhost" in self.base_url:
-                 url = f"{self.base_url.replace('/v1', '')}/api/chat"
-                 response = requests.post(url, headers=headers, json=payload, timeout=120)
-                 response.raise_for_status()
-                 data = response.json()
-                 return data['message']['content'].strip()
-             
-             response.raise_for_status()
-             data = response.json()
-             return data['choices'][0]['message']['content'].strip()
-        except Exception as e:
-            print(f"Error generating image prompt: {e}")
-            return "motivational abstract nature landscape technology calm powerful" # Fallback
 
     def get_quote(self, profile_content: str) -> str:
         prompt = self.prompt_template.format(profile_content=profile_content)
@@ -165,3 +121,65 @@ class LLMQuoteProvider(QuoteProvider):
         except Exception as e:
             # Fallback for raw completion if chat fails (older APIs)
             return f"Stay Hard. (LLM Error: {e})"
+
+class PollinationsQuoteProvider(QuoteProvider):
+    def __init__(self, model: str = "openai", api_key: str = None, prompt_template: str = None, request_params: dict = None):
+        self.model = model
+        self.api_key = api_key
+        # Default prompt template if none provided
+        self.prompt_template = prompt_template or """
+        You are a motivational coach. Based on the following profile, generate a single, short, punchy, direct motivational quote (max 20 words).
+        Do not explain. Do not use quotes around the text.
+        
+        PROFILE:
+        {profile_content}
+        """
+
+    def _call_pollinations(self, prompt: str) -> str:
+        # Use POST to avoid URL length limits with large profiles
+        url = "https://text.pollinations.ai" # No trailing slash
+        
+        headers = {
+            "Content-Type": "application/json"
+        }
+        if self.api_key:
+             headers["Authorization"] = f"Bearer {self.api_key}"
+
+        payload = {
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant."}, # System instruction could go here but simple is fine
+                {"role": "user", "content": prompt}
+            ],
+            "model": self.model,
+            "seed": random.randint(0, 1000)
+        }
+
+        try:
+            response = requests.post(url, json=payload, headers=headers, timeout=60)
+            response.raise_for_status()
+            
+            # Pollinations POST returns the message object directly: {"role": "assistant", "content": "..."}
+            try:
+                data = response.json()
+                if isinstance(data, dict) and 'content' in data:
+                    return data['content'].strip()
+                # Fallback if structure is different (e.g. OpenAI format)
+                if 'choices' in data and len(data['choices']) > 0:
+                    return data['choices'][0]['message']['content'].strip()
+            except ValueError:
+                pass
+            
+            return response.text.strip()
+        except Exception as e:
+            msg = str(e)
+            if 'response' in locals() and hasattr(response, 'text'):
+                msg += f" | Body: {response.text}"
+            print(f"Pollinations API Error: {msg}")
+            raise e
+
+    def get_quote(self, profile_content: str) -> str:
+        prompt = self.prompt_template.format(profile_content=profile_content)
+        try:
+            return self._call_pollinations(prompt)
+        except:
+             return "Discipline equals freedom."

@@ -25,6 +25,22 @@ llm:
   prompt_template: "You are a stoic philosopher. Give me a quote based on: {profile_content}"
 ```
 
+### Pollinations AI Options
+Free, high-quality cloud generation.
+```yaml
+pollinations:
+  # Image Generation Settings
+  image:
+    model: "flux" # "flux", "turbo", "midjourney"
+    nologo: true  # Remove Pollinations logo
+    api_key: "..." # Optional
+  
+  # Text/Quote Generation Settings
+  text:
+    model: "openai" # "openai", "mistral"
+    # api_key: "..." # Optional
+```
+
 ### Llama.cpp (or other specific APIs)
 You can point to your local `llama-server` (usually port 8080). You can also pass precise parameters in `request_params`.
 

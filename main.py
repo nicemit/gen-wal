@@ -1,67 +1,14 @@
 import os
-import sys
 import time
-import yaml
 import argparse
-import subprocess
-from src.providers.quotes import *
-from src.providers.images import *
-from src.providers.profiles import LocalFileProfileProvider
 from src.renderer import WallpaperRenderer
-
-def load_config(path="config.yaml"):
-    with open(path, 'r') as f:
-        return yaml.safe_load(f)
-
-def get_profile_provider(config):
-    # Default to local_file, could be 'url' or 'notion' in future
-    name = config.get('profile_provider', 'local_file')
-    if name == 'local_file':
-        return LocalFileProfileProvider(config.get('profile_path', 'profiles/amit_motivation_profile.md'))
-    else:
-        return LocalFileProfileProvider(config.get('profile_path', 'profiles/amit_motivation_profile.md'))
-
-def get_quote_provider(config):
-    name = config.get('quote_provider', 'zenquotes')
-    if name == 'llm':
-        llm_config = config.get('llm', {})
-        return LLMQuoteProvider(
-            llm_config.get('base_url', 'http://localhost:11434/v1'),
-            llm_config.get('api_key', 'ollama'),
-            llm_config.get('model', 'llama3'),
-            llm_config.get('prompt_template'),
-            llm_config.get('request_params', {})
-        )
-    elif name == 'csv':
-        return CsvQuoteProvider(config.get('quotes_file', 'quotes.csv'))
-    elif name == 'yaml':
-        return YamlQuoteProvider(config.get('quotes_file', 'quotes.yaml'))
-    else:
-        return ZenQuotesProvider()
-
-def get_image_provider(config):
-    name = config.get('image_provider', 'pollinations')
-    if name == 'local_dir':
-        return LocalDirImageProvider(config.get('local_image_dir', ''))
-    else:
-        # Pollinations config
-        poll_config = config.get('pollinations', {})
-        return PollinationsImageProvider(
-            model=poll_config.get('model'),
-            nologo=poll_config.get('nologo', True),
-            api_key=poll_config.get('api_key')
-        )
-
-def set_wallpaper(image_path):
-    # GNOME / Ubuntu
-    uri = f"file://{os.path.abspath(image_path)}"
-    try:
-        # Set for both light and dark themes
-        subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", uri], check=True)
-        subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", uri], check=True)
-        print(f"Wallpaper set to: {uri}")
-    except Exception as e:
-        print(f"Error setting wallpaper: {e}")
+from src.utils import load_config, set_wallpaper
+from src.factory import (
+    get_profile_provider, 
+    get_quote_provider, 
+    get_image_provider, 
+    get_text_provider
+)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -95,17 +42,29 @@ def main():
     
     start_t = time.time()
     image_provider = get_image_provider(config)
-    # Try to generate a dynamic image prompt if possible
-    prompt = "motivational abstract nature landscape technology calm powerful" # Default
     
-    if hasattr(quote_provider, 'get_image_prompt'):
-        print("Generating custom image prompt via LLM...")
+    # Generate dynamic image prompt if configured
+    prompt = "motivational abstract nature landscape technology calm powerful" 
+    
+    img_prompt_provider_name = config.get('image_prompt_provider')
+    if img_prompt_provider_name:
+        print(f"Generating custom image prompt using '{img_prompt_provider_name}'...")
         try:
-            dynamic_prompt = quote_provider.get_image_prompt(quote, profile_content)
-            print(f"Generated Image Prompt: {dynamic_prompt}")
-            prompt = dynamic_prompt
+            text_provider = get_text_provider(config, img_prompt_provider_name)
+            if text_provider:
+                prompt_instruction = f"""
+                Generate a concise visual description for an image to accompany this motivational quote. 
+                Focus on abstract, nature, or technological themes. No text in the image. 
+                Max 15 words.
+                
+                QUOTE: {quote}
+                PROFILE: {profile_content}
+                """
+                dynamic_prompt = text_provider.generate_text(prompt_instruction, system_prompt="You are a creative director.")
+                print(f"Generated Image Prompt: {dynamic_prompt}")
+                prompt = dynamic_prompt
         except Exception as e:
-            print(f"Failed to generate dynamic prompt, using default. Error: {e}") 
+             print(f"Failed to generate dynamic prompt, using default. Error: {e}") 
     
     width = config.get('resolution', {}).get('width', 1920)
     height = config.get('resolution', {}).get('height', 1080)

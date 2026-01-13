@@ -5,6 +5,9 @@
 # -----------------------------------------------------------------------------
 # 1. Profile Settings
 # -----------------------------------------------------------------------------
+# You can use the "provider:subtype" syntax to traverse nested configurations.
+# Example: "pollinations:text" looks for config['pollinations']['text']
+# -----------------------------------------------------------------------------
 # Choose where to load the user profile from.
 # Options: "local_file"
 profile_provider: "local_file"
@@ -13,53 +16,64 @@ profile_path: "profiles/example_profile.md" # Path to your motivation profile
 # -----------------------------------------------------------------------------
 # 2. Quote Provider
 # -----------------------------------------------------------------------------
-# Choose how to generate quotes.
-# Options: "llm" (Recommended), "csv", "yaml", "zenquotes" (API)
-quote_provider: "llm"
+# Quote Provider options: "llm:ollama", "pollinations:text", "csv:work_quotes"
+# quote_provider: "llm:ollama"
+quote_provider: "pollinations:text"
 
 # -----------------------------------------------------------------------------
 # 3. Image Provider
 # -----------------------------------------------------------------------------
 # Choose how to generate backgrounds.
-# Options: "pollinations" (Free AI generation), "local_dir" (Use your own wallpapers)
-image_provider: "pollinations"
+# Options: "pollinations:image", "local_dir"
+image_provider: "pollinations:image"
+
+# Image Prompt Provider (Optional)
+# Generates a dynamic visual description based on the quote + profile.
+# Options: "pollinations:text", "llm:ollama", "llm:local_server". 
+# If commented out, uses a static default prompt.
+image_prompt_provider: "pollinations:text"
+
+# -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
 # 4. LLM Configuration (For 'llm' provider)
 # -----------------------------------------------------------------------------
 # Supports OpenAI-compatible APIs (Ollama, Llama.cpp, vLLM, OpenAI, etc.)
-
 llm:
-  # Example: Ollama
-  # base_url: "http://localhost:11434/v1"
-  # api_key: "ollama"
-  # model: "llama3"
+  # Profile 1: Ollama
+  ollama:
+    base_url: "http://localhost:11434/v1"
+    api_key: "ollama"
+    model: "llama3"
 
-  # Example: Llama.cpp (Local Server)
-  base_url: "http://localhost:8080/v1"
-  api_key: "sk-no-key-needed"
-  model: "MaziyarPanahi/Qwen3-4B-GGUF:Q6_K" 
-  
-  # Advanced Parameters
-  request_params:
-    temperature: 0.8
-    top_k: 40
-    top_p: 0.9
-    n_predict: 2000 # Increased for models with reasoning/CoT
-    max_tokens: 2000
+  # Profile 2: Llama.cpp
+  local_server:
+    base_url: "http://localhost:8080/v1"
+    api_key: "sk-no-key-needed"
+    model: "MaziyarPanahi/Qwen3-4B-GGUF:Q6_K" 
+    request_params:
+      temperature: 0.8
+      max_tokens: 2000
+
 
 # -----------------------------------------------------------------------------
-# 5. Image Provider Configuration
+# 5. Local Provider Configurations
 # -----------------------------------------------------------------------------
 
-# Pollinations AI (Free, no key required usually)
+
+
+# Unified Pollinations Configuration
 pollinations:
-  model: "flux" # Options: flux, turbo, midjourney-style
-  nologo: true  # Remove watermark
-  api_key: "YOUR_API_KEY_HERE" # Optional: Add key if you have one for better limits
+  image:
+    model: "flux" # Options: flux, turbo, etc.
+    nologo: true # Remove watermark
+    api_key: "YOUR_API_KEY_HERE" # Optional
+    
+  text:
+    model: "openai" # Options: openai, mistral, llama
+    # api_key: "..." # Optional
 
-# Local Directory Image Provider
-# local_image_dir: "/home/user/Pictures/Wallpapers"
+
 
 # -----------------------------------------------------------------------------
 # 6. Output Settings
@@ -80,6 +94,14 @@ text_padding: 100 # Distance from screen edges in pixels
 font_size: 60     # Size of the quote text
 
 # -----------------------------------------------------------------------------
-# 8. Custom Data Sources (For 'csv' or 'yaml' providers)
+# 8. Local & Custom Data Sources
 # -----------------------------------------------------------------------------
-quotes_file: "my_quotes.csv"
+
+# CSV Quote Provider (Access via 'quote_provider: "csv"')
+csv:
+  file: "my_quotes.csv"
+
+# Local Directory Image Provider (Access via 'image_provider: "local_dir"')
+local_dir:
+  path: "/home/user/Pictures/Wallpapers"
+

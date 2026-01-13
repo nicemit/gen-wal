@@ -18,3 +18,8 @@ class ImageProvider(ABC):
     def get_image(self, prompt: str, width: int, height: int) -> str:
         """Generates or fetches an image based on the prompt. Returns file path."""
         pass
+
+class TextProvider(ABC):
+    @abstractmethod
+    def generate_text(self, prompt: str, system_prompt: str = None) -> str:
+        pass

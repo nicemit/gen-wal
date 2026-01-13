@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             --accent: #3b82f6;
             --code-bg: #171717;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg);
@@ -25,10 +27,12 @@
             padding: 2rem;
             text-align: center;
         }
+
         .container {
             max-width: 800px;
             width: 100%;
         }
+
         h1 {
             font-size: 3.5rem;
             margin-bottom: 0.5rem;
@@ -37,11 +41,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         p.subtitle {
             font-size: 1.25rem;
             color: #888;
             margin-bottom: 2rem;
         }
+
         .hero-img {
             width: 100%;
             border-radius: 12px;
@@ -49,6 +55,7 @@
             margin-bottom: 2.5rem;
             border: 1px solid #333;
         }
+
         .install-box {
             background: var(--code-bg);
             padding: 1.5rem;
@@ -63,9 +70,11 @@
             align-items: center;
             justify-content: space-between;
         }
+
         .install-box code {
             color: var(--accent);
         }
+
         .copy-btn {
             background: none;
             border: 1px solid #444;
@@ -75,10 +84,12 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
         .copy-btn:hover {
             border-color: #666;
             color: #fff;
         }
+
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -86,55 +97,70 @@
             text-align: left;
             margin-top: 3rem;
         }
+
         .feature h3 {
             margin-top: 0;
             color: #fff;
         }
+
         .feature p {
             color: #888;
             font-size: 0.95rem;
         }
+
         footer {
             margin-top: 5rem;
             color: #444;
             font-size: 0.9rem;
         }
-        a { color: var(--text); text-decoration: none; border-bottom: 1px dotted #444; }
-        a:hover { border-bottom-style: solid; }
+
+        a {
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px dotted #444;
+        }
+
+        a:hover {
+            border-bottom-style: solid;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>Gen-Wal</h1>
-    <p class="subtitle">A self-hosted AI daemon that generates a personalized<br>motivational wallpaper for your desktop every morning.</p>
+    <div class="container">
+        <h1>Gen-Wal</h1>
+        <p class="subtitle">A self-hosted AI daemon that generates a personalized<br>motivational wallpaper for your
+            desktop every morning.</p>
 
-    <img src="images/banner.png" alt="Gen-Wal Desktop Banner" class="hero-img">
+        <img src="images/banner.png" alt="Gen-Wal Desktop Banner" class="hero-img">
 
-    <div class="install-box" onclick="navigator.clipboard.writeText('curl -fsSL https://nicemit.github.io/gen-wal/genwal | bash'); alert('Copied!')">
-        <code>curl -fsSL https://nicemit.github.io/gen-wal/genwal | bash</code>
-        <button class="copy-btn">Copy</button>
+        <div class="install-box"
+            onclick="navigator.clipboard.writeText('curl -fsSL https://get.genwal.sh/genwal | bash'); alert('Copied!')">
+            <code>curl -fsSL https://get.genwal.sh/genwal | bash</code>
+            <button class="copy-btn">Copy</button>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🔒 100% Local</h3>
+                <p>Runs offline using llama.cpp. No data leaves your machine. Privacy first.</p>
+            </div>
+            <div class="feature">
+                <h3>🧠 Adaptive</h3>
+                <p>Generates content based on your personal goals, founder mindset, or stoic principles.</p>
+            </div>
+            <div class="feature">
+                <h3>⚡ Fast</h3>
+                <p>Zero-config. Installs a 4GB quantization of Qwen/Llama and sets up systemd in minutes.</p>
+            </div>
+        </div>
+
+        <footer>
+            <a href="https://github.com/nicemit/gen-wal">View Source on GitHub</a>
+        </footer>
     </div>
-
-    <div class="features">
-        <div class="feature">
-            <h3>🔒 100% Local</h3>
-            <p>Runs offline using llama.cpp. No data leaves your machine. Privacy first.</p>
-        </div>
-        <div class="feature">
-            <h3>🧠 Adaptive</h3>
-            <p>Generates content based on your personal goals, founder mindset, or stoic principles.</p>
-        </div>
-        <div class="feature">
-            <h3>⚡ Fast</h3>
-            <p>Zero-config. Installs a 4GB quantization of Qwen/Llama and sets up systemd in minutes.</p>
-        </div>
-    </div>
-
-    <footer>
-        <a href="https://github.com/nicemit/gen-wal">View Source on GitHub</a>
-    </footer>
-</div>
 
 </body>
+
 </html>

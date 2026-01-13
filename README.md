@@ -48,7 +48,7 @@ increases stars.)*
 ## 60-Second Install
 
 ``` bash
-curl -fsSL https://get.genwal.sh | bash
+curl -fsSL https://get.genwal.sh/genwal | bash
 ```
 
 Installs:

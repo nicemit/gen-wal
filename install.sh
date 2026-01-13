@@ -23,21 +23,44 @@ warn() {
     echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
-# 1. Pre-flight Checks
+# 1. Pre-flight & Bootstrap
 log "Checking prerequisites..."
 
 if ! command -v python3 &> /dev/null; then
     error "Python3 is not installed. Please install it: sudo apt install python3"
 fi
 
-if ! command -v systemctl &> /dev/null; then
-    error "systemd is not available. This script is designed for systemd-based Linux distributions."
+if ! command -v git &> /dev/null; then
+    error "Git is not installed. Please install it: sudo apt install git"
 fi
 
+# Detect if running via curl/pipe (helper to find where we are)
 PROJECT_DIR=$(pwd)
-REQUIREMENTS_FILE="$PROJECT_DIR/requirements.txt"
+INSTALL_DIR="$HOME/.gen-wal"
+
+if [ ! -f "$PROJECT_DIR/requirements.txt" ]; then
+    log "Running in bootstrap mode (curl | bash detected or not in source dir)."
+    
+    if [ -d "$INSTALL_DIR" ]; then
+        log "Updating existing installation in $INSTALL_DIR..."
+        cd "$INSTALL_DIR"
+        git pull
+    else
+        log "Cloning Gen-Wal to $INSTALL_DIR..."
+        git clone https://github.com/nicemit/gen-wal.git "$INSTALL_DIR"
+        cd "$INSTALL_DIR"
+    fi
+    
+    # Re-run the installer from the correct directory
+    log "Handing off to local installer..."
+    exec ./install.sh
+    exit 0
+fi
+
+# We are now strictly inside the repository
+REQUIREMENTS_FILE="requirements.txt"
 if [ ! -f "$REQUIREMENTS_FILE" ]; then
-    error "requirements.txt not found in $PROJECT_DIR"
+    error "requirements.txt not found in $(pwd). Something went wrong."
 fi
 
 # 2. Setup Virtual Environment

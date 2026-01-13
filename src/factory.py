@@ -28,9 +28,9 @@ def get_profile_provider(config):
     # Default to local_file, could be 'url' or 'notion' in future
     name = config.get('profile_provider', 'local_file')
     if name == 'local_file':
-        return LocalFileProfileProvider(config.get('profile_path', 'profiles/stoic_profile.md'))
+        return LocalFileProfileProvider(config.get('profile_path', 'profiles/examples/stoic_profile.md'))
     else:
-        return LocalFileProfileProvider(config.get('profile_path', 'profiles/stoic_profile.md'))
+        return LocalFileProfileProvider(config.get('profile_path', 'profiles/examples/stoic_profile.md'))
 
 def get_quote_provider(config):
     name = config.get('quote_provider', 'zenquotes')

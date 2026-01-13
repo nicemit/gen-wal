@@ -1,73 +1,118 @@
-# Gen-Wal: Motivational Wallpaper Generator
+# Gen-Wal 🧠
+
+**Your desktop becomes your quiet daily coach.**
 
 ![Gen-Wal Banner](docs/images/banner.png)
 
-A modular, automated wallpaper generator that keeps you motivated with fresh quotes and stunning backgrounds every day.
+> A local-first AI daemon that generates a personalized motivational
+> wallpaper on your desktop every morning.\
+> Offline. Private. Automatic.
 
-## Features
-- **Daily Updates**: Scheduled automatically via systemd.
-- **Personalized**: Supports custom profiles and themes.
-- **Modular**: Swap out Quote, Image, and Image Prompt providers easily.
-- **Providers**:
-    - **Quotes**: LLM (Ollama/Llama.cpp), CSV/YAML file, Pollinations (Text), ZenQuotes (API).
-    - **Images**: Pollinations.ai (AI Generated), Local Folder.
-    - **Image Prompts**: Dynamic AI generation of image prompts using your profile.
-- **Smart Rendering**: Auto-contrasting text overlay.
+------------------------------------------------------------------------
 
-## Installation
+## Why Gen-Wal?
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/gen-wal.git
-   cd gen-wal
-   ```
+Motivation apps need attention.\
+Gen-Wal lives in your peripheral vision.
 
-2. Run the installer:
-   ```bash
-   chmod +x install.sh
-   ./install.sh
-   ```
+You don't open it.\
+It opens you --- every morning.
 
-## Configuration
-Edit `config.yaml` to customize your experience.
+Your wallpaper quietly reinforces focus, discipline, and clarity\
+using your own local AI.
 
-**[Read the Full Configuration Guide](docs/CONFIGURATION.md)**
+No subscriptions.\
+No tracking.\
+No cloud dependency.
 
-```yaml
+------------------------------------------------------------------------
+
+## What It Does
+
+• Generates a new wallpaper every morning\
+• Uses your personal profile (goals, habits, mindset)\
+• Runs fully offline using llama.cpp / Ollama\
+• Auto-contrast typography for perfect readability\
+• systemd-powered scheduling\
+• Modular architecture for quotes, images, and prompts
+
+------------------------------------------------------------------------
+
+## Example Wallpapers
+
+*(Add 4--6 real generated wallpapers here --- this section massively
+increases stars.)*
+
+------------------------------------------------------------------------
+
+## 60-Second Install
+
+``` bash
+curl -fsSL https://get.genwal.sh | bash
+```
+
+Installs:
+
+• llama.cpp\
+• A local 4B AI model\
+• systemd daily service\
+• Interactive setup wizard
+
+You'll get your first personalized wallpaper in under 2 minutes.
+
+------------------------------------------------------------------------
+
+## Customize Your Mindset
+
+``` yaml
 profile_path: "profiles/my_profile.md"
 
-# Choose Providers (Subtype selection available)
 quote_provider: "llm:ollama"
 image_provider: "pollinations:image"
-image_prompt_provider: "pollinations:text" # Generates dynamic image descriptions
+image_prompt_provider: "pollinations:text"
 
-# LLM Settings (Defined by profile name)
 llm:
   ollama:
-    base_url: "http://localhost:11434/v1" 
-    model: "llama3"
+    base_url: "http://localhost:11434/v1"
+    model: "qwen3"
 
-# Pollinations Settings
-pollinations:
-  image:
-    model: "flux"
-  text:
-    model: "openai"
-
-# Image Resolution
 resolution:
   width: 1920
   height: 1080
 ```
 
-## Custom Quotes
-You can provide your own quotes in `my_quotes.csv` or `my_quotes.yaml`.
+### Included Mindset Packs
 
-**CSV Format:**
-```csv
-"The only way to do great work is to love what you do."
-"Stay hungry, stay foolish."
-```
+Gen-Wal comes with pre-built profiles to jumpstart your day. Select one by changing `profile_path` in `config.yaml`:
+
+| Pack | Focus | Config Path |
+| :--- | :--- | :--- |
+| **Stoic** | Resilience, Virtue | `profiles/examples/stoic_profile.md` |
+| **Founder** | Speed, Leverage | `profiles/examples/founder_profile.md` |
+| **Monk** | Deep Work, Zen | `profiles/examples/monk_profile.md` |
+| **Iron/Gym** | Discipline, Strength | `profiles/examples/gym_profile.md` |
+
+------------------------------------------------------------------------
+
+## Runs 100% Locally
+
+• No internet required\
+• No data collection\
+• Your AI runs on your machine\
+• Fully deterministic and reproducible
+
+------------------------------------------------------------------------
+
+## Roadmap
+
+• Multiple mindset packs\
+• Theme marketplace\
+• Journal memory mode\
+• Multi-monitor support\
+• Live animated wallpapers
+
+------------------------------------------------------------------------
 
 ## License
-MIT
+
+MIT --- build your own mental OS.

@@ -17,7 +17,7 @@
 # Choose where to load the user profile from.
 # Options: "local_file"
 profile_provider: "local_file"
-profile_path: "profiles/example_profile.md" # Path to your motivation profile
+profile_path: "profiles/examples/stoic_profile.md" # Path to your motivation profile
 
 # -----------------------------------------------------------------------------
 # 2. Quote Provider

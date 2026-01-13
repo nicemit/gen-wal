@@ -1,5 +1,7 @@
 # Gen-Wal: Motivational Wallpaper Generator
 
+![Gen-Wal Banner](docs/images/banner.png)
+
 A modular, automated wallpaper generator that keeps you motivated with fresh quotes and stunning backgrounds every day.
 
 ## Features

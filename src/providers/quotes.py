@@ -136,25 +136,30 @@ class PollinationsQuoteProvider(QuoteProvider):
         """
 
     def _call_pollinations(self, prompt: str) -> str:
-        import urllib.parse
-        safe_prompt = urllib.parse.quote(prompt)
-        url = f"https://gen.pollinations.ai/text/{safe_prompt}"
+        url = "https://gen.pollinations.ai/v1/chat/completions"
         
-        headers = {}
+        headers = {
+            "Content-Type": "application/json"
+        }
         if self.api_key:
              headers["Authorization"] = f"Bearer {self.api_key}"
 
-        params = {
+        payload = {
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ],
             "model": self.model,
-            "seed": random.randint(0, 1000),
-            "system": "You are a helpful assistant.",
-            "json": "false"
+            "stream": False,
+            "seed": random.randint(0, 1000000)
         }
 
         try:
-            response = requests.get(url, params=params, headers=headers, timeout=60)
+            response = requests.post(url, json=payload, headers=headers, timeout=60)
             response.raise_for_status()
-            return response.text.strip()
+            
+            data = response.json()
+            return data['choices'][0]['message']['content'].strip()
             
         except Exception as e:
             msg = str(e)

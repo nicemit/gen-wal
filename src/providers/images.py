@@ -2,6 +2,7 @@ import os
 import random
 import requests
 import time
+import urllib.parse
 from src.interfaces import ImageProvider
 
 class PollinationsImageProvider(ImageProvider):
@@ -12,7 +13,6 @@ class PollinationsImageProvider(ImageProvider):
         self.seed = seed
 
     def get_image(self, prompt: str, width: int, height: int) -> str:
-        import urllib.parse
         
         cache_dir = os.path.expanduser("~/.cache/gen-wal")
         os.makedirs(cache_dir, exist_ok=True)

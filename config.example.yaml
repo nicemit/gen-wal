@@ -121,3 +121,22 @@ local_dir:
   # nature_shots:
   #   path: "/home/user/Photos/Nature" # Access via "local_dir:nature_shots"
 
+
+# -----------------------------------------------------------------------------
+# 9. Prompt Customization (Externalized Logic)
+# -----------------------------------------------------------------------------
+prompts:
+  quote: |
+    You are a motivational coach. Based on the following profile, generate a single, short, punchy, direct motivational quote (max 20 words).
+    Do not explain. Do not use quotes around the text.
+    
+    PROFILE:
+    {profile_content}
+
+  image_description: |
+    Generate a concise visual description for an image to accompany this motivational quote. 
+    Focus on abstract, nature, or technological themes. No text in the image. 
+    Max 15 words.
+    
+    QUOTE: {quote}
+    PROFILE: {profile_content}

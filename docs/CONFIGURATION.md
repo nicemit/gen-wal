@@ -88,3 +88,23 @@ resolution:
 text_position: "center" # bottom_left, bottom_center, bottom_right, left_center, right_center, top_left, center, etc.
 text_padding: 100 # Distance from screen edge in pixels
 ```
+
+## External Customization (Prompts)
+
+You can tweak the "personality" of the AI without touching code by editing the `prompts` section in `config.yaml`.
+
+```yaml
+prompts:
+  quote: |
+    You are a motivational coach. Based on the following profile, generate a single, short...
+    PROFILE:
+    {profile_content}
+
+  image_description: |
+    Generate a concise visual description...
+    QUOTE: {quote}
+    PROFILE: {profile_content}
+```
+
+- **`{profile_content}`**: Injected automatically from your selected markdown profile.
+- **`{quote}`**: Injected automatically into the image description prompt.

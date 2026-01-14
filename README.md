@@ -49,20 +49,20 @@ Values: I built this because my desktop felt like noise. Now, it keeps my plans 
 
 ------------------------------------------------------------------------
 
-## 60-Second Install
-
+60-Second Install
 ``` bash
 curl -fsSL https://laptopserver.dev/genwal | bash
 ```
 
 Installs:
+• **Gen-Wal** (Python-based AI daemon)
+• **Systemd** daily service
+• **Zero-Config** default (uses Pollinations.ai)
+• **Interactive** Setup Wizard (Profile & Vibe)
 
-• llama.cpp\
-• A local 4B AI model\
-• systemd daily service\
-• Interactive setup wizard
+You'll get your first personalized wallpaper in under 2 minutes. No heavy downloads required.
 
-You'll get your first personalized wallpaper in under 2 minutes.
+> **Power User?** You can still switch to local LLMs (Ollama/Llama.cpp) in `config.yaml` after install.
 
 ------------------------------------------------------------------------
 

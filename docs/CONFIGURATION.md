@@ -119,7 +119,10 @@ Control where the wallpaper is saved and if it is applied.
 | `apply_wallpaper` | boolean | If `true`, sets the desktop background. If `false`, only saves the file. | `true` |
 
 ```yaml
+# -----------------------------------------------------------------------------
+# 1. Wallpaper Settings
+# -----------------------------------------------------------------------------
 wallpaper_settings:
-  save_path: "~/Pictures/MyMotivation.jpg"
-  apply_wallpaper: true
+  apply_wallpaper: true  # Set to false to generate image but not set desktop background
+  save_path: "~/.cache/gen-wal/current_wallpaper.jpg" # Where to save the generated image
 ```

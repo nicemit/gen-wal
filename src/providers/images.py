@@ -12,29 +12,33 @@ class PollinationsImageProvider(ImageProvider):
         self.seed = seed
 
     def get_image(self, prompt: str, width: int, height: int) -> str:
-        # Encode prompt slightly? Pollinations handles raw text well.
-        # We want to save the image to cache
+        import urllib.parse
+        
         cache_dir = os.path.expanduser("~/.cache/gen-wal")
         os.makedirs(cache_dir, exist_ok=True)
         filename = os.path.join(cache_dir, f"raw_bg_{int(time.time())}.jpg")
         
-        # Pollinations API: https://image.pollinations.ai/prompt/{prompt}?width={width}&height={height}
-        # Ideally we should clean the prompt to be URL safe-ish, butrequests handles most
-        # Add random seed to ensure freshness even with same prompt
-        # Add random seed to ensure freshness even with same prompt
+        safe_prompt = urllib.parse.quote(prompt)
         seed = self.seed if self.seed is not None else random.randint(0, 1000000)
-        url = f"https://image.pollinations.ai/prompt/{prompt}?width={width}&height={height}&seed={seed}"
-        if self.nologo:
-            url += "&nologo=true"
-        if self.model:
-            url += f"&model={self.model}"
         
+        url = f"https://gen.pollinations.ai/image/{safe_prompt}"
+        
+        params = {
+            "width": width,
+            "height": height,
+            "seed": seed,
+            "nologo": str(self.nologo).lower()
+        }
+        
+        if self.model:
+            params["model"] = self.model
+            
         headers = {}
         if self.api_key:
-            headers["Authorization"] = f"Bearer {self.api_key}" # Assuming Bearer token standard
+            headers["Authorization"] = f"Bearer {self.api_key}"
         
         try:
-            response = requests.get(url, headers=headers, timeout=120)
+            response = requests.get(url, params=params, headers=headers, timeout=120)
             response.raise_for_status()
             with open(filename, 'wb') as f:
                 f.write(response.content)

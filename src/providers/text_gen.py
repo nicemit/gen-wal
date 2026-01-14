@@ -60,37 +60,26 @@ class PollinationsTextProvider(TextProvider):
         self.api_key = api_key
 
     def generate_text(self, prompt: str, system_prompt: str = "You are a helpful assistant.") -> str:
-        url = "https://text.pollinations.ai/"
+        import urllib.parse
+        safe_prompt = urllib.parse.quote(prompt)
+        url = f"https://gen.pollinations.ai/text/{safe_prompt}"
         
-        headers = {
-            "Content-Type": "application/json"
-        }
+        headers = {}
         if self.api_key:
              headers["Authorization"] = f"Bearer {self.api_key}"
 
-        payload = {
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt}
-            ],
+        params = {
             "model": self.model,
-            "seed": 42 
+            "seed": 42,
+            "system": system_prompt,
+            "json": "true" 
         }
 
         try:
-            response = requests.post(url, json=payload, headers=headers, timeout=60)
+            response = requests.get(url, params=params, headers=headers, timeout=60)
             response.raise_for_status()
-            
-            try:
-                data = response.json()
-                if isinstance(data, dict) and 'content' in data:
-                    return data['content'].strip()
-                if 'choices' in data and len(data['choices']) > 0:
-                    return data['choices'][0]['message']['content'].strip()
-            except ValueError:
-                pass
-            
             return response.text.strip()
+            
         except Exception as e:
             print(f"Pollinations Text Gen Error: {e}")
             raise e

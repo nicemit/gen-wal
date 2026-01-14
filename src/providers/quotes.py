@@ -136,40 +136,26 @@ class PollinationsQuoteProvider(QuoteProvider):
         """
 
     def _call_pollinations(self, prompt: str) -> str:
-        # Use POST to avoid URL length limits with large profiles
-        url = "https://text.pollinations.ai" # No trailing slash
+        import urllib.parse
+        safe_prompt = urllib.parse.quote(prompt)
+        url = f"https://gen.pollinations.ai/text/{safe_prompt}"
         
-        headers = {
-            "Content-Type": "application/json"
-        }
+        headers = {}
         if self.api_key:
              headers["Authorization"] = f"Bearer {self.api_key}"
 
-        payload = {
-            "messages": [
-                {"role": "system", "content": "You are a helpful assistant."}, # System instruction could go here but simple is fine
-                {"role": "user", "content": prompt}
-            ],
+        params = {
             "model": self.model,
-            "seed": random.randint(0, 1000)
+            "seed": random.randint(0, 1000),
+            "system": "You are a helpful assistant.",
+            "json": "false"
         }
 
         try:
-            response = requests.post(url, json=payload, headers=headers, timeout=60)
+            response = requests.get(url, params=params, headers=headers, timeout=60)
             response.raise_for_status()
-            
-            # Pollinations POST returns the message object directly: {"role": "assistant", "content": "..."}
-            try:
-                data = response.json()
-                if isinstance(data, dict) and 'content' in data:
-                    return data['content'].strip()
-                # Fallback if structure is different (e.g. OpenAI format)
-                if 'choices' in data and len(data['choices']) > 0:
-                    return data['choices'][0]['message']['content'].strip()
-            except ValueError:
-                pass
-            
             return response.text.strip()
+            
         except Exception as e:
             msg = str(e)
             if 'response' in locals() and hasattr(response, 'text'):

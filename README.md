@@ -2,28 +2,25 @@
 
 **Your desktop becomes your quiet daily coach.**
 
+![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge&logo=github)
+
 ![Gen-Wal Banner](docs/images/banner.png)
 
-> A local-first AI daemon that generates a personalized motivational
+> A personal-first AI daemon that generates a personalized motivational
 > wallpaper on your desktop every morning.\
-> Offline. Private. Automatic.
+> Private. Beautiful. Automatic.
 
 ------------------------------------------------------------------------
 
-## Why Gen-Wal?
+## Why?
 
-Motivation apps need attention.\
-Gen-Wal lives in your peripheral vision.
+Most motivation apps require you to open them. Gen-Wal just exists in your environment.
 
-You don't open it.\
-It opens you --- every morning.
+It runs quietly in the background, updating your desktop once a day with a new wallpaper and quote tailored to your specific goals. It's a simple, set-and-forget ritual to keep your digital space fresh.
 
-Your wallpaper quietly reinforces focus, discipline, and clarity\
-using your own local AI.
-
-No subscriptions.\
-No tracking.\
-No cloud dependency.
+Values: I built this for myself because my desktop felt like noise. Now it quietly reminds me what actually matters.
 
 ------------------------------------------------------------------------
 
@@ -31,7 +28,7 @@ No cloud dependency.
 
 • Generates a new wallpaper every morning\
 • Uses your personal profile (goals, habits, mindset)\
-• Runs fully offline using llama.cpp / Ollama\
+• Runs with a local AI brain (llama.cpp / Ollama)\
 • Auto-contrast typography for perfect readability\
 • systemd-powered scheduling\
 • Modular architecture for quotes, images, and prompts
@@ -48,7 +45,7 @@ increases stars.)*
 ## 60-Second Install
 
 ``` bash
-curl -fsSL https://get.genwal.sh/genwal | bash
+curl -fsSL https://laptopserver.dev/genwal | bash
 ```
 
 Installs:
@@ -94,12 +91,12 @@ Gen-Wal comes with pre-built profiles to jumpstart your day. Select one by chang
 
 ------------------------------------------------------------------------
 
-## Runs 100% Locally
+## Personal-First
 
-• No internet required\
-• No data collection\
-• Your AI runs on your machine\
-• Fully deterministic and reproducible
+• **Your values** and intent stay on your machine\
+• **Visual beauty** is generated on demand\
+• **Privacy** where it matters most\
+• **A tiny personal AI ritual** that refreshes your desktop every day
 
 ------------------------------------------------------------------------
 

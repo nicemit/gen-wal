@@ -52,7 +52,7 @@ def get_quote_provider(config):
         return PollinationsQuoteProvider(
             model=specific_config.get('model', 'openai'),
             api_key=specific_config.get('api_key'),
-            prompt_template=specific_config.get('prompt_template'),
+            prompt_template=specific_config.get('prompt_template') or config.get('prompts', {}).get('quote'),
             request_params=specific_config.get('request_params', {})
         )
     elif base_name == 'llm':
@@ -61,7 +61,7 @@ def get_quote_provider(config):
             specific_config.get('base_url', 'http://localhost:11434/v1'),
             specific_config.get('api_key', 'ollama'),
             specific_config.get('model', 'llama3'),
-            specific_config.get('prompt_template'),
+            specific_config.get('prompt_template') or config.get('prompts', {}).get('quote'),
             specific_config.get('request_params', {})
         )
     else:

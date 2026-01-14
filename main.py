@@ -52,14 +52,21 @@ def main():
         try:
             text_provider = get_text_provider(config, img_prompt_provider_name)
             if text_provider:
-                prompt_instruction = f"""
-                Generate a concise visual description for an image to accompany this motivational quote. 
-                Focus on abstract, nature, or technological themes. No text in the image. 
-                Max 15 words.
+                prompt_instruction = config.get('prompts', {}).get('image_description')
                 
-                QUOTE: {quote}
-                PROFILE: {profile_content}
-                """
+                if not prompt_instruction:
+                    # Fallback default if config is missing
+                    prompt_instruction = f"""
+                    Generate a concise visual description for an image to accompany this motivational quote. 
+                    Focus on abstract, nature, or technological themes. No text in the image. 
+                    Max 15 words.
+                    
+                    QUOTE: {quote}
+                    PROFILE: {profile_content}
+                    """
+                else:
+                    # Format the config template
+                    prompt_instruction = prompt_instruction.format(quote=quote, profile_content=profile_content)
                 dynamic_prompt = text_provider.generate_text(prompt_instruction, system_prompt="You are a creative director.")
                 print(f"Generated Image Prompt: {dynamic_prompt}")
                 prompt = dynamic_prompt

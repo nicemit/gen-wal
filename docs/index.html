@@ -124,6 +124,31 @@
         a:hover {
             border-bottom-style: solid;
         }
+
+        .toast {
+            visibility: hidden;
+            background-color: var(--code-bg);
+            color: var(--accent);
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            border: 1px solid #333;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+            font-family: 'Courier New', Courier, monospace;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
     </style>
 </head>
 
@@ -136,11 +161,22 @@
 
         <img src="images/banner.png" alt="Gen-Wal Desktop Banner" class="hero-img">
 
-        <div class="install-box"
-            onclick="navigator.clipboard.writeText('curl -fsSL https://laptopserver.dev/genwal'); alert('Copied!')">
-            <code>curl -fsSL https://laptopserver.dev/genwal</code>
+        <div class="install-box" onclick="copyCommand()"></div>
+            <code>curl -fsSL https://laptopserver.dev/genwal | bash</code>
             <button class="copy-btn">Copy</button>
         </div>
+
+        <div id="toast" class="toast">Command Copied! 📋</div>
+
+        <script>
+            function copyCommand() {
+                navigator.clipboard.writeText('curl -fsSL https://laptopserver.dev/genwal | bash').then(() => {
+                    const toast = document.getElementById("toast");
+                    toast.className = "toast show";
+                    setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+                });
+            }
+        </script>
 
         <div class="features">
             <div class="feature">

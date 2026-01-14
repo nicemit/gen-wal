@@ -146,4 +146,5 @@ prompts:
 # -----------------------------------------------------------------------------
 wallpaper_settings:
   apply_wallpaper: true
-  save_path: "~/.cache/gen-wal/current_wallpaper.jpg" # Optional: Custom path to save the generated image
+  save_path: "~/.cache/gen-wal/archive" # Directory = Archive Mode (New file daily)
+  # save_path: "~/.cache/gen-wal/current.jpg" # File = Overwrite Mode

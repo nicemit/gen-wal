@@ -117,10 +117,33 @@ def main():
         custom_path = wallpaper_settings.get('save_path')
         
         if custom_path:
-             # Expand user path (~) if present
              output_path = os.path.expanduser(custom_path)
-             # Create directory if it doesn't exist
-             os.makedirs(os.path.dirname(output_path), exist_ok=True)
+             # Check if it looks like a directory (no extension) or is an existing directory
+             _, ext = os.path.splitext(output_path)
+             is_directory = not ext or os.path.isdir(output_path)
+
+             if is_directory:
+                 # Metadata Filename Logic
+                 from datetime import datetime
+                 import re
+                 
+                 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                 
+                 # Clean Profile Name
+                 profile_name = os.path.basename(config.get('profile_path', 'default'))
+                 profile_clean = os.path.splitext(profile_name)[0]
+                 
+                 # Clean Model Name
+                 model_clean = re.sub(r'[^a-zA-Z0-9]', '', image_model)
+                 
+                 filename = f"{timestamp}_{profile_clean}_{model_clean}.jpg"
+                 
+                 # Ensure dir exists
+                 os.makedirs(output_path, exist_ok=True)
+                 output_path = os.path.join(output_path, filename)
+             else:
+                 # It's a file path, ensure parent dir exists
+                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
         else:
              output_path = os.path.join(os.path.expanduser("~/.cache/gen-wal"), "current_wallpaper.jpg")
         

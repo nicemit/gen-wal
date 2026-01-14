@@ -20,7 +20,7 @@ Most motivation apps require you to open them. Gen-Wal just exists in your envir
 
 It runs quietly in the background, updating your desktop once a day with a new wallpaper and quote tailored to your specific goals. It's a simple, set-and-forget ritual to keep your digital space fresh.
 
-Values: I built this for myself because my desktop felt like noise. Now it quietly reminds me what actually matters.
+Values: I built this because my desktop felt like noise. Now, it keeps my plans in focus—reminding me not just of the goal, but that I have to do the work to see results.
 
 ------------------------------------------------------------------------
 
@@ -37,8 +37,15 @@ Values: I built this for myself because my desktop felt like noise. Now it quiet
 
 ## Example Wallpapers
 
-*(Add 4--6 real generated wallpapers here --- this section massively
-increases stars.)*
+
+| **Founder Profile** | **Monk Profile** |
+| :---: | :---: |
+| <img src="docs/images/founder-example-1.jpg" width="100%" alt="Founder Startup Wallpaper"> | <img src="docs/images/monk-example-1.jpg" width="100%" alt="Zen Monk Wallpaper"> |
+
+| **Gym Profile** | **Founder Profile (Variant)** |
+| :---: | :---: |
+| <img src="docs/images/gym-example-1.jpg" width="100%" alt="Gym Motivation Wallpaper"> | <img src="docs/images/founder-example-2.jpg" width="100%" alt="Founder Wallpaper Variant"> |
+
 
 ------------------------------------------------------------------------
 

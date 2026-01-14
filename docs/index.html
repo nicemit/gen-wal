@@ -6,143 +6,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gen-Wal: Your Desktop's AI Brain</title>
     <link rel="icon" type="image/png" href="/favicon.png">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Courier New', 'Courier', 'monospace'],
+                    },
+                    colors: {
+                        bg: '#0a0a0a',
+                        card: '#171717',
+                        accent: '#3b82f6',
+                        text: '#e5e5e5',
+                        muted: '#888888',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --text: #e5e5e5;
-            --accent: #3b82f6;
-            --code-bg: #171717;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-            text-align: center;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
         }
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.05em;
-            background: linear-gradient(to right, #fff, #888);
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #888888);
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        p.subtitle {
-            font-size: 1.25rem;
-            color: #888;
-            margin-bottom: 2rem;
-        }
-
-        .hero-img {
+        /* Swiper Customization */
+        .swiper {
             width: 100%;
-            border-radius: 12px;
+            border-radius: 0.75rem;
+            /* 12px */
+            border: 1px solid #333;
             box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
-            margin-bottom: 2.5rem;
-            border: 1px solid #333;
         }
 
-        .install-box {
-            background: var(--code-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.1rem;
-            border: 1px solid #333;
-            margin-bottom: 2rem;
-            position: relative;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .swiper-pagination-bullet {
+            background: #fff;
+            opacity: 0.5;
         }
 
-        .install-box code {
-            color: var(--accent);
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #3b82f6;
         }
 
-        .copy-btn {
-            background: none;
-            border: 1px solid #444;
-            color: #888;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .copy-btn:hover {
-            border-color: #666;
-            color: #fff;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: left;
-            margin-top: 3rem;
-        }
-
-        .feature h3 {
-            margin-top: 0;
-            color: #fff;
-        }
-
-        .feature p {
-            color: #888;
-            font-size: 0.95rem;
-        }
-
-        footer {
-            margin-top: 5rem;
-            color: #444;
-            font-size: 0.9rem;
-        }
-
-        a {
-            color: var(--text);
-            text-decoration: none;
-            border-bottom: 1px dotted #444;
-        }
-
-        a:hover {
-            border-bottom-style: solid;
-        }
-
+        /* Toast Animation */
         .toast {
             visibility: hidden;
-            background-color: var(--code-bg);
-            color: var(--accent);
-            text-align: center;
-            border-radius: 8px;
-            padding: 12px 24px;
-            position: fixed;
-            z-index: 1000;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            border: 1px solid #333;
             opacity: 0;
-            transition: opacity 0.3s, bottom 0.3s;
-            font-family: 'Courier New', Courier, monospace;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease, bottom 0.3s ease;
+            bottom: 30px;
         }
 
         .toast.show {
@@ -153,52 +86,175 @@
     </style>
 </head>
 
-<body>
+<body
+    class="flex flex-col min-h-screen items-center justify-center p-8 text-center antialiased selection:bg-accent selection:text-white">
 
-    <div class="container">
-        <h1>Gen-Wal</h1>
-        <p class="subtitle">A personal-first AI daemon that generates a personalized<br>motivational wallpaper for your
-            desktop every morning.</p>
+    <div class="w-full max-w-4xl space-y-12">
 
-        <img src="images/banner.png" alt="Gen-Wal Desktop Banner" class="hero-img">
+        <!-- Header -->
+        <header class="space-y-4 pt-10">
+            <h1 class="text-6xl font-bold tracking-tight text-gradient">Gen-Wal</h1>
+            <p class="text-xl font-light text-muted leading-relaxed">
+                A personal-first AI daemon that generates a personalized<br class="hidden sm:block">
+                motivational wallpaper for your desktop every morning.
+            </p>
+        </header>
 
-        <div class="install-box" onclick="copyCommand()">
-            <code>curl -fsSL https://laptopserver.dev/genwal | bash</code>
-            <button class="copy-btn">Copy</button>
+        <!-- Carousel (Swiper) -->
+        <div class="relative w-full max-w-3xl mx-auto">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide relative">
+                        <img src="images/founder-example-1.jpg" alt="Founder Profile"
+                            class="w-full h-auto block select-none">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-6 px-4">
+                            <span class="font-mono text-sm text-white text-shadow-sm">Profile: Founder / Startup
+                                Grind</span>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide relative">
+                        <img src="images/monk-example-1.jpg" alt="Monk Profile" class="w-full h-auto block select-none">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-6 px-4">
+                            <span class="font-mono text-sm text-white text-shadow-sm">Profile: Digital Monk / Zen</span>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="swiper-slide relative">
+                        <img src="images/gym-example-1.jpg" alt="Gym Profile" class="w-full h-auto block select-none">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-6 px-4">
+                            <span class="font-mono text-sm text-white text-shadow-sm">Profile: Iron & Discipline</span>
+                        </div>
+                    </div>
+                    <!-- Slide 4 -->
+                    <div class="swiper-slide relative">
+                        <img src="images/founder-example-2.jpg" alt="Founder Variant"
+                            class="w-full h-auto block select-none">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-6 px-4">
+                            <span class="font-mono text-sm text-white text-shadow-sm">Profile: Founder / Deep
+                                Focus</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            <p class="mt-4 text-xs italic text-gray-600">
+                * Snapshots from my actual daily morning ritual.
+            </p>
         </div>
 
-        <div id="toast" class="toast">Command Copied! 📋</div>
+        <!-- Personal Quote -->
+        <div class="max-w-2xl mx-auto px-4">
+            <blockquote class="border-l-2 border-accent/30 pl-6 italic text-gray-400 text-lg md:text-xl text-left">
+                "I built this because plans are easy to forget. Gen-Wal reminds me not just of what I want,
+                but that I have to <strong class="text-gray-200">do the work</strong> to see results."
+            </blockquote>
+        </div>
 
-        <script>
-            function copyCommand() {
-                navigator.clipboard.writeText('curl -fsSL https://laptopserver.dev/genwal | bash').then(() => {
-                    const toast = document.getElementById("toast");
-                    toast.className = "toast show";
-                    setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
-                });
-            }
-        </script>
-
-        <div class="features">
-            <div class="feature">
-                <h3>🔒 Personal-First</h3>
-                <p>Your values and intent stay on your machine. Visual beauty is generated on demand.</p>
-            </div>
-            <div class="feature">
-                <h3>🧠 Adaptive</h3>
-                <p>Generates content based on your personal goals, founder mindset, or stoic principles.</p>
-            </div>
-            <div class="feature">
-                <h3>⚡ Fast</h3>
-                <p>Zero-config. Installs a 4GB quantization of Qwen/Llama and sets up systemd in minutes.</p>
+        <!-- Install Command -->
+        <div class="max-w-2xl mx-auto">
+            <div onclick="copyCommand()"
+                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-6 py-5 text-left font-mono text-base transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
+                <code class="text-accent break-all">curl -fsSL https://laptopserver.dev/genwal | bash</code>
+                <button
+                    class="shrink-0 rounded bg-white/5 px-3 py-1.5 text-sm text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
+                    Copy
+                </button>
             </div>
         </div>
 
-        <footer>
-            <a href="https://github.com/nicemit/gen-wal">View Source on GitHub</a>
+        <!-- Features Grid -->
+        <div class="grid gap-8 text-left sm:grid-cols-3 pt-8 pb-16">
+            <div class="space-y-3 p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
+                <div class="text-2xl">🔒</div>
+                <h3 class="text-lg font-semibold text-white">Personal-First</h3>
+                <p class="text-sm text-muted leading-relaxed">Your values and intent stay on your machine. Visual beauty
+                    is generated on demand.</p>
+            </div>
+            <div class="space-y-3 p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
+                <div class="text-2xl">🧠</div>
+                <h3 class="text-lg font-semibold text-white">Adaptive</h3>
+                <p class="text-sm text-muted leading-relaxed">Generates content based on your personal goals, founder
+                    mindset, or stoic principles.</p>
+            </div>
+            <div class="space-y-3 p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
+                <div class="text-2xl">⚡</div>
+                <h3 class="text-lg font-semibold text-white">Fast</h3>
+                <p class="text-sm text-muted leading-relaxed">Zero-config. Installs a 4GB quantization of Qwen/Llama and
+                    sets up systemd in minutes.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="pb-12 text-sm text-zinc-600">
+            <a href="https://github.com/nicemit/gen-wal" target="_blank"
+                class="hover:text-zinc-400 border-b border-zinc-800 hover:border-zinc-500 transition-colors pb-0.5">View
+                Source on GitHub</a>
         </footer>
     </div>
 
+    <!-- Hidden Toast -->
+    <div id="toast"
+        class="toast fixed z-50 flex items-center gap-2 rounded-lg border border-neutral-800 bg-card px-6 py-3 font-mono text-accent shadow-xl">
+        <span>Command Copied!</span>
+        <span class="text-xl">📋</span>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Init Swiper & Scripts -->
+    <script>
+        // Initialize Swiper
+        const swiper = new Swiper(".mySwiper", {
+            spaceBetween: 30,
+            centeredSlides: true,
+            loop: true,
+            effect: "fade",
+            fadeEffect: {
+                crossFade: true
+            },
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
+            },
+        });
+
+        // Robust Copy Function
+        function copyCommand() {
+            const command = 'curl -fsSL https://laptopserver.dev/genwal | bash';
+
+            // UI Feedback function
+            const showToast = () => {
+                const toast = document.getElementById("toast");
+                toast.classList.add("show");
+                setTimeout(() => { toast.classList.remove("show"); }, 3000);
+            };
+
+            // Attempt copy, but show toast regardless of dev environment restrictions
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(command)
+                    .then(showToast)
+                    .catch((err) => {
+                        console.error('Clipboard API failed (likely non-secure context):', err);
+                        showToast();
+                    });
+            } else {
+                console.warn('Clipboard API unavailable in this context');
+                showToast();
+            }
+        }
+    </script>
 </body>
 
 </html>

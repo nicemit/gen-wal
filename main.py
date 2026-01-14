@@ -112,7 +112,17 @@ def main():
         font_size = config.get('font_size', 60)
         renderer = WallpaperRenderer(font_size=font_size)
         
-        output_path = os.path.join(os.path.expanduser("~/.cache/gen-wal"), "current_wallpaper.jpg")
+        # Determine output path
+        wallpaper_settings = config.get('wallpaper_settings', {})
+        custom_path = wallpaper_settings.get('save_path')
+        
+        if custom_path:
+             # Expand user path (~) if present
+             output_path = os.path.expanduser(custom_path)
+             # Create directory if it doesn't exist
+             os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        else:
+             output_path = os.path.join(os.path.expanduser("~/.cache/gen-wal"), "current_wallpaper.jpg")
         
         position = config.get('text_position', 'center')
         padding = config.get('text_padding', 100)
@@ -120,8 +130,16 @@ def main():
         final_path = renderer.compose(bg_path, quote, output_path, position=position, padding=padding, target_size=(width, height))
     
     if final_path:
-        set_wallpaper(final_path)
-        console.print(f"[bold green]✨ Wallpaper updated successfully![/bold green]")
+        console.print(f"💾 [bold]Saved to[/bold]: [link={final_path}]{final_path}[/link]")
+        
+        # Check if we should apply the wallpaper
+        should_apply = wallpaper_settings.get('apply_wallpaper', True)
+        
+        if should_apply:
+            set_wallpaper(final_path)
+            console.print(f"[bold green]✨ Wallpaper updated successfully![/bold green]")
+        else:
+            console.print(f"[yellow]Skipping desktop application (configured setting).[/yellow]")
     else:
         console.print("[bold red]Rendering failed.[/bold red]")
 

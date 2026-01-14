@@ -4,7 +4,12 @@
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-# 1. Profile Settings
+# 1.# Wallpaper Settings
+wallpaper_settings:
+  save_path: "~/.cache/gen-wal/current_wallpaper.jpg" # Optional: Custom path to save the generated image
+  apply_wallpaper: true # Set to false to only generate the image without applying it
+
+# Profile Settings
 # -----------------------------------------------------------------------------
 # POWER USER TIP: You can define custom profiles for ANY provider!
 # 1. Create a new named section under the provider block (e.g., 'csv', 'llm', 'local_dir').

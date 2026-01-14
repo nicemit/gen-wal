@@ -108,3 +108,18 @@ prompts:
 
 - **`{profile_content}`**: Injected automatically from your selected markdown profile.
 - **`{quote}`**: Injected automatically into the image description prompt.
+
+## Wallpaper Settings
+
+Control where the wallpaper is saved and if it is applied.
+
+| Key | Type | Description | Default |
+| :--- | :--- | :--- | :--- |
+| `save_path` | string | Absolute path (or path with `~`) to save the final image. | `~/.cache/gen-wal/current_wallpaper.jpg` |
+| `apply_wallpaper` | boolean | If `true`, sets the desktop background. If `false`, only saves the file. | `true` |
+
+```yaml
+wallpaper_settings:
+  save_path: "~/Pictures/MyMotivation.jpg"
+  apply_wallpaper: true
+```

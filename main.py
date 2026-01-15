@@ -19,11 +19,21 @@ console = Console()
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.yaml", help="Path to config file")
+    parser.add_argument("--profile", help="Override profile path")
+    parser.add_argument("--text-pos", help="Override text position (e.g. center, bottom_right)")
     args = parser.parse_args()
 
     # Load Config
     config_path = os.path.join(os.path.dirname(__file__), args.config)
     config = load_config(config_path)
+    
+    # Override Profile if argument provided
+    if args.profile:
+        config['profile_path'] = args.profile
+
+    # Override Text Position if argument provided
+    if args.text_pos:
+        config['text_position'] = args.text_pos
 
     # 1. Info Table
     quote_provider_name = config.get('quote_provider', 'zenquotes')

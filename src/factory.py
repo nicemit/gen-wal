@@ -1,6 +1,6 @@
 from src.providers.quotes import *
 from src.providers.images import *
-from src.providers.text_gen import *
+from src.providers.text import *
 from src.providers.profiles import LocalFileProfileProvider
 
 def get_config_from_path(config, provider_path):
@@ -64,6 +64,16 @@ def get_quote_provider(config):
             specific_config.get('prompt_template') or config.get('prompts', {}).get('quote'),
             specific_config.get('request_params', {})
         )
+    elif base_name == 'huggingface':
+        # specific_config should point to ['huggingface'] or ['huggingface']['text']
+        if 'text' in specific_config and 'image' in specific_config:
+             specific_config = specific_config.get('text', {})
+        
+        return HuggingFaceQuoteProvider(
+            model=specific_config.get('model', 'Qwen/Qwen2.5-7B-Instruct'),
+            api_key=specific_config.get('api_key') or config.get('huggingface', {}).get('api_key'),
+            prompt_template=specific_config.get('prompt_template') or config.get('prompts', {}).get('quote')
+        )
     else:
         return ZenQuotesProvider()
 
@@ -75,6 +85,15 @@ def get_image_provider(config):
         # Support nested config 'path' key or fallback to root 'local_image_dir'
         path = specific_config.get('path', config.get('local_image_dir', ''))
         return LocalDirImageProvider(path)
+    elif base_name == 'huggingface':
+        if 'text' in specific_config and 'image' in specific_config:
+             specific_config = specific_config.get('image', {})
+
+        return HuggingFaceImageProvider(
+            model=specific_config.get('model', 'stabilityai/stable-diffusion-2-1'),
+            api_key=specific_config.get('api_key') or config.get('huggingface', {}).get('api_key'),
+            seed=specific_config.get('seed')
+        )
     else:
         # Assume Pollinations/generic
         if 'text' in specific_config and 'image' in specific_config:
@@ -104,5 +123,13 @@ def get_text_provider(config, provider_name):
         return PollinationsTextProvider(
             model=specific_config.get('model', 'openai'),
             api_key=specific_config.get('api_key')
+        )
+    elif base_name == 'huggingface':
+        if 'text' in specific_config and 'image' in specific_config:
+             specific_config = specific_config.get('text', {})
+
+        return HuggingFaceTextProvider(
+            model=specific_config.get('model', 'Qwen/Qwen2.5-7B-Instruct'),
+            api_key=specific_config.get('api_key') or config.get('huggingface', {}).get('api_key')
         )
     return None

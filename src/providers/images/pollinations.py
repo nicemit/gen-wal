@@ -1,7 +1,7 @@
 import os
+import time
 import random
 import requests
-import time
 import urllib.parse
 from src.interfaces import ImageProvider
 
@@ -46,23 +46,3 @@ class PollinationsImageProvider(ImageProvider):
         except Exception as e:
             print(f"Error fetching image: {e}")
             return ""
-
-class LocalDirImageProvider(ImageProvider):
-    def __init__(self, directory: str):
-        self.directory = directory
-
-    def get_image(self, prompt: str, width: int, height: int) -> str:
-        if not os.path.exists(self.directory):
-             return ""
-        
-        valid_extensions = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
-        images = [
-            os.path.join(self.directory, f) 
-            for f in os.listdir(self.directory) 
-            if os.path.splitext(f)[1].lower() in valid_extensions
-        ]
-        
-        if not images:
-            return ""
-            
-        return random.choice(images)

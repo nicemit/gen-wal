@@ -7,10 +7,12 @@
     <title>Gen-Wal: Your Desktop's AI Brain</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter & Orbitron -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
 
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -24,6 +26,7 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['Courier New', 'Courier', 'monospace'],
+                        orbitron: ['Orbitron', 'sans-serif'],
                     },
                     colors: {
                         bg: '#0a0a0a',
@@ -142,7 +145,7 @@
             background:
                 radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 0% 100%, rgba(249, 115, 22, 0.15) 0%, transparent 50%);
             background-size: 200% 200%;
             animation: wavePulse 15s ease-in-out infinite alternate;
         }
@@ -185,10 +188,10 @@
         <!-- Header -->
         <header class="space-y-4 pt-6 md:pt-10 animate-fade-in-up flex flex-col items-center">
             <div class="flex items-center justify-center gap-3 sm:gap-6 mb-2">
-                <img src="images/logo.png" alt="Gen-Wal Logo"
+                <img src="images/logo.png?v=8" alt="Gen-Wal Logo"
                     class="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                 <h1
-                    class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white text-glow">
+                    class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-widest font-orbitron bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 drop-shadow-sm pb-2">
                     Gen-Wal</h1>
             </div>
             <p class="text-xl font-light text-muted leading-relaxed">

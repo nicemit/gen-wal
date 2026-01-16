@@ -14,8 +14,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap"
         rel="stylesheet">
 
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -54,25 +53,6 @@
             background-clip: text;
         }
 
-        /* Swiper Customization */
-        .swiper {
-            width: 100%;
-            border-radius: 0.75rem;
-            /* 12px */
-            border: 1px solid #333;
-            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .swiper-pagination-bullet {
-            background: #fff;
-            opacity: 0.5;
-        }
-
-        .swiper-pagination-bullet-active {
-            opacity: 1;
-            background: #3b82f6;
-        }
-
         /* Toast Animation */
         .toast {
             visibility: hidden;
@@ -85,20 +65,6 @@
             visibility: visible;
             opacity: 1;
             bottom: 50px;
-        }
-
-        /* Carousel Autoplay Progress */
-        .autoplay-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            z-index: 10;
-            width: 0;
-            height: 0.8px;
-            /* Very subtle */
-            background: #979797;
-            opacity: 0.6;
-            transition: width 100ms linear;
         }
 
         /* Minimal Entry Animation */
@@ -183,76 +149,95 @@
     <!-- Wavy Background -->
     <div class="fixed inset-0 z-0 wavy-background pointer-events-none"></div>
 
-    <div class="relative z-10 w-full max-w-4xl space-y-8 md:space-y-12 my-auto">
+    <div class="relative z-10 w-full max-w-7xl my-auto p-4 md:p-8">
 
-        <!-- Header -->
-        <header class="space-y-4 pt-6 md:pt-10 animate-fade-in-up flex flex-col items-center">
-            <div class="flex items-center justify-center gap-3 sm:gap-6 mb-2">
-                <img src="images/logo.png?v=8" alt="Gen-Wal Logo"
-                    class="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                <h1
-                    class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-widest font-orbitron bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 drop-shadow-sm pb-2">
-                    Gen-Wal</h1>
+        <!-- Hero Section: Split Layout -->
+        <div
+            class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-24 items-center mb-12 lg:mb-24 mt-4 lg:mt-0">
+
+            <!-- Left Column: Content -->
+            <div
+                class="space-y-6 md:space-y-8 text-left animate-fade-in-up flex flex-col items-center lg:items-start text-center lg:text-left">
+                <!-- Header -->
+                <header class="space-y-4 md:space-y-6">
+                    <div class="flex items-center justify-center lg:justify-start gap-3 md:gap-4">
+                        <img src="images/logo.png?v=8" alt="Gen-Wal Logo"
+                            class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                        <h1
+                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-widest font-orbitron bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 drop-shadow-sm">
+                            Gen-Wal
+                        </h1>
+                    </div>
+                    <p
+                        class="text-lg sm:text-xl md:text-2xl font-light text-muted leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        A personal-first AI daemon that generates a personalized motivational wallpaper for your desktop
+                        every morning.
+                    </p>
+                </header>
+
+                <!-- Personal Quote -->
+                <blockquote
+                    class="border-l-2 border-accent/30 pl-4 md:pl-6 italic text-gray-400 text-base sm:text-lg md:text-xl max-w-xl mx-auto lg:mx-0 text-left">
+                    "I built this because plans are easy to forget. Gen-Wal reminds me not just of what I want,
+                    but that I have to <strong class="text-gray-200">do the work</strong> to see results."
+                </blockquote>
+
+
             </div>
-            <p class="text-xl font-light text-muted leading-relaxed">
-                A personal-first AI daemon that generates a personalized<br class="hidden sm:block">
-                motivational wallpaper for your desktop every morning.
-            </p>
-        </header>
 
-        <!-- Personal Quote (Moved Up) -->
-        <div class="max-w-2xl mx-auto px-4 animate-fade-in-up delay-100">
-            <blockquote class="border-l-2 border-accent/30 pl-6 italic text-gray-400 text-lg md:text-xl text-left">
-                "I built this because plans are easy to forget. Gen-Wal reminds me not just of what I want,
-                but that I have to <strong class="text-gray-200">do the work</strong> to see results."
-            </blockquote>
-        </div>
-
-        <!-- Carousel (Swiper) -->
-        <div class="relative w-full max-w-3xl mx-auto animate-fade-in-up delay-200">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper" id="carousel-wrapper">
-                    <!-- Slides will be dynamically loaded from carousel_manifest.json -->
+            <!-- Right Column: Video -->
+            <div class="relative w-full animate-fade-in-up delay-200 group mt-4 lg:mt-0">
+                <div
+                    class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-orange-600 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-1000">
                 </div>
-                <div class="swiper-pagination"></div>
-                <div class="autoplay-progress"></div>
+                <!-- Video Element -->
+                <video autoplay loop muted playsinline
+                    class="relative rounded-xl border border-neutral-800 shadow-2xl w-full bg-black/50">
+                    <source src="headline-video.mp4" type="video/mp4">
+                </video>
+                <p class="mt-2 md:mt-3 text-[10px] sm:text-xs italic text-gray-600 text-center lg:text-right">
+                    * Wallpapers generated by Gen-Wal on my desktop.
+                </p>
             </div>
-            <p class="mt-2 text-xs italic text-gray-600">
-                * Wallpapers generated by Gen-Wal on my desktop.
-            </p>
+
         </div>
 
-        <!-- Install Command -->
-        <div class="max-w-2xl mx-auto animate-fade-in-up delay-300">
+
+        <!-- Install Command (Centered Below) -->
+        <div class="max-w-4xl mx-auto px-4 mb-20 animate-fade-in-up delay-300">
             <div onclick="copyCommand()"
-                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-6 py-5 text-left font-mono text-base transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
+                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-5 py-4 font-mono text-xs sm:text-base md:text-lg transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
                 <code class="text-accent break-all">curl -fsSL https://laptopserver.dev/genwal | bash</code>
                 <button
-                    class="shrink-0 rounded bg-white/5 px-3 py-1.5 text-sm text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
+                    class="shrink-0 rounded bg-white/5 px-4 py-2 text-xs sm:text-sm text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
                     Copy
                 </button>
             </div>
         </div>
 
         <!-- Features Grid -->
-        <div class="grid gap-8 text-left sm:grid-cols-3 pt-8 pb-16 animate-fade-in-up delay-400">
-            <div class="space-y-3 p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
-                <div class="text-2xl">🔒</div>
-                <h3 class="text-lg font-semibold text-white">Personal-First</h3>
-                <p class="text-sm text-muted leading-relaxed">Your values and intent stay on your machine. Visual beauty
+        <div
+            class="grid gap-6 md:gap-8 text-left sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-8 md:pt-16">
+            <div class="space-y-2 md:space-y-3 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
+                <div class="text-xl md:text-2xl">🔒</div>
+                <h3 class="text-base md:text-lg font-semibold text-white">Personal-First</h3>
+                <p class="text-xs md:text-sm text-muted leading-relaxed">Your values and intent stay on your machine.
+                    Visual beauty
                     is generated on demand.</p>
             </div>
-            <div class="space-y-3 p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
-                <div class="text-2xl">🧠</div>
-                <h3 class="text-lg font-semibold text-white">Adaptive</h3>
-                <p class="text-sm text-muted leading-relaxed">Generates content based on your personal goals, founder
+            <div class="space-y-2 md:space-y-3 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
+                <div class="text-xl md:text-2xl">🧠</div>
+                <h3 class="text-base md:text-lg font-semibold text-white">Adaptive</h3>
+                <p class="text-xs md:text-sm text-muted leading-relaxed">Generates content based on your personal goals,
+                    founder
                     mindset, or stoic principles.</p>
             </div>
-            <div class="space-y-3 p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
-                <div class="text-2xl">⚡</div>
-                <h3 class="text-lg font-semibold text-white">Fast</h3>
-                <p class="text-sm text-muted leading-relaxed">Zero-config. Uses <a href="https://pollinations.ai"
-                        target="_blank" class="text-accent hover:underline">Pollinations</a> for quick setup.
+            <div class="space-y-2 md:space-y-3 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
+                <div class="text-xl md:text-2xl">⚡</div>
+                <h3 class="text-base md:text-lg font-semibold text-white">Fast</h3>
+                <p class="text-xs md:text-sm text-muted leading-relaxed">Zero-config. Uses <a
+                        href="https://pollinations.ai" target="_blank"
+                        class="text-accent hover:underline">Pollinations</a> for quick setup.
                     Sets up systemd automation in minutes.</p>
             </div>
         </div>
@@ -290,64 +275,10 @@
         <span class="text-xl">📋</span>
     </div>
 
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!-- Init Swiper & Scripts -->
+
+    <!-- Scripts -->
     <script>
-        async function loadCarousel() {
-            try {
-                const response = await fetch('carousel_manifest.json');
-                const slides = await response.json();
-
-                const wrapper = document.getElementById('carousel-wrapper');
-
-                slides.forEach(slide => {
-                    const div = document.createElement('div');
-                    div.className = 'swiper-slide relative';
-                    div.innerHTML = `
-                        <img src="${slide.src}" alt="${slide.caption}" class="w-full h-auto block select-none">
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-6 px-4">
-                            <span class="font-mono text-sm text-white text-shadow-sm">${slide.caption}</span>
-                        </div>
-                    `;
-                    wrapper.appendChild(div);
-                });
-
-                // Initialize Swiper AFTER content is loaded
-                new Swiper(".mySwiper", {
-                    spaceBetween: 30,
-                    centeredSlides: true,
-                    loop: true,
-                    effect: "fade",
-                    fadeEffect: { crossFade: true },
-                    autoplay: {
-                        delay: 4000,
-                        disableOnInteraction: false,
-                    },
-                    pagination: {
-                        el: ".swiper-pagination",
-                        clickable: true,
-                        dynamicBullets: true,
-                    },
-                    on: {
-                        autoplayTimeLeft(s, time, progress) {
-                            const progressBar = document.querySelector(".autoplay-progress");
-                            if (progressBar) {
-                                progressBar.style.width = `${(1 - progress) * 100}%`;
-                            }
-                        }
-                    }
-                });
-
-            } catch (error) {
-                console.error('Failed to load carousel manifest:', error);
-            }
-        }
-
-        // Load content on start
-        loadCarousel();
-
         // Robust Copy Function
         function copyCommand() {
             const command = 'curl -fsSL https://laptopserver.dev/genwal | bash';
@@ -359,17 +290,42 @@
                 setTimeout(() => { toast.classList.remove("show"); }, 3000);
             };
 
-            // Attempt copy, but show toast regardless of dev environment restrictions
+            // Fallback for non-secure contexts (HTTP) or older browsers
+            const fallbackCopy = (text) => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+
+                // Ensure it's not visible but part of the DOM
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                textArea.style.top = "0";
+                document.body.appendChild(textArea);
+
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) showToast();
+                    else console.error('Fallback copy failed.');
+                } catch (err) {
+                    console.error('Fallback copy error:', err);
+                }
+
+                document.body.removeChild(textArea);
+            };
+
+            // Try Modern Clipboard API first
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(command)
                     .then(showToast)
                     .catch((err) => {
-                        console.error('Clipboard API failed (likely non-secure context):', err);
-                        showToast();
+                        console.warn('Clipboard API failed (likely non-secure), trying fallback...', err);
+                        fallbackCopy(command);
                     });
             } else {
-                console.warn('Clipboard API unavailable in this context');
-                showToast();
+                // Fallback immediately if API not available
+                fallbackCopy(command);
             }
         }
     </script>

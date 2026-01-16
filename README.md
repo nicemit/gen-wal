@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge&logo=github)
 
-![Gen-Wal Banner](docs/images/banner.png)
+![Gen-Wal Banner](docs/images/banner.gif)
 
 > A personal-first AI daemon that generates a personalized motivational
 > wallpaper on your desktop every morning.\

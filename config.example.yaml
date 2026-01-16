@@ -22,7 +22,7 @@ profile_path: "profiles/examples/stoic_profile.md" # Path to your motivation pro
 # -----------------------------------------------------------------------------
 # 2. Quote Provider
 # -----------------------------------------------------------------------------
-# Quote Provider options: "llm:ollama", "pollinations:text", "csv:work_quotes"
+# Quote Provider options: "huggingface:text", "llm:ollama", "pollinations:text", "csv:work_quotes"
 # quote_provider: "llm:ollama"
 quote_provider: "pollinations:text"
 
@@ -30,7 +30,7 @@ quote_provider: "pollinations:text"
 # 3. Image Provider
 # -----------------------------------------------------------------------------
 # Choose how to generate backgrounds.
-# Options: "pollinations:image", "local_dir"
+# Options: "huggingface:image", "pollinations:image", "local_dir"
 image_provider: "pollinations:image"
 
 # Image Prompt Provider (Optional)
@@ -78,6 +78,15 @@ pollinations:
   text:
     model: "openai" # Options: openai, mistral, llama
     # api_key: "..." # Optional
+
+# Hugging Face Configuration
+# Free Inference API - High Availability Defaults
+huggingface:
+  api_key: "hf_YOUR_TOKEN_HERE" # Get one at https://huggingface.co/settings/tokens
+  
+  # Defaults (Free Tier Compatible):
+  # text_model: "Qwen/Qwen2.5-7B-Instruct"
+  # image_model: "stabilityai/stable-diffusion-2-1"
 
 
 

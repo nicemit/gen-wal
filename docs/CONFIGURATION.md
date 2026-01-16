@@ -14,9 +14,9 @@ Gen-Wal uses a powerful **path-based** configuration system. You can point any p
 | Key | Description | Default |
 | :--- | :--- | :--- |
 | `profile_path` | Path to your personal motivation profile (Markdown). | `profiles/amit_motivation_profile.md` |
-| `quote_provider` | Options: `llm:profile`, `pollinations:text`, `csv:profile`, `yaml:profile`. | `zenquotes` |
-| `image_provider` | Options: `pollinations:image`, `local_dir:profile`. | `pollinations:image` |
-| `image_prompt_provider` | Options: `pollinations:text`, `llm:profile`. Optional dynamic prompt generation. | `pollinations:text` |
+| `quote_provider` | Options: `huggingface:text`, `llm:profile`, `pollinations:text`, `csv:profile`. | `zenquotes` |
+| `image_provider` | Options: `huggingface:image`, `pollinations:image`, `local_dir:profile`. | `pollinations:image` |
+| `image_prompt_provider` | Options: `huggingface:text`, `pollinations:text`, `llm:profile`. | `pollinations:text` |
 
 ## Quote Providers
 
@@ -38,6 +38,18 @@ llm:
     base_url: "https://api.openai.com/v1"
     api_key: "sk-..."
     model: "gpt-4"
+```
+
+### Hugging Face
+Use the free Hugging Face Inference API for high-availability access to open models.
+
+```yaml
+quote_provider: "huggingface:text"
+huggingface:
+  api_key: "hf_YOUR_TOKEN"
+  # Optional overrides
+  # text_model: "Qwen/Qwen2.5-7B-Instruct"
+  # image_model: "stabilityai/stable-diffusion-2-1"
 ```
 
 ### CSV / YAML
@@ -126,3 +138,13 @@ wallpaper_settings:
   apply_wallpaper: true  # Set to false to generate image but not set desktop background
   save_path: "~/.cache/gen-wal/current_wallpaper.jpg" # Where to save the generated image
 ```
+
+## CLI Overrides
+
+You can temporarily override configuration settings via command-line arguments:
+
+| Argument | Description | Example |
+| :--- | :--- | :--- |
+| `--profile` | Use a different profile file for this run. | `python3 main.py --profile profiles/examples/monk_profile.md` |
+| `--text-pos` | Override text positioning. | `python3 main.py --text-pos center` |
+| `--config` | Use a specific config file. | `python3 main.py --config my_custom_config.yaml` |

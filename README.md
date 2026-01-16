@@ -28,7 +28,7 @@ Values: I built this because my desktop felt like noise. Now, it keeps my plans 
 
 • Generates a new wallpaper every morning\
 • Uses your personal profile (goals, habits, mindset)\
-• Runs with a local AI brain (llama.cpp / Ollama)\
+• Runs with a local AI brain (llama.cpp / Ollama) or Cloud (Pollinations / Hugging Face)\
 • Auto-contrast typography for perfect readability\
 • systemd-powered scheduling\
 • Modular architecture for quotes, images, and prompts
@@ -95,6 +95,18 @@ Gen-Wal comes with pre-built profiles to jumpstart your day. Select one by chang
 | **Founder** | Speed, Leverage | `profiles/examples/founder_profile.md` |
 | **Monk** | Deep Work, Zen | `profiles/examples/monk_profile.md` |
 | **Iron/Gym** | Discipline, Strength | `profiles/examples/gym_profile.md` |
+
+------------------------------------------------------------------------
+
+## Advanced Usage
+
+### CLI Overrides
+You can override your config settings directly from the command line:
+
+```bash
+# Run with a specific profile and text position
+python3 main.py --profile profiles/examples/monk_profile.md --text-pos center
+```
 
 ------------------------------------------------------------------------
 

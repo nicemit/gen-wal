@@ -92,7 +92,7 @@ def main():
     grid.add_row(f"[dim]Quote Provider:[/dim] {quote_provider_name}", f"[dim]Model:[/dim] {quote_model}")
     grid.add_row(f"[dim]Image Provider:[/dim] {image_provider_name}", f"[dim]Model:[/dim] {image_model}")
     
-    console.print(Panel(grid, border_style="blue", padding=(1, 2)))
+    console.print(Panel(grid, title="[bold]Environment designs the mind[/bold]", border_style="blue", padding=(1, 2)))
 
     # 3. Execution
     start_total = time.time()

@@ -12,13 +12,28 @@
 > wallpaper on your desktop every morning.\
 > Private. Beautiful. Automatic.
 
+⭐ If this resonates with you, consider starring the repo.
+It helps others discover the project.
+
 ------------------------------------------------------------------------
 
 ## Why?
 
-I built this as a small tool for myself. I realized that keeping my goals in my head wasn't enough—I needed a constant reminder that **actions take a person further**. 
+I built this as a small tool for myself. I realized that keeping my goals in my head wasn't enough. **A goal is a promise that only action can keep.** I needed a constant reminder that **environment designs the mind**. 
 
 Instead of another app I have to open, Gen-Wal just exists. It runs quietly, ensuring that the first thing I see every morning is a nudge to do the work.
+
+------------------------------------------------------------------------
+
+## Who This Is For
+
+Gen-Wal is for people who:
+- Spend a lot of time at their computer
+- Want calm reminders instead of noisy productivity apps
+- Prefer personal, local-first tools
+- Care about aesthetics and ritual
+
+If that sounds like you, this will feel natural very quickly.
 
 ------------------------------------------------------------------------
 
@@ -43,6 +58,16 @@ Instead of another app I have to open, Gen-Wal just exists. It runs quietly, ens
 | **Gym Profile** | **Founder Profile (Variant)** |
 | :---: | :---: |
 | <img src="docs/images/gym-example-1.jpg" width="100%" alt="Gym Motivation Wallpaper"> | <img src="docs/images/founder-example-2.jpg" width="100%" alt="Founder Wallpaper Variant"> |
+
+------------------------------------------------------------------------
+
+## Why Gen-Wal?
+
+Gen-Wal is not a productivity app.
+It doesn’t track you, notify you, or demand attention.
+
+It quietly changes your environment once a day —
+so your goals stay visible without becoming noise.
 
 
 ------------------------------------------------------------------------
@@ -134,6 +159,15 @@ I'm exploring ways to make Gen-Wal even more useful, but I'd love your input. Wh
 *   **📓 Mirror Mode**: Interactive journaling where the system generates content based on your *current* mood input.
 
 > Have an idea? [Open an Issue](https://github.com/nicemit/gen-wal/issues) or reach out. Let's build tools that keep us moving.
+
+------------------------------------------------------------------------
+
+## Troubleshooting
+
+*   **Python Errors**: Gen-Wal requires **Python 3.10+**. Check with `python3 --version`.
+*   **Wallpaper Not Setting**: Currently supports GNOME/Unity. For other DEs, check `src/utils.py`.
+*   **API Errors**: If using OpenAI/Anthropic directly, ensure your `API_KEY` is set in `config.yaml` or env vars.
+*   **Pollinations**: Service can be busy. If generation hangs or fails, try again in a few minutes.
 
 ------------------------------------------------------------------------
 

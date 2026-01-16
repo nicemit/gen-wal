@@ -103,7 +103,7 @@ def get_image_provider(config):
             model=specific_config.get('model', 'flux'),
             nologo=specific_config.get('nologo', True),
             api_key=specific_config.get('api_key'),
-            seed=specific_config.get('seed', 42) 
+            seed=specific_config.get('seed') 
         )
 
 def get_text_provider(config, provider_name):

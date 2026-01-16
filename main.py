@@ -35,41 +35,15 @@ def main():
     if args.text_pos:
         config['text_position'] = args.text_pos
 
-    # 1. Info Table
-    quote_provider_name = config.get('quote_provider', 'zenquotes')
-    image_provider_name = config.get('image_provider', 'pollinations')
+    # 1. Load Profile (First, to get metadata for the summary)
+    profile_content = ""
+    smart_prompts_active = False
     
-    # Extract Model Names (Heuristic based on config structure)
-    quote_model = "Unknown"
-    if "pollinations" in quote_provider_name:
-         quote_model = config.get('pollinations', {}).get('text', {}).get('model', 'openai')
-    elif "llm" in quote_provider_name:
-         # Simplified lookup logic
-         parts = quote_provider_name.split(':')
-         sub = parts[1] if len(parts) > 1 else 'ollama'
-         quote_model = config.get('llm', {}).get(sub, {}).get('model', 'unknown')
-
-    image_model = "Unknown"
-    if "pollinations" in image_provider_name:
-         image_model = config.get('pollinations', {}).get('image', {}).get('model', 'flux')
-    
-    
-    grid = Table.grid(expand=True)
-    grid.add_column()
-    grid.add_column(justify="right")
-    grid.add_row(f"[bold blue]Gen-Wal[/bold blue] v1.0", f"[dim]Profile:[/dim] [cyan]{os.path.basename(config.get('profile_path', 'default'))}[/cyan]")
-    grid.add_row(f"[dim]Quote Provider:[/dim] {quote_provider_name}", f"[dim]Model:[/dim] {quote_model}")
-    grid.add_row(f"[dim]Image Provider:[/dim] {image_provider_name}", f"[dim]Model:[/dim] {image_model}")
-    
-    console.print(Panel(grid, border_style="blue"))
-
-    # Load Profile
-    # Load Profile
-    with console.status("[bold green]Fetching profile...[/bold green]"):
+    with console.status("[bold green]Loading profile...[/bold green]"):
         profile_provider = get_profile_provider(config)
         profile_data = profile_provider.get_profile()
         
-        # Handle ProfileData object or legacy string (safeguard)
+        # Handle ProfileData
         if hasattr(profile_data, 'metadata'):
             profile_content = profile_data.content
             metadata = profile_data.metadata
@@ -78,39 +52,73 @@ def main():
             if 'quote_prompt_template' in metadata:
                  if 'prompts' not in config: config['prompts'] = {}
                  config['prompts']['quote'] = metadata['quote_prompt_template']
-                 console.print(f"[dim]Override: Using custom quote prompt from profile.[/dim]")
+                 smart_prompts_active = True
 
             if 'image_prompt_template' in metadata:
                  if 'prompts' not in config: config['prompts'] = {}
                  config['prompts']['image_description'] = metadata['image_prompt_template']
-                 console.print(f"[dim]Override: Using custom image prompt from profile.[/dim]")
+                 smart_prompts_active = True
         else:
             profile_content = str(profile_data)
 
-    # 2. Get Quote
-    start_t = time.time()
+    # 2. Display Info Table
+    quote_provider_name = config.get('quote_provider', 'zenquotes')
+    image_provider_name = config.get('image_provider', 'pollinations')
+    
+    # Extract Model Names
+    quote_model = "Unknown"
+    if "pollinations" in quote_provider_name:
+         quote_model = config.get('pollinations', {}).get('text', {}).get('model', 'openai')
+    elif "llm" in quote_provider_name:
+         parts = quote_provider_name.split(':')
+         sub = parts[1] if len(parts) > 1 else 'ollama'
+         quote_model = config.get('llm', {}).get(sub, {}).get('model', 'unknown')
+
+    image_model = "Unknown"
+    if "pollinations" in image_provider_name:
+         image_model = config.get('pollinations', {}).get('image', {}).get('model', 'flux')
+    
+    # Build Table
+    grid = Table.grid(expand=True)
+    grid.add_column()
+    grid.add_column(justify="right")
+    
+    profile_name = os.path.basename(config.get('profile_path', 'default'))
+    res = config.get('resolution', {})
+    res_str = f"{res.get('width')}x{res.get('height')}"
+
+    grid.add_row(f"[bold blue]Gen-Wal[/bold blue] v1.0", f"[dim]Profile:[/dim] [cyan]{profile_name}[/cyan]")
+    grid.add_row(f"[dim]Resolution:[/dim] {res_str}", f"[dim]Smart Prompts:[/dim] " + ("[bold green]Active 🧠[/bold green]" if smart_prompts_active else "[dim]None[/dim]"))
+    grid.add_row(f"[dim]Quote Provider:[/dim] {quote_provider_name}", f"[dim]Model:[/dim] {quote_model}")
+    grid.add_row(f"[dim]Image Provider:[/dim] {image_provider_name}", f"[dim]Model:[/dim] {image_model}")
+    
+    console.print(Panel(grid, border_style="blue", padding=(1, 2)))
+
+    # 3. Execution
+    start_total = time.time()
+    
+    # Get Quote
     quote = ""
     with console.status(f"[bold green]Fetching quote...[/bold green]"):
+        start_t = time.time()
         quote_provider = get_quote_provider(config)
         quote = quote_provider.get_quote(profile_content)
-    duration = time.time() - start_t
+        dur_q = time.time() - start_t
     
-    console.print(f"📄 [bold]Quote[/bold] ([green]{duration:.2f}s[/green]): [italic]\"{quote}\"[/italic]")
+    console.print(f"📄 [bold]Quote[/bold]           [dim]({dur_q:.1f}s)[/dim]: [italic]\"{quote}\"[/italic]")
 
-    # 3. Get Image
+    # Get Image Prompt
     img_prompt_provider_name = config.get('image_prompt_provider')
     prompt = "motivational abstract nature landscape technology calm powerful"
     
-    # Generate dynamic image prompt if configured
     if img_prompt_provider_name:
-        with console.status(f"[bold purple]Generating image prompt...[/bold purple]"):
+        with console.status(f"[bold purple]Generating visual description...[/bold purple]"):
             try:
                 text_provider = get_text_provider(config, img_prompt_provider_name)
                 if text_provider:
                     prompt_instruction = config.get('prompts', {}).get('image_description')
                     
                     if not prompt_instruction:
-                        # Fallback default
                         prompt_instruction = f"Generate a concise visual description... QUOTE: {quote}"
                     else:
                         prompt_instruction = prompt_instruction.format(quote=quote, profile_content=profile_content)
@@ -121,57 +129,49 @@ def main():
             except Exception as e:
                  console.print(f"[red]Failed to generate dynamic prompt, using default.[/red] [dim]{e}[/dim]")
 
-    start_t = time.time()
+    # Get Image
     bg_path = ""
     with console.status(f"[bold green]Generating wallpaper...[/bold green]"):
+        start_t = time.time()
         image_provider = get_image_provider(config)
         width = config.get('resolution', {}).get('width', 1920)
         height = config.get('resolution', {}).get('height', 1080)
         bg_path = image_provider.get_image(prompt, width, height)
-    duration = time.time() - start_t
+        dur_i = time.time() - start_t
 
     if not bg_path:
         console.print("[bold red]Failed to get image.[/bold red]")
         return
         
-    console.print(f"🖼️ [bold]Image[/bold] ([green]{duration:.2f}s[/green]): [link={bg_path}]{bg_path}[/link]")
+    console.print(f"🖼️  [bold]Image[/bold]           [dim]({dur_i:.1f}s)[/dim]: [link={bg_path}]{os.path.basename(bg_path)}[/link]")
 
-    # 4. Render
-    with console.status("[bold green]Composing wallpaper...[/bold green]"):
+    # Render & Save
+    with console.status("[bold green]Composing final image...[/bold green]"):
         font_size = config.get('font_size', 60)
         renderer = WallpaperRenderer(font_size=font_size)
         
-        # Determine output path
+        # Output Path Logic
         wallpaper_settings = config.get('wallpaper_settings', {})
         custom_path = wallpaper_settings.get('save_path')
         
         if custom_path:
              output_path = os.path.expanduser(custom_path)
-             # Check if it looks like a directory (no extension) or is an existing directory
-             _, ext = os.path.splitext(output_path)
-             is_directory = not ext or os.path.isdir(output_path)
-
-             if is_directory:
-                 # Metadata Filename Logic
+             if not os.path.splitext(output_path)[1]: # Is Dir
                  from datetime import datetime
                  import re
                  
                  timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
                  
                  # Clean Profile Name
-                 profile_name = os.path.basename(config.get('profile_path', 'default'))
-                 profile_clean = os.path.splitext(profile_name)[0]
+                 profile_clean = os.path.splitext(os.path.basename(config.get('profile_path', 'default')))[0]
                  
                  # Clean Model Name
                  model_clean = re.sub(r'[^a-zA-Z0-9]', '', image_model)
                  
                  filename = f"{timestamp}_{profile_clean}_{model_clean}.jpg"
-                 
-                 # Ensure dir exists
                  os.makedirs(output_path, exist_ok=True)
                  output_path = os.path.join(output_path, filename)
              else:
-                 # It's a file path, ensure parent dir exists
                  os.makedirs(os.path.dirname(output_path), exist_ok=True)
         else:
              output_path = os.path.join(os.path.expanduser("~/.cache/gen-wal"), "current_wallpaper.jpg")
@@ -182,16 +182,18 @@ def main():
         final_path = renderer.compose(bg_path, quote, output_path, position=position, padding=padding, target_size=(width, height))
     
     if final_path:
-        console.print(f"💾 [bold]Saved to[/bold]: [link={final_path}]{final_path}[/link]")
+        console.print(f"💾 [bold]Saved to[/bold]        : [link={final_path}]{final_path}[/link]")
         
-        # Check if we should apply the wallpaper
         should_apply = wallpaper_settings.get('apply_wallpaper', True)
         
         if should_apply:
-            set_wallpaper(final_path)
-            console.print(f"[bold green]✨ Wallpaper updated successfully![/bold green]")
+            try:
+                set_wallpaper(final_path)
+                console.print(f"[bold green]✨ Desktop Updated Successfully![/bold green]")
+            except:
+                pass # Error printed by util
         else:
-            console.print(f"[yellow]Skipping desktop application (configured setting).[/yellow]")
+            console.print(f"[yellow]Skipping application (config).[/yellow]")
     else:
         console.print("[bold red]Rendering failed.[/bold red]")
 

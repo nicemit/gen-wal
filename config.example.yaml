@@ -16,6 +16,11 @@
 # -----------------------------------------------------------------------------
 # Choose where to load the user profile from.
 # Options: "local_file"
+#
+# TIP: Profiles can be "Smart Packs" containing custom prompt overrides!
+# Add a YAML frontmatter block to your profile.md to override 'prompts.quote'
+# and 'prompts.image_description' automatically.
+# -----------------------------------------------------------------------------
 profile_provider: "local_file"
 profile_path: "profiles/examples/stoic_profile.md" # Path to your motivation profile
 

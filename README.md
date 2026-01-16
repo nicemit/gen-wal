@@ -16,11 +16,9 @@
 
 ## Why?
 
-Most motivation apps require you to open them. Gen-Wal just exists in your environment.
+I built this as a small tool for myself. I realized that keeping my goals in my head wasn't enough—I needed a constant reminder that **actions take a person further**. 
 
-It runs quietly in the background, updating your desktop once a day with a new wallpaper and quote tailored to your specific goals. It's a simple, set-and-forget ritual to keep your digital space fresh.
-
-Values: I built this because my desktop felt like noise. Now, it keeps my plans in focus—reminding me not just of the goal, but that I have to do the work to see results.
+Instead of another app I have to open, Gen-Wal just exists. It runs quietly, ensuring that the first thing I see every morning is a nudge to do the work.
 
 ------------------------------------------------------------------------
 
@@ -126,13 +124,16 @@ python3 main.py --profile profiles/examples/monk_profile.md --text-pos center
 
 ------------------------------------------------------------------------
 
-## Roadmap
+## Future Ideas
 
-• Multiple mindset packs\
-• Theme marketplace\
-• Journal memory mode\
-• Multi-monitor support\
-• Live animated wallpapers
+I'm exploring ways to make Gen-Wal even more useful, but I'd love your input. What would help you stay focused?
+
+*   **📜 Daily Briefing**: Generating a `TODAY.md` text file on your desktop with focus points.
+*   **🎵 Sonic Mood**: Ambient soundscapes paired with your profile (Monk mode rain, Gym mode high-BPM).
+*   **🖥️ Focus Dashboard**: Turning `localhost:9000` into a simple "New Tab" page with goal tracking.
+*   **📓 Mirror Mode**: Interactive journaling where the system generates content based on your *current* mood input.
+
+> Have an idea? [Open an Issue](https://github.com/nicemit/gen-wal/issues) or reach out. Let's build tools that keep us moving.
 
 ------------------------------------------------------------------------
 

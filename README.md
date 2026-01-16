@@ -137,6 +137,22 @@ I'm exploring ways to make Gen-Wal even more useful, but I'd love your input. Wh
 
 ------------------------------------------------------------------------
 
+## Development & Testing
+
+Gen-Wal includes a `unittest` suite to ensure stability of core features (Providers, Config, Smart Profiles).
+
+### Running Tests
+```bash
+python3 -m unittest discover tests
+```
+
+### Coverage
+*   **Profiles**: Verifies Frontmatter parsing and override logic.
+*   **Factory**: Validates complex configuration path traversing (`pollinations:image`, `llm:ollama`).
+*   **Pending**: Integration tests for actual API calls (mocked for now).
+
+------------------------------------------------------------------------
+
 ## License
 
-MIT --- build your own mental OS.
+MIT — Free to use, modify, and make it your own.

@@ -87,14 +87,21 @@ resolution:
 
 ### Included Mindset Packs
 
-Gen-Wal comes with pre-built profiles to jumpstart your day. Select one by changing `profile_path` in `config.yaml`:
+Gen-Wal profiles are **"Smart Packs"** that contain their own system prompts. A standard profile not only defines *who* you want to be but *how* the AI should speak to you.
 
-| Pack | Focus | Config Path |
+| Pack | Focus | Prompt Style |
 | :--- | :--- | :--- |
-| **Stoic** | Resilience, Virtue | `profiles/examples/stoic_profile.md` |
-| **Founder** | Speed, Leverage | `profiles/examples/founder_profile.md` |
-| **Monk** | Deep Work, Zen | `profiles/examples/monk_profile.md` |
-| **Iron/Gym** | Discipline, Strength | `profiles/examples/gym_profile.md` |
+| **Stoic** | Resilience, Virtue | Marcus Aurelius (Direct, Ancient) |
+| **Founder** | Speed, Leverage | YC Partner (Curt, High-Tech) |
+| **Monk** | Deep Work, Zen | Zen Master (Cryptic, Misty) |
+| **Gym** | Discipline, Strength | Drill Sergeant (Aggressive, Gritty) |
+
+Select one by changing `profile_path` in `config.yaml` or running:
+```bash
+python3 main.py --profile profiles/examples/gym_profile.md
+```
+
+
 
 ------------------------------------------------------------------------
 

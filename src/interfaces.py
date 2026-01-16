@@ -1,5 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Dict, Any
+from dataclasses import dataclass, field
+
+@dataclass
+class ProfileData:
+    content: str
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
 class QuoteProvider(ABC):
     @abstractmethod
@@ -9,8 +15,8 @@ class QuoteProvider(ABC):
 
 class ProfileProvider(ABC):
     @abstractmethod
-    def get_profile(self) -> str:
-        """Fetches the user profile content as a string."""
+    def get_profile(self) -> ProfileData:
+        """Fetches the user profile content and metadata."""
         pass
 
 class ImageProvider(ABC):

@@ -64,9 +64,28 @@ def main():
     console.print(Panel(grid, border_style="blue"))
 
     # Load Profile
+    # Load Profile
     with console.status("[bold green]Fetching profile...[/bold green]"):
         profile_provider = get_profile_provider(config)
-        profile_content = profile_provider.get_profile()
+        profile_data = profile_provider.get_profile()
+        
+        # Handle ProfileData object or legacy string (safeguard)
+        if hasattr(profile_data, 'metadata'):
+            profile_content = profile_data.content
+            metadata = profile_data.metadata
+
+            # Apply Frontmatter Overrides
+            if 'quote_prompt_template' in metadata:
+                 if 'prompts' not in config: config['prompts'] = {}
+                 config['prompts']['quote'] = metadata['quote_prompt_template']
+                 console.print(f"[dim]Override: Using custom quote prompt from profile.[/dim]")
+
+            if 'image_prompt_template' in metadata:
+                 if 'prompts' not in config: config['prompts'] = {}
+                 config['prompts']['image_description'] = metadata['image_prompt_template']
+                 console.print(f"[dim]Override: Using custom image prompt from profile.[/dim]")
+        else:
+            profile_content = str(profile_data)
 
     # 2. Get Quote
     start_t = time.time()

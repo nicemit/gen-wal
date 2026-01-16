@@ -1,8 +1,25 @@
 # Gen-Wal Configuration Guide
 
-This document explains how to configure **Gen-Wal** using `config.yaml`.
+# Configuration Reference
 
-## Configuration Logic
+## 🧠 Smart Profiles
+Gen-Wal profiles support "Smart Prompts" using YAML Frontmatter. This creates self-contained "Mindset Packs" that define specific personas without needing global config.
+
+**Example `my_profile.md`:**
+```markdown
+---
+quote_prompt_template: "Act as a Drill Sergeant. SCREAM the quote. Max 15 words."
+image_prompt_template: "Generate a prompt for a gritty, dark industrial gym. Iron, sweat, shadows. Max 15 words."
+---
+# Iron Gym
+I value strength...
+```
+
+When you run `python3 main.py --profile my_profile.md`, these prompts will override your `config.yaml` defaults.
+
+## Global Settings (`config.yaml`).
+
+### Configuration Logic
 Gen-Wal uses a powerful **path-based** configuration system. You can point any provider to a specific section of your config using `provider:subtype`.
 
 **Example:**

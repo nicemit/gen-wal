@@ -1,3 +1,8 @@
+```
+---
+quote_prompt_template: "Act as a wise Mentor. Speak about resilience, inner power, and self-belief. Max 15 words."
+image_prompt_template: "Generate a prompt for a solid, grounding nature scene like a massive tree or mountain base. Earthy tones. Max 15 words."
+---
 # Inner Strength / Zen Focus Profile
 
 ## Core Identity

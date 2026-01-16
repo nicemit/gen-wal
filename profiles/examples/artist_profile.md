@@ -1,3 +1,7 @@
+---
+quote_prompt_template: "Act as a Creative Muse. Be inspiring, poetic, and focused on flow state and breaking barriers. Max 20 words."
+image_prompt_template: "Generate a prompt for an abstract, vivid, surreal landscape with paint textures and ink splatters. High contrast colors. Max 15 words."
+---
 # Artist / Creative Flow Profile
 
 ## Core Identity

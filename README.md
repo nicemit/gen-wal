@@ -51,13 +51,13 @@ If that sounds like you, this will feel natural very quickly.
 ## Example Wallpapers
 
 
-| **Founder Profile** | **Monk Profile** |
+| **Gym Profile** | **Stoic Profile** |
 | :---: | :---: |
-| <img src="docs/images/founder-example-1.jpg" width="100%" alt="Founder Startup Wallpaper"> | <img src="docs/images/monk-example-1.jpg" width="100%" alt="Zen Monk Wallpaper"> |
+| <img src="docs/images/gym.jpg" width="100%" alt="Gym Motivation Wallpaper"> | <img src="docs/images/stoic.jpg" width="100%" alt="Stoic Calm Wallpaper"> |
 
-| **Gym Profile** | **Founder Profile (Variant)** |
+| **Artist Profile** | **Inner Strength Profile** |
 | :---: | :---: |
-| <img src="docs/images/gym-example-1.jpg" width="100%" alt="Gym Motivation Wallpaper"> | <img src="docs/images/founder-example-2.jpg" width="100%" alt="Founder Wallpaper Variant"> |
+| <img src="docs/images/artist.jpg" width="100%" alt="Artist Creativity Wallpaper"> | <img src="docs/images/strength.jpg" width="100%" alt="Inner Strength Wallpaper"> |
 
 ------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ so your goals stay visible without becoming noise.
 
 60-Second Install
 ``` bash
-curl -fsSL https://laptopserver.dev/genwal | bash
+curl -fsSL https://gen-wal.laptopserver.dev/genwal | bash
 ```
 
 Installs:

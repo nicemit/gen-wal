@@ -171,6 +171,15 @@ I'm exploring ways to make Gen-Wal even more useful, but I'd love your input. Wh
 *   **API Errors**: If using OpenAI/Anthropic directly, ensure your `API_KEY` is set in `config.yaml` or env vars.
 *   **Pollinations**: Service can be busy. If generation hangs or fails, try again in a few minutes.
 
+## Uninstall
+
+To remove Gen-Wal completely (stop the daily schedule and delete files):
+
+```bash
+cd ~/.gen-wal
+./uninstall.sh
+```
+
 ------------------------------------------------------------------------
 
 ## Development & Testing

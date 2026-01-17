@@ -15,7 +15,11 @@ class PollinationsQuoteProvider(QuoteProvider):
         """
 
     def _call_pollinations(self, prompt: str) -> str:
-        url = "https://gen.pollinations.ai/v1/chat/completions"
+        if self.api_key:
+            url = "https://gen.pollinations.ai/v1/chat/completions"
+        else:
+             url = "https://text.pollinations.ai/openai/v1/chat/completions"
+
         headers = {"Content-Type": "application/json"}
         if self.api_key:
              headers["Authorization"] = f"Bearer {self.api_key}"

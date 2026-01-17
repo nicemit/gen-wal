@@ -8,7 +8,10 @@ class PollinationsTextProvider(TextProvider):
         self.api_key = api_key
 
     def generate_text(self, prompt: str, system_prompt: str = "You are a helpful assistant.") -> str:
-        url = "https://gen.pollinations.ai/v1/chat/completions"
+        if self.api_key:
+            url = "https://gen.pollinations.ai/v1/chat/completions"
+        else:
+            url = "https://text.pollinations.ai/openai/v1/chat/completions"
         
         headers = {
             "Content-Type": "application/json"
@@ -21,6 +24,7 @@ class PollinationsTextProvider(TextProvider):
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
             ],
+            # If using free tier, model might be ignored or need specific value, but passing self.model is safe
             "model": self.model,
             "stream": False,
             "seed": random.randint(0, 1000000)

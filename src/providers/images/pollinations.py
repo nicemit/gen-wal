@@ -21,7 +21,10 @@ class PollinationsImageProvider(ImageProvider):
         safe_prompt = urllib.parse.quote(prompt)
         seed = self.seed if self.seed is not None else random.randint(0, 1000000)
         
-        url = f"https://gen.pollinations.ai/image/{safe_prompt}"
+        if self.api_key:
+            url = f"https://gen.pollinations.ai/image/{safe_prompt}"
+        else:
+            url = f"https://image.pollinations.ai/prompt/{safe_prompt}"
         
         params = {
             "width": width,

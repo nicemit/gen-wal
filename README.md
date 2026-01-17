@@ -12,8 +12,6 @@
 > wallpaper on your desktop every morning.\
 > Private. Beautiful. Automatic.
 
-⭐ If this resonates with you, consider starring the repo.
-It helps others discover the project.
 
 ------------------------------------------------------------------------
 
@@ -33,7 +31,11 @@ Gen-Wal is for people who:
 - Prefer personal, local-first tools
 - Care about aesthetics and ritual
 
+------------------------------------------------------------------------
+
 If that sounds like you, this will feel natural very quickly.
+
+⭐ **Resonate with you?** Consider starring the repo to help others discover the project.
 
 ------------------------------------------------------------------------
 

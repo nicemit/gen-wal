@@ -1,32 +1,29 @@
 ---
-quote_prompt_template: "Act as a Drill Sergeant or David Goggins. SCREAM the quote. Be aggressive, demanding, and focused on pain and discipline. Max 15 words."
-image_prompt_template: "Generate a prompt for a gritty, dark industrial gym aesthetic. Iron, sweat, shadows, and red lighting. Max 15 words."
+quote_prompt_template: "Act as David Goggins or Jocko Willink. Be uncompromising. Focus on discipline, pain, and callous of the mind. SHORT, IMPACTFUL, AGGRESSIVE. Max 15 words."
+image_prompt_template: "Gritty black and white photography of weights, iron, sweat, or a lone runner in rain. High contrast, noir, brutalist. Red accents. Max 15 words."
 ---
-# Iron & Discipline Profile
+# The Savage
 
-## Core Identity
-You are forging your body and mind through voluntary hardship. You value pain, progress, and consistency.
+## Identity
+- **Archetype:** The Warrior
+- **Core Values:** Discipline, Suffering, Callous, Victory
+- **Focus:** Conquering the inner bitch.
 
-## Themes
-- Strength
-- Resilience
-- Iron
-- Grind
-- Victory
+## Core Struggles to Conquer
+- The warm bed.
+- The "tomorrow" excuse.
+- Comfort zones.
+- Mediocrity.
 
-## Preferred Styles
-- Gritty Urban
-- Gym Aesthetics
-- Dark Industrial
-- High Energy
-- Red/Black Accents
+## Strength Anchors
+- "Who's gonna carry the boats?"
+- "Discipline Equals Freedom."
+- "They don't know me son."
+- Embracing the suck.
 
-## Anti-Patterns
-- Weakness
-- Skipping days
-- Comfort
+## Daily Battle Plan
+- Do what you hate to do, to become what you want to be.
+- Pain is weakness leaving the body.
+- Ignoring the feelings of fatigue.
+- One more rep.
 
-## Sample Quotes
-"No man has the right to be an amateur in the matter of physical training." - Socrates
-"Light weight baby!" - Ronnie Coleman
-"Discipline is doing what you hate to do, but doing it like you love it." - Mike Tyson

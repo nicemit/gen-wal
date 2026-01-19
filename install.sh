@@ -80,9 +80,13 @@ log "🎨 Profile setup"
 read -r -p "Your name (default: User): " USER_NAME
 USER_NAME="${USER_NAME:-User}"
 
-echo "Focus examples: Ruthless Founder | Calm Stoic | Creative Artist"
-read -r -p "Your focus (default: Stoic): " FOCUS
-FOCUS="${FOCUS:-Stoic}"
+echo "Choose your Mindset Profile:"
+echo "  1) Stoic   (Calm, Virtue, Resilience)"
+echo "  2) Founder (Speed, Focus, Building)"
+echo "  3) Savage  (Discipline, Pain, Victory)"
+echo "  4) Custom  (Start fresh)"
+read -r -p "Select [1-4] (default: 1): " FOCUS_CHOICE
+FOCUS_CHOICE="${FOCUS_CHOICE:-1}"
 
 read -r -p "When should this run? (HH:MM, default 06:30): " RUN_AT
 RUN_AT="${RUN_AT:-06:30}"
@@ -118,21 +122,37 @@ CACHE_DIR="$HOME/.cache/gen-wal"
 mkdir -p "$SYSTEMD_DIR" "$CACHE_DIR"
 
 # --------------------------------------------------
-# Profile
+# Profile Setup
 # --------------------------------------------------
 PROFILE_PATH="$PROJECT_DIR/profiles/user_profile.md"
 if [ ! -f "$PROFILE_PATH" ]; then
-cat > "$PROFILE_PATH" <<EOF
+    case "$FOCUS_CHOICE" in
+        2)
+            log "Applying Founder Profile..."
+            cp "$PROJECT_DIR/profiles/examples/founder_profile.md" "$PROFILE_PATH"
+            ;;
+        3)
+            log "Applying Savage Profile..."
+            cp "$PROJECT_DIR/profiles/examples/gym_profile.md" "$PROFILE_PATH"
+            ;;
+        4)
+            log "Creating Custom Profile..."
+            cat > "$PROFILE_PATH" <<EOF
 # $USER_NAME's Gen-Wal Profile
 
 ## Focus
-$FOCUS
+Global Domination
 
 ## Themes
-- Discipline
 - Consistency
 - Growth
 EOF
+            ;;
+        *)
+            log "Applying Stoic Profile..."
+            cp "$PROJECT_DIR/profiles/examples/stoic_profile.md" "$PROFILE_PATH"
+            ;;
+    esac
 fi
 
 # --------------------------------------------------
@@ -225,6 +245,70 @@ if [ ! -f "\$CONFIG_FILE" ]; then
 fi
 
 case "\$1" in
+    profile)
+        # Helper function to list profiles
+        list_profiles() {
+            echo "📂 Standard Profiles (in profiles/examples/):"
+            if [ -d "\$INSTALL_DIR/profiles/examples" ]; then
+                ls -1 "\$INSTALL_DIR/profiles/examples"/*.md 2>/dev/null | xargs -n 1 basename | sed 's/.md$//' | sed 's/^/  - /'
+            else
+                echo "  (No examples found)"
+            fi
+            
+            echo ""
+            echo "👤 User Profiles (in profiles/):"
+             if [ -d "\$INSTALL_DIR/profiles" ]; then
+                ls -1 "\$INSTALL_DIR/profiles"/*.md 2>/dev/null | grep -v "user_profile.md" | xargs -n 1 basename | sed 's/.md$//' | sed 's/^/  - /'
+            fi
+            echo "  - user_profile (Current)"
+        }
+
+        case "\$2" in
+            list|ls|"")
+                list_profiles
+                ;;
+                
+            use|set)
+                if [ -z "\$3" ]; then 
+                    echo "❌ Missing profile name."
+                    echo ""
+                    list_profiles
+                    echo ""
+                    echo "Usage: genwal profile use <name>"
+                    exit 1
+                fi
+                
+                NAME="\$3"
+                # Strip .md extension if user typed it
+                NAME=\${NAME%.md}
+                
+                # Search order: 
+                # 1. profiles/<name>.md (User created)
+                # 2. profiles/examples/<name>.md (Standard)
+                
+                TARGET=""
+                if [ -f "\$INSTALL_DIR/profiles/\$NAME.md" ]; then
+                    TARGET="profiles/\$NAME.md"
+                elif [ -f "\$INSTALL_DIR/profiles/examples/\$NAME.md" ]; then
+                    TARGET="profiles/examples/\$NAME.md"
+                fi
+                
+                if [ -z "\$TARGET" ]; then
+                    echo "❌ Profile '\$NAME' not found."
+                    exit 1
+                fi
+                
+                # Update config
+                "\$INSTALL_DIR/venv/bin/python" -c "import yaml; path='\$CONFIG_FILE'; data=yaml.safe_load(open(path)); data['profile_path']='\$TARGET'; yaml.dump(data, open(path, 'w'))"
+                
+                echo "✅ Active profile set to: \$NAME"
+                echo "💡 Run 'genwal run' to generate a wallpaper with this new persona."
+                ;;
+            *)
+                echo "Usage: genwal profile {list|use <name>}"
+                ;;
+        esac
+        ;;
     config|edit)
         echo "📝 Opening config file: \$CONFIG_FILE"
         \${EDITOR:-nano} "\$CONFIG_FILE"

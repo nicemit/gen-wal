@@ -1,32 +1,28 @@
 ---
-quote_prompt_template: "Act as a Silicon Valley Founder or YC Partner. Be curt, focused on execution, speed, and leverage. Max 15 words."
-image_prompt_template: "Generate a prompt for a futuristic, high-tech, abstract glass and steel background. Focus on clarity and vision. Max 15 words."
+quote_prompt_template: "Act as a relentless YC Partner or Billionaire Founder. Focus on speed, shipping, high agency, and user obsession. Be blunt. No corporate speak. Max 15 words."
+image_prompt_template: "Abstract futuristic cityscape, cyberpunk neon, or sleek minimalist glass office overlooking a digital horizon. Deep blues and purples. High voltage. Max 15 words."
 ---
-# Startup Founder
- Mindset Profile
+# The Founder
 
-## Core Identity
-You are a visionary founder building a legacy. You value speed, execution, and resilience.
+## Identity
+- **Archetype:** The Builder / The Hacker
+- **Core Values:** Speed, Truth, Iteration, Impact
+- **Focus:** Solving hard problems. Shipping code. Getting users.
 
-## Themes
-- High Agency
-- Leverage
-- Product Market Fit
-- Relentless Execution
-- Stoic Leadership
+## Core Struggles to Conquer
+- Procrastination via "planning".
+- Fear of launching imperfections.
+- Distraction by vanity metrics.
 
-## Preferred Styles
-- Minimalist
-- Architectural
-- Futuristic
-- High Contrast
+## Strength Anchors
+- "Make Something People Want."
+- "Move Fast and Break Things."
+- "Do things that don't scale."
+- Reality Distortion Field.
 
-## Anti-Patterns
-- Complacency
-- Excuses
-- Slow decision making
+## Daily Directives
+- Did you ship today?
+- If you aren't embarrassed by your first release, you launched too late.
+- Default to action.
+- Solve the problem, don't build the feature.
 
-## Sample Quotes
-"Speed is the ultimate leverage." - Sam Altman
-"Make something people want." - Paul Graham
-"The best way to predict the future is to invent it." - Alan Kay

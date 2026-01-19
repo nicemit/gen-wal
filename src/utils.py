@@ -10,12 +10,23 @@ def load_config(path="config.yaml"):
         return yaml.safe_load(f)
 
 def set_wallpaper(image_path):
-    # GNOME / Ubuntu
-    uri = f"file://{os.path.abspath(image_path)}"
-    try:
-        # Set for both light and dark themes
-        subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", uri], check=True)
-        subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", uri], check=True)
-        print(f"Wallpaper set to: {uri}")
-    except Exception as e:
-        print(f"Error setting wallpaper: {e}")
+    # Detect Desktop Environment
+    desktop = os.environ.get("XDG_CURRENT_DESKTOP", "Unknown")
+    
+    # GNOME / Unity / Ubuntu
+    if "GNOME" in desktop or "Unity" in desktop or "ubuntu" in desktop.lower():
+        uri = f"file://{os.path.abspath(image_path)}"
+        try:
+            # Set for both light and dark themes
+            subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", uri], check=True)
+            subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", uri], check=True)
+            
+            # Force options to 'zoom' to ensure rendering
+            subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "zoom"], check=True)
+            
+            print(f"Wallpaper set to: {uri} (DE: {desktop})")
+        except Exception as e:
+            print(f"Error setting wallpaper: {e}")
+    else:
+        # Fallback (Future: Add feh/nitrogen support)
+        print(f"Desktop '{desktop}' not fully supported yet. Wallpaper generated at: {image_path}")

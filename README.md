@@ -89,6 +89,17 @@ You'll get your first personalized wallpaper in under 2 minutes. No heavy downlo
 
 > **Power User?** You can still switch to local LLMs (Ollama/Llama.cpp) in `config.yaml` after install.
 
+## CLI Manager 🛠️
+
+Gen-Wal comes with a dedicated CLI tool to make management easy.
+
+```bash
+genwal config    # Opens your config file in nano
+genwal logs      # View live logs (Ctrl+C to exit)
+genwal run       # Force a new wallpaper generation immediately
+genwal status    # Check the daily schedule timer
+```
+
 ------------------------------------------------------------------------
 
 ## Customize Your Mindset

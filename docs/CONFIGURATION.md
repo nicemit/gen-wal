@@ -1,5 +1,15 @@
 # Gen-Wal Configuration Guide
 
+## 🛠️ Quick Edits (Recommended)
+
+Use the built-in CLI to edit your configuration safely:
+
+```bash
+genwal config
+```
+
+This ensures you are editing the correct file for your installation.
+
 # Configuration Reference
 
 ## 🧠 Smart Profiles

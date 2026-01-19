@@ -205,14 +205,70 @@ systemctl --user daemon-reload
 log "Enabling timer..."
 systemctl --user enable --now gen-wal.timer
 
+# --------------------------------------------------
+# CLI Helper
+# --------------------------------------------------
+CLI_DEST="$HOME/.local/bin"
+mkdir -p "$CLI_DEST"
+
+# Generate CLI script dynamically to capture correct INSTALL_DIR
+cat > "$CLI_DEST/genwal" <<EOF
+#!/bin/bash
+
+# Gen-Wal CLI Helper (Generated on $(date))
+INSTALL_DIR="$PROJECT_DIR"
+CONFIG_FILE="\$INSTALL_DIR/config.yaml"
+
+if [ ! -f "\$CONFIG_FILE" ]; then
+    echo "❌ Config not found at \$CONFIG_FILE"
+    exit 1
+fi
+
+case "\$1" in
+    config|edit)
+        echo "📝 Opening config file: \$CONFIG_FILE"
+        \${EDITOR:-nano} "\$CONFIG_FILE"
+        ;;
+    logs)
+        echo "📋 Tailing logs (Ctrl+C to exit)..."
+        journalctl --user -u gen-wal.service -f
+        ;;
+    run|now|start)
+        echo "🚀 Triggering run..."
+        systemctl --user start gen-wal.service
+        echo "Done. Check logs for progress."
+        ;;
+    status)
+        systemctl --user status gen-wal.timer
+        ;;
+    help|*)
+        echo "Usage: genwal {config|logs|run|status}"
+        echo ""
+        echo "  config  - Edit configuration file"
+        echo "  logs    - View service logs"
+        echo "  run     - Trigger immediate wallpaper generation"
+        echo "  status  - Check schedule status"
+        ;;
+esac
+EOF
+
+chmod +x "$CLI_DEST/genwal"
+log "Installed 'genwal' CLI to $CLI_DEST"
+
+# Check PATH
+if [[ ":$PATH:" != *":$CLI_DEST:"* ]]; then
+    warn "Your PATH does not include $CLI_DEST. You may need to add it to run 'genwal' directly."
+fi
+
 log "Installation Complete! 🚀"
 echo ""
 log "   - Config: $PROJECT_DIR/config.yaml"
 log "   - Profile: $PROFILE_PATH"
 log "   - Next run: Tomorrow at $RUN_AT"
 echo ""
-log "💡 PRO TIP: To use your own OpenAI/Anthropic keys, edit the config file:"
-echo "   nano $PROJECT_DIR/config.yaml"
+log "🔥 NEW: Use the CLI to manage everything!"
+echo "   genwal config   # Edit settings easily"
+echo "   genwal run      # Generate wallpaper now"
+echo "   genwal logs     # See what happened"
 echo ""
-log "To test it immediately, run: systemctl --user start gen-wal.service"
-log "Check logs with: journalctl --user -u gen-wal.service"
+log "To test it immediately, run: genwal run"

@@ -56,4 +56,11 @@ fi
 CONFIG_DIR="$HOME/.config/gen-wal" # Note: install.sh didn't seem to create this explicitly in a std location, config is usually inside the repo.
 # If config was inside the repo ($INSTALL_DIR), it's already gone.
 
+# 5. Remove CLI Tool
+CLI_PATH="$HOME/.local/bin/genwal"
+if [ -f "$CLI_PATH" ]; then
+    log "Removing CLI tool..."
+    rm "$CLI_PATH"
+fi
+
 log "Uninstallation Complete. Local files and schedule have been removed."

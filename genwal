@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Gen-Wal CLI Helper
+# Usage: genwal [command]
+
+INSTALL_DIR="$HOME/.gen-wal"
+CONFIG_FILE="$INSTALL_DIR/config.yaml"
+
+# If not found in default location, check current directory (Dev Mode)
+if [ ! -f "$CONFIG_FILE" ]; then
+    if [ -f "./config.yaml" ]; then
+        CONFIG_FILE="./config.yaml"
+    else
+        echo "❌ Could not find config.yaml in $INSTALL_DIR or current directory."
+        exit 1
+    fi
+fi
+
+case "$1" in
+    config|edit)
+        echo "📝 Opening config file: $CONFIG_FILE"
+        ${EDITOR:-nano} "$CONFIG_FILE"
+        ;;
+    logs)
+        echo "📋 Tailing logs (Ctrl+C to exit)..."
+        journalctl --user -u gen-wal.service -f
+        ;;
+    run|now|start)
+        echo "🚀 Triggering run..."
+        systemctl --user start gen-wal.service
+        echo "Done. Check logs for progress."
+        ;;
+    status)
+        systemctl --user status gen-wal.timer
+        ;;
+    help|*)
+        echo "Usage: genwal {config|logs|run|status}"
+        echo ""
+        echo "  config  - Edit configuration file"
+        echo "  logs    - View service logs"
+        echo "  run     - Trigger immediate wallpaper generation"
+        echo "  status  - Check schedule status"
+        ;;
+esac

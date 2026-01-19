@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gen-Wal: Your Desktop's AI Brain</title>
+    <title>Gen-Wal: Environment Designs the Mind</title>
     <link rel="icon" type="image/svg+xml" href="logo.svg?v=1">
 
     <!-- Google Fonts: Inter & Orbitron -->
@@ -206,8 +206,8 @@
         </div>
 
 
-        <!-- Install Command (Centered Below) -->
-        <div class="max-w-4xl mx-auto px-4 mb-12 animate-fade-in-up delay-300">
+        <!-- Install Command (Centered) -->
+        <div class="max-w-4xl mx-auto px-4 mb-4 animate-fade-in-up delay-300">
             <div onclick="copyCommand()"
                 class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-5 py-4 font-mono text-xs sm:text-base md:text-lg transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
                 <code class="text-accent break-all">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
@@ -216,14 +216,85 @@
                     Copy
                 </button>
             </div>
-            <p class="mt-4 text-center text-sm md:text-base text-gray-400 opacity-80 font-light">
-                Runs locally on your machine. No accounts. No dashboards.
+
+            <div class="mt-6 flex items-center justify-center gap-6 text-sm">
+                <p class="text-gray-400 opacity-80 font-light">
+                    Runs locally. No accounts. No dashboards.
+                </p>
+                <span class="text-neutral-700">|</span>
+                <a href="https://github.com/nicemit/gen-wal" target="_blank"
+                    class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+                    <svg class="w-4 h-4 group-hover:text-yellow-400 transition-colors" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <span>Star on GitHub</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Visual Archetypes Gallery -->
+        <div class="py-16 animate-fade-in-up delay-400 border-t border-neutral-900/50">
+            <h2
+                class="text-2xl md:text-3xl font-bold mb-12 font-orbitron text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-200 to-gray-500">
+                Choose Your Aesthetic
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+                <!-- Card 1: Stoic -->
+                <div
+                    class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-stone-800 to-stone-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                        <h3 class="text-xl font-serif text-stone-300 mb-2">The Stoic</h3>
+                        <p class="text-sm text-stone-500 italic">"The obstacle is the way."</p>
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-stone-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Card 2: Founder -->
+                <div
+                    class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-blue-900 to-slate-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                        <h3 class="text-xl font-mono text-blue-300 mb-2">The Founder</h3>
+                        <p class="text-sm text-blue-500 font-mono">Move Fast. Break Things.</p>
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Card 3: Savage -->
+                <div
+                    class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-red-900 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                        <h3 class="text-xl font-black uppercase text-red-500 mb-2 tracking-widest">Savage</h3>
+                        <p class="text-sm text-red-800 font-bold uppercase">Discipline Equals Freedom</p>
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-red-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-xs text-neutral-600 mt-6 font-mono">
+                + Fully customizable via Markdown profiles
             </p>
         </div>
 
         <!-- Features Grid -->
         <div
-            class="grid gap-6 md:gap-8 text-center sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-4 md:pt-8">
+            class="grid gap-6 md:gap-8 text-center sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-8 md:pt-16">
             <div class="space-y-2 md:space-y-3 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
                 <div class="text-xl md:text-2xl">🔒</div>
                 <h3 class="text-lg md:text-xl font-semibold text-white">Personal-First</h3>

@@ -17,12 +17,23 @@ def set_wallpaper(image_path):
     if "GNOME" in desktop or "Unity" in desktop or "ubuntu" in desktop.lower():
         uri = f"file://{os.path.abspath(image_path)}"
         try:
+            # Force options to 'zoom' to ensure rendering
+            subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "zoom"], check=True)
+            
+            # Check current URI to force refresh if identical
+            current_uri = subprocess.check_output(
+                ["gsettings", "get", "org.gnome.desktop.background", "picture-uri"], 
+                text=True
+            ).strip().strip("'")
+            
+            if current_uri == uri:
+                # Toggle to empty to force a reload event
+                subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", ""], check=True)
+                subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", ""], check=True)
+            
             # Set for both light and dark themes
             subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri", uri], check=True)
             subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", uri], check=True)
-            
-            # Force options to 'zoom' to ensure rendering
-            subprocess.run(["gsettings", "set", "org.gnome.desktop.background", "picture-options", "zoom"], check=True)
             
             print(f"Wallpaper set to: {uri} (DE: {desktop})")
         except Exception as e:

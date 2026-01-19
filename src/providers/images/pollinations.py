@@ -18,8 +18,11 @@ class PollinationsImageProvider(ImageProvider):
         os.makedirs(cache_dir, exist_ok=True)
         filename = os.path.join(cache_dir, f"raw_bg_{int(time.time())}.jpg")
         
-        safe_prompt = urllib.parse.quote(prompt)
         seed = self.seed if self.seed is not None else random.randint(0, 1000000)
+        
+        # Append seed to prompt to ensure uniqueness and bypass server-side caching
+        full_prompt = f"{prompt} --seed {seed}"
+        safe_prompt = urllib.parse.quote(full_prompt)
         
         if self.api_key:
             url = f"https://gen.pollinations.ai/image/{safe_prompt}"

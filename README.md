@@ -75,8 +75,8 @@ so your goals stay visible without becoming noise.
 ------------------------------------------------------------------------
 
 60-Second Install
-``` bash
-curl -fsSL https://gen-wal.laptopserver.dev/genwal | bash
+```bash
+curl -sL https://gen-wal.laptopserver.dev/install | bash
 ```
 
 Installs:
@@ -94,10 +94,13 @@ You'll get your first personalized wallpaper in under 2 minutes. No heavy downlo
 Gen-Wal comes with a dedicated CLI tool to make management easy.
 
 ```bash
-genwal config    # Opens your config file in nano
-genwal logs      # View live logs (Ctrl+C to exit)
-genwal run       # Force a new wallpaper generation immediately
-genwal status    # Check the daily schedule timer
+```bash
+genwal config          # Opens your config file in nano
+genwal profile list    # List available mindset profiles
+genwal profile use     # Switch your profile (interactive)
+genwal logs            # View live logs (Ctrl+C to exit)
+genwal run             # Force a new wallpaper generation immediately
+genwal status          # Check the daily schedule timer
 ```
 
 ------------------------------------------------------------------------
@@ -130,11 +133,11 @@ Gen-Wal profiles are **"Smart Packs"** that contain their own system prompts. A 
 | **Stoic** | Resilience, Virtue | Marcus Aurelius (Direct, Ancient) |
 | **Founder** | Speed, Leverage | YC Partner (Curt, High-Tech) |
 | **Monk** | Deep Work, Zen | Zen Master (Cryptic, Misty) |
-| **Gym** | Discipline, Strength | Drill Sergeant (Aggressive, Gritty) |
+| **Savage** | Discipline, Strength | Goggins/Jocko (Aggressive, Gritty) |
 
-Select one by changing `profile_path` in `config.yaml` or running:
+Select one instantly using the CLI:
 ```bash
-python3 main.py --profile profiles/examples/gym_profile.md
+genwal profile use founder
 ```
 
 

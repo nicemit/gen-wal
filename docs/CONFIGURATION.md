@@ -25,7 +25,10 @@ image_prompt_template: "Generate a prompt for a gritty, dark industrial gym. Iro
 I value strength...
 ```
 
-When you run `python3 main.py --profile my_profile.md`, these prompts will override your `config.yaml` defaults.
+To switch to this profile, simply run:
+```bash
+genwal profile use my_profile
+```
 
 ## Global Settings (`config.yaml`).
 

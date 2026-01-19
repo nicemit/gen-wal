@@ -210,7 +210,7 @@
         <div class="max-w-4xl mx-auto px-4 mb-12 animate-fade-in-up delay-300">
             <div onclick="copyCommand()"
                 class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-5 py-4 font-mono text-xs sm:text-base md:text-lg transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
-                <code class="text-accent break-all">curl -fsSL https://gen-wal.laptopserver.dev/genwal | bash</code>
+                <code class="text-accent break-all">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
                 <button
                     class="shrink-0 rounded bg-white/5 px-4 py-2 text-xs sm:text-sm text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
                     Copy
@@ -384,7 +384,7 @@
     <script>
         // Robust Copy Function
         function copyCommand() {
-            const command = 'curl -fsSL https://gen-wal.laptopserver.dev/genwal | bash';
+            const command = "curl -sL https://gen-wal.laptopserver.dev/install | bash";
 
             // UI Feedback function
             const showToast = () => {

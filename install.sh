@@ -258,7 +258,7 @@ case "\$1" in
             echo ""
             echo "👤 User Profiles (in profiles/):"
              if [ -d "\$INSTALL_DIR/profiles" ]; then
-                ls -1 "\$INSTALL_DIR/profiles"/*.md 2>/dev/null | grep -v "user_profile.md" | xargs -n 1 basename | sed 's/.md$//' | sed 's/^/  - /'
+                ls -1 "\$INSTALL_DIR/profiles"/*.md 2>/dev/null | grep -v "user_profile.md" | xargs -r -n 1 basename | sed 's/.md$//' | sed 's/^/  - /'
             fi
             echo "  - user_profile (Current)"
         }
@@ -298,7 +298,7 @@ case "\$1" in
                     exit 1
                 fi
                 
-                # Update config
+                # Update config using venv python
                 "\$INSTALL_DIR/venv/bin/python" -c "import yaml; path='\$CONFIG_FILE'; data=yaml.safe_load(open(path)); data['profile_path']='\$TARGET'; yaml.dump(data, open(path, 'w'))"
                 
                 echo "✅ Active profile set to: \$NAME"
@@ -323,15 +323,20 @@ case "\$1" in
         echo "Done. Check logs for progress."
         ;;
     status)
+        echo "🔍 Checking gen-wal timer status..."
         systemctl --user status gen-wal.timer
         ;;
     help|*)
-        echo "Usage: genwal {config|logs|run|status}"
+        echo "Usage: genwal {run|config|profile|status|logs}"
         echo ""
-        echo "  config  - Edit configuration file"
-        echo "  logs    - View service logs"
-        echo "  run     - Trigger immediate wallpaper generation"
-        echo "  status  - Check schedule status"
+        echo "Commands:"
+        echo "  run              - Trigger immediate wallpaper generation"
+        echo "  config           - Edit configuration file"
+        echo "  profile list     - List available mindset profiles"
+        echo "  profile use <id> - Switch to a different profile"
+        echo "  status           - Check schedule status"
+        echo "  logs             - View service logs"
+        echo ""
         ;;
 esac
 EOF

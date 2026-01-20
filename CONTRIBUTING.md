@@ -68,5 +68,6 @@ python3 -m unittest discover tests
 
 *   **Keep it simple**: We don't need a heavy database or GUI.
 *   **Local-first**: Prefer tools that can run on the user's machine.
+*   **Flexible**: Allow users to change prompts and logic easily.
 
 Happy hacking! 🧠

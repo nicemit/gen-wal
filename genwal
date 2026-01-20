@@ -26,9 +26,26 @@ case "$1" in
         journalctl --user -u gen-wal.service -f
         ;;
     run|now|start)
-        echo "🚀 Triggering run..."
-        systemctl --user start gen-wal.service
-        echo "Done. Check logs for progress."
+        shift # remove 'run' command
+        
+        # If arguments are provided (e.g. --text-pos), run interactively
+        if [ "$#" -gt 0 ]; then
+             echo "🚀 Running interactively with args: $*"
+             
+             PYTHON_CMD="python3"
+             if [ -f "$INSTALL_DIR/venv/bin/python" ]; then
+                PYTHON_CMD="$INSTALL_DIR/venv/bin/python"
+             fi
+             
+             # Run in INSTALL_DIR so imports work if needed, though main.py handles paths well
+             cd "$INSTALL_DIR" || exit 1
+             "$PYTHON_CMD" "main.py" --config "$CONFIG_FILE" "$@"
+        else
+             # No args? Just trigger the background service
+             echo "🚀 Triggering background run..."
+             systemctl --user start gen-wal.service
+             echo "Done. Check logs for progress: genwal logs"
+        fi
         ;;
     status)
         systemctl --user status gen-wal.timer
@@ -38,7 +55,11 @@ case "$1" in
         echo ""
         echo "  config  - Edit configuration file"
         echo "  logs    - View service logs"
-        echo "  run     - Trigger immediate wallpaper generation"
+        echo "  run     - Trigger wallpaper generation (accepts --text-pos, --font-size)"
         echo "  status  - Check schedule status"
+        echo ""
+        echo "Examples:"
+        echo "  genwal run --text-pos center"
+        echo "  genwal run --font-size 40"
         ;;
 esac

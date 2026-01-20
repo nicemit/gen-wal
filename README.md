@@ -45,7 +45,7 @@ curl -sL https://gen-wal.laptopserver.dev/install | bash
 ```
 
 This sets up:
-- The `genwal` CLI tool
+- The `genwal` CLI tool (for easy config & overrides)
 - A systemd timer (daily update at 9:00 AM)
 - Default config in `~/.gen-wal/`
 

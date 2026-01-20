@@ -36,18 +36,21 @@ POSITIONS=("center" "bottom_right" "top_left" "bottom_center" "left_center")
 echo "$PROFILES" | while read -r profile; do
     # Pick a random position
     RAND_POS=${POSITIONS[$RANDOM % ${#POSITIONS[@]}]}
+    
+    # Pick a random font size (between 30 and 90)
+    RAND_FONT=$((30 + RANDOM % 61))
 
     echo ""
     echo "==================================================="
-    echo "🔄 Run $COUNT/4: Profile: $(basename "$profile") | Pos: $RAND_POS"
+    echo "🔄 Run $COUNT/4: Profile: $(basename "$profile") | Pos: $RAND_POS | Font: $RAND_FONT"
     echo "==================================================="
     
     # Run Gen-Wal with profile override and random text position
     # Use venv python if available, else python3
     if [ -f "venv/bin/python" ]; then
-        venv/bin/python main.py --profile "$profile" --text-pos "$RAND_POS"
+        venv/bin/python main.py --profile "$profile" --text-pos "$RAND_POS" --font-size "$RAND_FONT"
     else
-        python3 main.py --profile "$profile" --text-pos "$RAND_POS"
+        python3 main.py --profile "$profile" --text-pos "$RAND_POS" --font-size "$RAND_FONT"
     fi
     
     # Optional cool-down/padding

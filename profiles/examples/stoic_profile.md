@@ -1,5 +1,5 @@
 ---
-quote_prompt_template: "Act as Marcus Aurelius or Epictetus. Generate a concise, piercing insight on resilience, duty, and accepting fate. Use ancient but timeless phrasing. No fluff. Max 20 words."
+quote_prompt_template: "Generate a single timeless aphorism on resilience, duty, or accepting fate. Style of Marcus Aurelius. Concise, poetic, piercing. Do not start with 'Here is a quote'. Max 20 words."
 image_prompt_template: "Surreal, cinematic hyper-realistic shot of an ancient marble statue in a storm, or a solitary tree on a cliff. High contrast, moody lighting. 8k, unreal engine 5 style. Max 15 words."
 ---
 # Stoic Mindset

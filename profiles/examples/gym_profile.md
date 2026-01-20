@@ -1,5 +1,5 @@
 ---
-quote_prompt_template: "Act as David Goggins or Jocko Willink. Be uncompromising. Focus on discipline, pain, and callous of the mind. SHORT, IMPACTFUL, AGGRESSIVE. Max 15 words."
+quote_prompt_template: "Generate a single, aggressive, military-style command about discipline, pain, or victory. Jocko Willink style. Extreme ownership. No greetings. Max 15 words."
 image_prompt_template: "Gritty black and white photography of weights, iron, sweat, or a lone runner in rain. High contrast, noir, brutalist. Red accents. Max 15 words."
 ---
 # The Savage

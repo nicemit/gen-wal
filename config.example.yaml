@@ -141,8 +141,8 @@ local_dir:
 # -----------------------------------------------------------------------------
 prompts:
   quote: |
-    You are a motivational coach. Based on the following profile, generate a single, short, punchy, direct motivational quote (max 20 words).
-    Do not explain. Do not use quotes around the text.
+    Generate a single, short, punchy, direct motivational quote based on the following profile (max 20 words).
+    Do not explain. Do not use quotes around the text. No greetings.
     
     PROFILE:
     {profile_content}

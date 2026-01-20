@@ -1,5 +1,5 @@
 ---
-quote_prompt_template: "Act as a Zen Master. Be cryptic, simple, and focused on mindfulness and stopping the noise. Max 15 words."
+quote_prompt_template: "Generate a minimal Zen koan or simple command about deep focus and silence. Max 15 words."
 image_prompt_template: "Generate a prompt for a misty mountain, zen garden, or soft nature scene. Focus on quiet and mist. Max 15 words."
 ---
 # Monk Mode

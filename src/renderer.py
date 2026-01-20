@@ -20,7 +20,23 @@ class WallpaperRenderer:
                 return c
         return "arial.ttf" # Fallback, might fail if not present but PIL default is tiny
 
+    def _clean_text(self, text: str) -> str:
+        """Removes markdown formatting and surrounding quotes for cleaner wallpaper text."""
+        import re
+        # Remove bold/italic markers
+        clean = re.sub(r'(\*\*|__)', '', text)
+        clean = re.sub(r'(\*|_)', '', clean)
+        
+        # Remove surrounding quotes if they exist
+        clean = clean.strip()
+        if (clean.startswith('"') and clean.endswith('"')) or (clean.startswith("'") and clean.endswith("'")):
+            clean = clean[1:-1]
+            
+        return clean.strip()
+
     def compose(self, image_path: str, text: str, output_path: str, position: str = "center", padding: int = 100, target_size: tuple = None):
+        # Clean text first
+        text = self._clean_text(text)
         try:
             img = Image.open(image_path).convert("RGBA")
             

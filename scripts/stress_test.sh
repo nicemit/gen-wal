@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+# Resolve Project Root (Parent of the directory containing this script)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+cd "$PROJECT_ROOT"
+echo "📂 Working in: $PROJECT_ROOT"
+
 # Directory containing profiles
 PROFILE_DIR="profiles/examples"
 
@@ -36,7 +43,12 @@ echo "$PROFILES" | while read -r profile; do
     echo "==================================================="
     
     # Run Gen-Wal with profile override and random text position
-    python3 main.py --profile "$profile" --text-pos "$RAND_POS"
+    # Use venv python if available, else python3
+    if [ -f "venv/bin/python" ]; then
+        venv/bin/python main.py --profile "$profile" --text-pos "$RAND_POS"
+    else
+        python3 main.py --profile "$profile" --text-pos "$RAND_POS"
+    fi
     
     # Optional cool-down/padding
     if [ $COUNT -lt 4 ]; then

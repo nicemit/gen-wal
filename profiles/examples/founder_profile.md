@@ -1,5 +1,5 @@
 ---
-quote_prompt_template: "Act as a relentless YC Partner or Billionaire Founder. Focus on speed, shipping, high agency, and user obsession. Be blunt. No corporate speak. Max 15 words."
+quote_prompt_template: "Generate a single, ruthless axiom about building startups, shipping code, or user obsession. Be blunt. No greetings. Max 15 words."
 image_prompt_template: "Abstract futuristic cityscape, cyberpunk neon, or sleek minimalist glass office overlooking a digital horizon. Deep blues and purples. High voltage. Max 15 words."
 ---
 # The Founder

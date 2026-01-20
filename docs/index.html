@@ -162,26 +162,26 @@
                 <header class="space-y-4 md:space-y-6">
                     <div class="flex items-center justify-center lg:justify-start gap-3 md:gap-4">
                         <img src="images/logo.png?v=8" alt="Gen-Wal Logo"
-                            class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                            class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                         <h1
-                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-widest font-orbitron bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-orange-500 drop-shadow-sm">
+                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight font-orbitron text-white drop-shadow-sm">
                             Gen-Wal
                         </h1>
                     </div>
-                    <p
-                        class="text-lg sm:text-xl md:text-2xl font-light text-muted leading-relaxed max-w-lg mx-auto lg:mx-0">
-                        A personal-first AI daemon that generates a personalized motivational wallpaper for your desktop
-                        every morning.
+                    <p class="text-lg sm:text-xl font-light text-muted leading-relaxed max-w-lg mx-auto lg:mx-0">
+                        A personal experiment in ambient computing.
                     </p>
                 </header>
 
                 <!-- Personal Quote -->
-                <blockquote
-                    class="border-l-2 border-accent/30 pl-4 md:pl-6 italic text-gray-400 text-base sm:text-lg md:text-xl max-w-xl mx-auto lg:mx-0 text-left">
-                    "I built this as a small tool for myself. Keeping goals in my head wasn't enough. <strong>A goal is
-                        a promise that only action can keep.</strong> I needed a reminder
-                    that <strong>environment designs the mind</strong>."
-                </blockquote>
+                <div
+                    class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 text-left space-y-4 font-light leading-relaxed">
+                    <p>I spend a lot of time working on my machine. I was curious whether the desktop itself could be
+                        part of an experiment.</p>
+                    <p>Specifically, whether <strong>passive environmental cues</strong> (like a wallpaper) work better
+                        than apps, notifications, or dashboards.</p>
+                    <p class="text-sm opacity-70 italic">— A tiny script, not a product.</p>
+                </div>
 
 
 
@@ -221,24 +221,13 @@
                 <p class="text-gray-400 opacity-80 font-light">
                     Runs locally. No accounts. No dashboards.
                 </p>
-                <span class="text-neutral-700">|</span>
-                <a href="https://github.com/nicemit/gen-wal" target="_blank"
-                    class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
-                    <svg class="w-4 h-4 group-hover:text-yellow-400 transition-colors" fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                    </svg>
-                    <span>Star on GitHub</span>
-                </a>
             </div>
         </div>
 
         <!-- Visual Archetypes Gallery -->
         <div class="py-16 animate-fade-in-up delay-400 border-t border-neutral-900/50">
-            <h2
-                class="text-2xl md:text-3xl font-bold mb-12 font-orbitron text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-200 to-gray-500">
-                Choose Your Aesthetic
+            <h2 class="text-xl md:text-2xl font-bold mb-12 font-orbitron text-center text-neutral-300">
+                Aesthetic Experiments
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
@@ -292,62 +281,57 @@
             </p>
         </div>
 
-        <!-- Features Grid -->
+        <!-- How it Works (Formerly Features) -->
         <div
-            class="grid gap-6 md:gap-8 text-center sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-8 md:pt-16">
-            <div class="space-y-2 md:space-y-3 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
-                <div class="text-xl md:text-2xl">🔒</div>
-                <h3 class="text-lg md:text-xl font-semibold text-white">Personal-First</h3>
-                <p class="text-sm md:text-base text-muted leading-relaxed">Your values and intent stay on your machine.
-                    Visual beauty
-                    is generated on demand.</p>
+            class="grid gap-8 md:gap-12 text-left sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-8 md:pt-16 max-w-5xl mx-auto">
+            <div class="space-y-2">
+                <h3 class="text-lg font-semibold text-white">Understated</h3>
+                <p class="text-sm text-neutral-500 leading-relaxed">
+                    It runs in the background. No GUI. No notifications. Just a quiet visual change once a day.
+                </p>
             </div>
-            <div class="space-y-2 md:space-y-3 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
-                <div class="text-xl md:text-2xl">🧠</div>
-                <h3 class="text-lg md:text-xl font-semibold text-white">Adaptive</h3>
-                <p class="text-sm md:text-base text-muted leading-relaxed">Generates content based on your personal
-                    goals,
-                    founder
-                    mindset, or stoic principles.</p>
+            <div class="space-y-2">
+                <h3 class="text-lg font-semibold text-white">Configurable</h3>
+                <p class="text-sm text-neutral-500 leading-relaxed">
+                    Adjust text content, positioning, opacity, and timing. It's designed to adapt to your workflow, not
+                    interrupt it.
+                </p>
             </div>
-            <div class="space-y-2 md:space-y-3 p-3 md:p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
-                <div class="text-xl md:text-2xl">⚡</div>
-                <h3 class="text-lg md:text-xl font-semibold text-white">Fast</h3>
-                <p class="text-sm md:text-base text-muted leading-relaxed">Zero-config. Uses <a
-                        href="https://pollinations.ai" target="_blank"
-                        class="text-accent hover:underline">Pollinations</a>.
-                    Manage efficiently with the built-in <code>genwal</code> CLI.</p>
+            <div class="space-y-2">
+                <h3 class="text-lg font-semibold text-white">Honest</h3>
+                <p class="text-sm text-neutral-500 leading-relaxed">
+                    Local-first. Your mindset profiles stay on your disk. Visuals are generated on demand.
+                </p>
             </div>
         </div>
 
-        <!-- Split Section: Philosophy & Audience -->
+        <!-- Split Section: Philosophy -->
         <div
-            class="grid md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 mb-6 border-b border-neutral-900/50 pb-6 animate-fade-in-up delay-400 text-center items-start">
+            class="grid md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 mb-6 border-b border-neutral-900/50 pb-6 animate-fade-in-up delay-400 items-center text-center">
 
-            <!-- Left: Why Gen-Wal? -->
+            <!-- Left: The Premise -->
             <div class="space-y-6">
-                <h2 class="text-2xl font-bold text-white font-orbitron text-center">Why Gen-Wal?</h2>
-                <div class="space-y-4 text-gray-400 text-base md:text-lg leading-relaxed font-light">
-                    <p>Gen-Wal is <span class="text-white font-medium">not a productivity app</span>.</p>
+                <h2 class="text-xl font-bold text-white font-orbitron">The Premise</h2>
+                <div class="space-y-4 text-gray-500 text-sm md:text-base leading-relaxed font-light mx-auto max-w-sm">
+                    <p>It's not a productivity app.</p>
                     <p>It doesn’t track you, notify you, or demand attention.</p>
                     <p>It quietly changes your environment once a day — <br class="hidden md:block">
-                        so your goals stay visible without becoming noise.</p>
+                        so your intent stays visible without becoming noise.</p>
                 </div>
             </div>
 
-            <!-- Right: Who This Is For -->
+            <!-- Right: Flexibility -->
             <div class="space-y-6">
-                <h2 class="text-2xl font-bold text-white font-orbitron text-center">Who This Is For</h2>
-                <div class="p-6 bg-neutral-900/20 rounded-2xl border border-neutral-800/50">
-                    <ul class="space-y-3 text-gray-400 text-sm md:text-base">
-                        <li class="flex items-center justify-center gap-3"><span class="text-accent">✓</span> Spends a
-                            lot of time at computer</li>
-                        <li class="flex items-center justify-center gap-3"><span class="text-accent">✓</span> Wants calm
-                            reminders, not noise</li>
-                        <li class="flex items-center justify-center gap-3"><span class="text-accent">✓</span> Prefers
-                            personal, local-first tools</li>
-                        <li class="flex items-center justify-center gap-3"><span class="text-accent">✓</span> Cares
-                            about aesthetics & ritual</li>
+                <h2 class="text-xl font-bold text-white font-orbitron">Flexibility</h2>
+                <div class="p-6 bg-neutral-900/20 rounded-xl border border-neutral-800/50 mx-auto max-w-sm text-left">
+                    <p class="text-sm text-gray-500 mb-4 text-center">
+                        Everything is a text file.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 text-xs font-mono pl-4">
+                        <li>> text_position: "bottom_right"</li>
+                        <li>> opacity: 0.8</li>
+                        <li>> font: "Inter"</li>
+                        <li>> prompt: "Be concise."</li>
                     </ul>
                 </div>
 
@@ -358,59 +342,43 @@
 
         <!-- Closing Validation (Centered) -->
         <div class="text-center mb-24 animate-fade-in-up delay-500">
-            <p class="text-muted italic text-base md:text-lg mb-6">If that sounds like you, this will feel natural very
-                quickly.</p>
             <p class="text-sm text-gray-400 flex items-center justify-center gap-2">
-                ⭐ Resonate with you? <a href="https://github.com/nicemit/gen-wal" target="_blank"
+                <span class="opacity-50">Experimental project.</span>
+                <a href="https://github.com/nicemit/gen-wal" target="_blank"
                     class="text-white hover:text-accent font-medium underline decoration-dashed underline-offset-4 transition-colors">Star
-                    the repo</a>.
+                    on GitHub</a>
             </p>
         </div>
 
-        <!-- Future Roadmap -->
+        <!-- Future Ideas -->
         <div class="mt-8 mb-16 space-y-8 animate-fade-in-up delay-500">
             <h2
-                class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 font-orbitron inline-block">
-                Future Concepts
+                class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 font-orbitron inline-block">
+                Other Ideas
             </h2>
             <p class="text-muted max-w-2xl mx-auto text-lg font-light">
-                Expanding the utility of Gen-Wal beyond the wallpaper.
+                Things I'm thinking about adding.
             </p>
 
             <div class="grid gap-6 sm:grid-cols-2 text-left max-w-4xl mx-auto">
                 <div
                     class="p-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-accent/40 transition-colors">
                     <h3 class="text-xl font-semibold mb-2 text-blue-400">📜 Daily Briefing</h3>
-                    <p class="text-sm text-gray-400">Generates a <code
-                            class="bg-neutral-800 px-1 py-0.5 rounded text-xs">TODAY.md</code> briefing on your desktop
-                        with strategy and focus points.</p>
+                    <p class="text-sm text-gray-400">Generating a <code
+                            class="bg-neutral-800 px-1 py-0.5 rounded text-xs">TODAY.md</code> file on the desktop.</p>
                 </div>
+                <!-- ... other items removed for brevity / simplicity ... -->
                 <div
                     class="p-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-orange-500/40 transition-colors">
                     <h3 class="text-xl font-semibold mb-2 text-orange-400">🎵 Sonic Mode</h3>
-                    <p class="text-sm text-gray-400">Ambient soundscapes paired with your mindset (e.g., Monk rain, Gym
-                        beats).</p>
-                </div>
-                <div
-                    class="p-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-purple-500/40 transition-colors">
-                    <h3 class="text-xl font-semibold mb-2 text-purple-400">📓 Mirror Mode</h3>
-                    <p class="text-sm text-gray-400">Interactive journaling where the system generates content based on
-                        your real-time mood.</p>
-                </div>
-                <div
-                    class="p-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-emerald-500/40 transition-colors">
-                    <h3 class="text-xl font-semibold mb-2 text-emerald-400">🖥️ Focus Dashboard</h3>
-                    <p class="text-sm text-gray-400">Turning localhost into a localized "New Tab" page for goal
-                        tracking.</p>
+                    <p class="text-sm text-gray-400">Ambient soundscapes matched to the profile.</p>
                 </div>
             </div>
 
             <div class="mt-12 mb-4 space-y-2 text-sm md:text-base text-gray-400">
                 <p>
-                    Have an idea? <a href="https://github.com/nicemit/gen-wal/issues" target="_blank"
-                        class="text-accent hover:underline decoration-dashed underline-offset-4">Open an Issue</a>.
-                    Let's
-                    build tools that keep us moving.
+                    If you have ideas, <a href="https://github.com/nicemit/gen-wal/issues" target="_blank"
+                        class="text-accent hover:underline decoration-dashed underline-offset-4">open an issue</a>.
                 </p>
             </div>
         </div>

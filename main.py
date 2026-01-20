@@ -21,6 +21,7 @@ def main():
     parser.add_argument("--config", default="config.yaml", help="Path to config file")
     parser.add_argument("--profile", help="Override profile path")
     parser.add_argument("--text-pos", help="Override text position (e.g. center, bottom_right)")
+    parser.add_argument("--font-size", type=int, help="Override font size")
     args = parser.parse_args()
 
     # Load Config
@@ -34,6 +35,9 @@ def main():
     # Override Text Position if argument provided
     if args.text_pos:
         config['text_position'] = args.text_pos
+    
+    if args.font_size:
+        config['font_size'] = args.font_size
 
     # 1. Load Profile (First, to get metadata for the summary)
     profile_content = ""

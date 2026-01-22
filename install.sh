@@ -171,6 +171,12 @@ resolution:
   width: 1920
   height: 1080
 
+watermark:
+  enabled: true
+  position: "bottom_right"
+  font_size: 25
+  opacity: 180
+
 wallpaper_settings:
   apply_wallpaper: true
   save_path: "$CACHE_DIR/current_wallpaper.jpg"

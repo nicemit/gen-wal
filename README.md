@@ -17,7 +17,7 @@
 
 I spend a lot of time working on my machine. I realized that keeping goals in my head wasn't enough, but I didn't want another app to check.
 
-**Gen-Wal** is a small daemon that runs in the background. Once a day, it generates a wallpaper based on a "profile" (a text file defining a mindset or goal).
+**Gen-Wal** is a background daemon that changes one thing a day. Nothing more. It generates a wallpaper based on a "profile" (a text file defining a mindset or goal).
 
 It's not a product. It's just a script I wrote to see if changing my environment quietly could change my focus.
 
@@ -61,17 +61,32 @@ The system is fully configurable. You can tweak the text content, font size, pos
 text_position: "bottom_right" # understated placement
 font_size: 45                 # smaller text
 image_provider: "pollinations:image" # or "local_dir"
+
+# Watermark your profile name (e.g. "Stoic", "F1 Racing")
+watermark:
+  enabled: true
+  position: "bottom_right"
+  opacity: 150
+
+# Randomly rotate between mentors/mindsets
+profile_path: 
+  - "profiles/examples/stoic_profile.md"
+  - "profiles/examples/f1_racing_profile.md"
+  - "profiles/examples/war_of_art_profile.md"
 ```
 
 ### Profiles
 
-Profiles are just Markdown files. You can write your own.
-
-```markdown
-# My Focus.md
-quote_prompt: "Generate a reminder to focus on deep work."
-image_prompt: "Abstract geometric shapes, calm colors."
+profiles/examples/stoic_profile.md
 ```
+
+### Digital Mentors
+Gen-Wal comes with a library of profiles to quietly influence your day:
+- **Mindsets**: Stoic, Founder, Monk, Artist, Writer
+- **Books**: Atomic Habits, The War of Art, Man's Search for Meaning, Meditations, Harry Potter
+- **Sports**: F1 Racing, Cricket, Football
+
+You can point `profile_path` to a list of these to switch between them daily.
 
 ------------------------------------------------------------------------
 

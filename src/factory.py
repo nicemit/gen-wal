@@ -24,13 +24,23 @@ def get_config_from_path(config, provider_path):
         
     return current_config, base_name
 
+import random
+
 def get_profile_provider(config):
     # Default to local_file, could be 'url' or 'notion' in future
     name = config.get('profile_provider', 'local_file')
+    
+    # Handle random profile rotation if list
+    profile_path = config.get('profile_path', 'profiles/examples/stoic_profile.md')
+    if isinstance(profile_path, list):
+        profile_path = random.choice(profile_path)
+        # Update config so main.py sees the actual selected profile
+        config['profile_path'] = profile_path
+
     if name == 'local_file':
-        return LocalFileProfileProvider(config.get('profile_path', 'profiles/examples/stoic_profile.md'))
+        return LocalFileProfileProvider(profile_path)
     else:
-        return LocalFileProfileProvider(config.get('profile_path', 'profiles/examples/stoic_profile.md'))
+        return LocalFileProfileProvider(profile_path)
 
 def get_quote_provider(config):
     name = config.get('quote_provider', 'zenquotes')

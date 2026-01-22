@@ -158,30 +158,96 @@
             <!-- Left Column: Content -->
             <div
                 class="space-y-6 md:space-y-8 text-left animate-fade-in-up flex flex-col items-center lg:items-start text-center lg:text-left">
-                <!-- Header -->
-                <header class="space-y-4 md:space-y-6">
-                    <div class="flex items-center justify-center lg:justify-start gap-3 md:gap-4">
+                <header class="space-y-6 md:space-y-8">
+                    <div class="flex items-center justify-center lg:justify-start gap-4 md:gap-6">
                         <img src="images/logo.png?v=8" alt="Gen-Wal Logo"
                             class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                         <h1
-                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight font-orbitron text-white drop-shadow-sm">
+                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter font-orbitron text-white drop-shadow-lg origin-left">
                             Gen-Wal
                         </h1>
                     </div>
-                    <p class="text-lg sm:text-xl font-light text-muted leading-relaxed max-w-lg mx-auto lg:mx-0">
-                        A personal experiment in ambient computing.
-                    </p>
-                </header>
 
-                <!-- Personal Quote -->
-                <div
-                    class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 text-left space-y-4 font-light leading-relaxed">
-                    <p>I spend a lot of time working on my machine. I was curious whether the desktop itself could be
-                        part of an experiment.</p>
-                    <p>Specifically, whether <strong>passive environmental cues</strong> (like a wallpaper) work better
-                        than apps, notifications, or dashboards.</p>
-                    <p class="text-sm opacity-70 italic">— A tiny script, not a product.</p>
-                </div>
+                    <!-- Dynamic Tagline -->
+                    <div>
+                        <p id="tagline"
+                            class="text-xl sm:text-2xl md:text-3xl font-light text-neutral-400 leading-relaxed max-w-lg mx-auto lg:mx-0 min-h-[40px]">
+                            <!-- JS will populate -->
+                        </p>
+                        <p id="subline" class="text-sm text-neutral-600 font-mono pt-4 min-h-[24px]">
+                            <!-- JS will populate -->
+                        </p>
+                    </div>
+
+                    <script>
+                        const lines = [
+                            {
+                                tagline: "Environment shapes attention.",
+                                sub: "// Runs quietly in the background."
+                            },
+                            {
+                                tagline: "Design the environment.",
+                                sub: "// The rest emerges slowly."
+                            },
+                            {
+                                tagline: "Context precedes intention.",
+                                sub: "// One minimal change per day."
+                            },
+                            {
+                                tagline: "The backdrop matters.",
+                                sub: "// Applied once, then left alone."
+                            },
+                            {
+                                tagline: "Small shifts accumulate.",
+                                sub: "// No interaction required."
+                            },
+                            {
+                                tagline: "Where you work, works on you.",
+                                sub: "// A long-running process."
+                            },
+                            {
+                                tagline: "Attention follows surroundings.",
+                                sub: "// Subtle by design."
+                            },
+                            {
+                                tagline: "Change the context.",
+                                sub: "// Behavior adjusts over time."
+                            },
+                            {
+                                tagline: "Designed absence of noise.",
+                                sub: "// No prompts. No reminders."
+                            },
+                            {
+                                tagline: "The environment does the work.",
+                                sub: "// Observational, not prescriptive."
+                            },
+                            {
+                                tagline: "A quiet variable in the system.",
+                                sub: "// Executed daily."
+                            },
+                            {
+                                tagline: "Ambient influence, applied lightly.",
+                                sub: "// Defaults are intentional."
+                            },
+                            {
+                                tagline: "The background is not neutral.",
+                                sub: "// It changes, whether noticed or not."
+                            },
+                            {
+                                tagline: "Minimal intervention.",
+                                sub: "// Long-term effects."
+                            },
+                            {
+                                tagline: "State changes without friction.",
+                                sub: "// No UI required."
+                            }
+                        ];
+
+                        const pick = lines[Math.floor(Math.random() * lines.length)];
+                        document.getElementById("tagline").textContent = pick.tagline;
+                        document.getElementById("subline").textContent = pick.sub;
+                    </script>
+                </header>
 
 
 
@@ -206,29 +272,17 @@
         </div>
 
 
-        <!-- Install Command (Centered) -->
-        <div class="max-w-4xl mx-auto px-4 mb-4 animate-fade-in-up delay-300">
-            <div onclick="copyCommand()"
-                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-5 py-4 font-mono text-xs sm:text-base md:text-lg transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
-                <code class="text-accent break-all">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
-                <button
-                    class="shrink-0 rounded bg-white/5 px-4 py-2 text-xs sm:text-sm text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
-                    Copy
-                </button>
-            </div>
 
-            <div class="mt-6 flex items-center justify-center gap-6 text-sm">
-                <p class="text-gray-400 opacity-80 font-light">
-                    Runs locally. Includes <code>genwal</code> CLI. No accounts.
-                </p>
-            </div>
-        </div>
+
 
         <!-- Visual Archetypes Gallery -->
-        <div class="py-16 animate-fade-in-up delay-400 border-t border-neutral-900/50">
-            <h2 class="text-xl md:text-2xl font-bold mb-12 font-orbitron text-center text-neutral-300">
-                Aesthetic Experiments
+        <div class="py-8 md:py-16 animate-fade-in-up delay-300">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 font-orbitron text-center text-neutral-300">
+                Digital Mentors
             </h2>
+            <p class="text-center text-neutral-600 max-w-lg mx-auto mb-12 font-light text-sm">
+                Select a profile. It quietly influences the environment you work in.
+            </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
                 <!-- Card 1: Stoic -->
@@ -238,8 +292,9 @@
                         class="absolute inset-0 bg-gradient-to-br from-stone-800 to-stone-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <h3 class="text-xl font-serif text-stone-300 mb-2">The Stoic</h3>
-                        <p class="text-sm text-stone-500 italic">"The obstacle is the way."</p>
+                        <h3 class="text-xl font-serif text-stone-300 mb-2">The Philosopher</h3>
+                        <p class="text-sm text-stone-500 italic">"Waste no more time arguing about what a good man
+                            should be. Be one."</p>
                     </div>
                     <div
                         class="absolute bottom-0 left-0 right-0 h-1 bg-stone-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
@@ -253,8 +308,9 @@
                         class="absolute inset-0 bg-gradient-to-br from-blue-900 to-slate-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <h3 class="text-xl font-mono text-blue-300 mb-2">The Founder</h3>
-                        <p class="text-sm text-blue-500 font-mono">Move Fast. Break Things.</p>
+                        <h3 class="text-xl font-mono text-blue-300 mb-2">The Creator</h3>
+                        <p class="text-sm text-blue-500 font-mono">"Inspiration exists, but it has to find you working."
+                        </p>
                     </div>
                     <div
                         class="absolute bottom-0 left-0 right-0 h-1 bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
@@ -265,14 +321,15 @@
                 <div
                     class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from-red-900 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                        class="absolute inset-0 bg-gradient-to-br from-amber-900 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <h3 class="text-xl font-black uppercase text-red-500 mb-2 tracking-widest">Savage</h3>
-                        <p class="text-sm text-red-800 font-bold uppercase">Discipline Equals Freedom</p>
+                        <h3 class="text-xl font-bold uppercase text-amber-500 mb-2 tracking-widest">The Searcher</h3>
+                        <p class="text-sm text-amber-700 font-bold">"He who has a why to live can bear almost any how."
+                        </p>
                     </div>
                     <div
-                        class="absolute bottom-0 left-0 right-0 h-1 bg-red-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-amber-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
                     </div>
                 </div>
             </div>
@@ -281,9 +338,31 @@
             </p>
         </div>
 
-        <!-- How it Works (Formerly Features) -->
+
+        <!-- Install Command (Centered) -->
+        <div class="max-w-4xl mx-auto px-4 mb-24 animate-fade-in-up delay-300">
+            <div onclick="copyCommand()"
+                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-5 py-4 font-mono text-xs sm:text-base md:text-lg transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
+                <code class="text-accent break-all">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
+                <button
+                    class="shrink-0 rounded bg-white/5 px-4 py-2 text-xs sm:text-sm text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
+                    Copy
+                </button>
+            </div>
+
+            <div class="mt-6 flex flex-col items-center justify-center gap-2 text-sm">
+                <p class="text-gray-500 text-sm mt-3 font-light">
+                    A background daemon that changes one thing a day. Nothing more.
+                </p>
+                <p class="text-[11px] text-neutral-600 font-mono mt-4 opacity-70">
+                    Everything on this page is documented in the README.
+                </p>
+            </div>
+        </div>
+
+        <!-- Philosophy / Features (Moved to bottom) -->
         <div
-            class="grid gap-8 md:gap-12 text-left sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-8 md:pt-16 max-w-5xl mx-auto">
+            class="grid gap-8 md:gap-12 text-left sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-8 md:pt-16 max-w-5xl mx-auto opacity-60 hover:opacity-100 transition-opacity">
             <div class="space-y-2">
                 <h3 class="text-lg font-semibold text-white">Understated</h3>
                 <p class="text-sm text-neutral-500 leading-relaxed">
@@ -293,50 +372,18 @@
             <div class="space-y-2">
                 <h3 class="text-lg font-semibold text-white">Configurable</h3>
                 <p class="text-sm text-neutral-500 leading-relaxed">
-                    Adjust text content, positioning, opacity, and timing. It's designed to adapt to your workflow, not
-                    interrupt it.
+                    Text, positioning, opacity, and timing are configurable — defaults are intentional.
                 </p>
             </div>
             <div class="space-y-2">
-                <h3 class="text-lg font-semibold text-white">Honest</h3>
+                <h3 class="text-lg font-semibold text-white">Influence</h3>
                 <p class="text-sm text-neutral-500 leading-relaxed">
-                    Local-first. Your mindset profiles stay on your disk. Visuals are generated on demand.
+                    Profiles influence tone, pacing, and visual emphasis — changing slightly day to day.
                 </p>
             </div>
         </div>
 
-        <!-- Split Section: Philosophy -->
-        <div
-            class="grid md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 mb-6 border-b border-neutral-900/50 pb-6 animate-fade-in-up delay-400 items-center text-center">
 
-            <!-- Left: The Premise -->
-            <div class="space-y-6">
-                <h2 class="text-xl font-bold text-white font-orbitron">The Premise</h2>
-                <div class="space-y-4 text-gray-500 text-sm md:text-base leading-relaxed font-light mx-auto max-w-sm">
-                    <p>It's not a productivity app.</p>
-                    <p>It doesn’t track you, notify you, or demand attention.</p>
-                    <p>It quietly changes your environment once a day — <br class="hidden md:block">
-                        so your intent stays visible without becoming noise.</p>
-                </div>
-            </div>
-
-            <!-- Right: Flexibility -->
-            <div class="space-y-6">
-                <h2 class="text-xl font-bold text-white font-orbitron">Flexibility</h2>
-                <div class="p-6 bg-neutral-900/20 rounded-xl border border-neutral-800/50 mx-auto max-w-sm text-left">
-                    <p class="text-sm text-gray-500 mb-4 text-center">
-                        Everything is a text file. (Or use the CLI).
-                    </p>
-                    <ul class="space-y-2 text-gray-600 text-xs font-mono pl-4">
-                        <li>> text_position: "bottom_right"</li>
-                        <li>> opacity: 0.8</li>
-                        <li>> font: "Inter"</li>
-                        <li>> prompt: "Be concise."</li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
 
 
 
@@ -365,7 +412,8 @@
                     class="p-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-accent/40 transition-colors">
                     <h3 class="text-xl font-semibold mb-2 text-blue-400">📜 Daily Briefing</h3>
                     <p class="text-sm text-gray-400">Generating a <code
-                            class="bg-neutral-800 px-1 py-0.5 rounded text-xs">TODAY.md</code> file on the desktop.</p>
+                            class="bg-neutral-800 px-1 py-0.5 rounded text-xs">TODAY.md</code> file on the
+                        desktop.</p>
                 </div>
                 <!-- ... other items removed for brevity / simplicity ... -->
                 <div
@@ -378,7 +426,8 @@
             <div class="mt-12 mb-4 space-y-2 text-sm md:text-base text-gray-400">
                 <p>
                     If you have ideas, <a href="https://github.com/nicemit/gen-wal/issues" target="_blank"
-                        class="text-accent hover:underline decoration-dashed underline-offset-4">open an issue</a>.
+                        class="text-accent hover:underline decoration-dashed underline-offset-4">open an
+                        issue</a>.
                 </p>
             </div>
         </div>
@@ -387,15 +436,25 @@
         <footer class="pb-12 space-y-6 text-sm text-zinc-600 animate-fade-in-up delay-500">
             <div class="flex flex-col items-center gap-4">
                 <p>
-                    Open Source. <span class="text-zinc-400">MIT License</span>. Free to use, modify, and make it your
+                    Open Source. <span class="text-zinc-400">MIT License</span>. Free to use, modify, and make
+                    it your
                     own.
                 </p>
-                <p class="max-w-md mx-auto text-center leading-relaxed">
-                    This is a small but impactful project.<br>
-                    <span class="text-zinc-400">Contributions are welcome!</span> Whether it's new profiles, providers,
-                    or
-                    code.
+                This is a small but impactful project.<br>
+                <span class="text-zinc-400">Contributions are welcome!</span> Whether it's new profiles,
+                providers,
+                or
+                code.
                 </p>
+                <div class="space-y-2 text-center pt-4">
+                    <p class="text-xs text-zinc-500 max-w-xl mx-auto">
+                        Built as an experiment in ambient influence — inspired by the idea that environment shapes
+                        behavior more reliably than willpower.
+                    </p>
+                    <p class="text-xs text-zinc-600">
+                        Good first contributions: profiles, providers, documentation polish.
+                    </p>
+                </div>
                 <div class="flex gap-6 pt-2">
                     <a href="https://github.com/nicemit/gen-wal" target="_blank"
                         class="hover:text-zinc-400 border-b border-transparent hover:border-zinc-500 transition-colors">GitHub

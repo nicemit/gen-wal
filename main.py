@@ -183,7 +183,18 @@ def main():
         position = config.get('text_position', 'center')
         padding = config.get('text_padding', 100)
         
-        final_path = renderer.compose(bg_path, quote, output_path, position=position, padding=padding, target_size=(width, height))
+        # Watermark Setup
+        watermark_config = config.get('watermark', {})
+        if watermark_config.get('enabled', True): # Default to true if not specified but logic passed
+            # Clean Profile Name for display
+            display_name = os.path.splitext(os.path.basename(config.get('profile_path', 'Gen-Wal')))[0]
+            display_name = display_name.replace('_profile', '').replace('_', ' ').title()
+            
+            # Allow config to override text, otherwise use profile name
+            if 'text' not in watermark_config:
+                watermark_config['text'] = display_name
+                
+        final_path = renderer.compose(bg_path, quote, output_path, position=position, padding=padding, target_size=(width, height), watermark_config=watermark_config)
     
     if final_path:
         console.print(f"💾 [bold]Saved to[/bold]        : [link={final_path}]{final_path}[/link]")

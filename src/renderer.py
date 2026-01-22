@@ -34,7 +34,7 @@ class WallpaperRenderer:
             
         return clean.strip()
 
-    def compose(self, image_path: str, text: str, output_path: str, position: str = "center", padding: int = 100, target_size: tuple = None):
+    def compose(self, image_path: str, text: str, output_path: str, position: str = "center", padding: int = 100, target_size: tuple = None, watermark_config: dict = None):
         # Clean text first
         text = self._clean_text(text)
         try:
@@ -112,6 +112,40 @@ class WallpaperRenderer:
                 
                 current_y += line_height
                 
+            # 4. Draw Watermark
+            if watermark_config and watermark_config.get('enabled', False):
+                wm_text = watermark_config.get('text', '')
+                if wm_text:
+                    wm_size = watermark_config.get('font_size', 20)
+                    wm_dpos = watermark_config.get('position', 'bottom_right')
+                    wm_opacity = watermark_config.get('opacity', 150)
+                    # wm_color is ignoring for now, defaulting to white with alpha
+                    
+                    try:
+                        wm_font = ImageFont.truetype(self.font_path, wm_size)
+                    except:
+                        wm_font = ImageFont.load_default()
+                        
+                    wm_bbox = draw.textbbox((0, 0), wm_text, font=wm_font)
+                    wm_width = wm_bbox[2] - wm_bbox[0]
+                    wm_height = wm_bbox[3] - wm_bbox[1]
+                    
+                    wm_x, wm_y = 0, 0
+                    wm_padding = 30 # Hardcoded small padding for watermark
+                    
+                    if 'bottom' in wm_dpos:
+                        wm_y = img.height - wm_height - wm_padding
+                    else: # top
+                        wm_y = wm_padding
+                        
+                    if 'right' in wm_dpos:
+                        wm_x = img.width - wm_width - wm_padding
+                    else: # left
+                        wm_x = wm_padding
+                        
+                    # Draw Watermark
+                    draw.text((wm_x, wm_y), wm_text, font=wm_font, fill=(255, 255, 255, wm_opacity))
+
             img = img.convert("RGB")
             img.save(output_path, "JPEG")
             return output_path

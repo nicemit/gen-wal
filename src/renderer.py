@@ -131,19 +131,53 @@ class WallpaperRenderer:
                     wm_height = wm_bbox[3] - wm_bbox[1]
                     
                     wm_x, wm_y = 0, 0
-                    wm_padding = 30 # Hardcoded small padding for watermark
+                    wm_padding = 40 # Padding from edge
                     
                     if 'bottom' in wm_dpos:
                         wm_y = img.height - wm_height - wm_padding
-                    else: # top
+                    elif 'top' in wm_dpos:
                         wm_y = wm_padding
+                    else: # center y
+                        wm_y = (img.height - wm_height) / 2
                         
                     if 'right' in wm_dpos:
                         wm_x = img.width - wm_width - wm_padding
-                    else: # left
+                    elif 'left' in wm_dpos:
                         wm_x = wm_padding
-                        
-                    # Draw Watermark
+                    else: # center x
+                        wm_x = (img.width - wm_width) / 2
+                    
+                    # Draw Rounded Background
+                    box_padding = 10
+                    box_x0 = wm_x - box_padding
+                    box_y0 = wm_y - box_padding
+                    box_x1 = wm_x + wm_width + box_padding
+                    box_y1 = wm_y + wm_height + (box_padding * 0.5) # Slight optical adjustment
+                    
+                    # Create overlay for the box to handle transparency
+                    box_overlay = Image.new('RGBA', img.size, (0, 0, 0, 0))
+                    box_draw = ImageDraw.Draw(box_overlay)
+                    
+                    # Background color: White with very low opacity (e.g. 10-20% of text opacity)
+                    # Or same opacity as requested? User asked for "same transparency".
+                    # Let's use the provided opacity for the border/fill.
+                    
+                    # Draw rounded rect
+                    box_draw.rounded_rectangle(
+                        [(box_x0, box_y0), (box_x1, box_y1)], 
+                        radius=4, 
+                        fill=(0, 0, 0, int(wm_opacity * 0.5)), # darker background, 50% of text opacity
+                        outline=(255, 255, 255, int(wm_opacity * 0.3)), # faint border
+                        width=1
+                    )
+                    
+                    # Composite the box
+                    img = Image.alpha_composite(img, box_overlay)
+                    
+                    # Re-create draw object for text on top of new layer
+                    draw = ImageDraw.Draw(img)
+
+                    # Draw Watermark Text
                     draw.text((wm_x, wm_y), wm_text, font=wm_font, fill=(255, 255, 255, wm_opacity))
 
             img = img.convert("RGB")

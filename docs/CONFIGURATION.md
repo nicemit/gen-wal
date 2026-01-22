@@ -129,6 +129,19 @@ resolution:
 
 text_position: "center" # bottom_left, bottom_center, bottom_right, left_center, right_center, top_left, center, etc.
 text_padding: 100 # Distance from screen edge in pixels
+
+## Watermark
+
+Overlay a subtle text watermark on the wallpaper.
+
+```yaml
+watermark:
+  enabled: true
+  text: "My Custom Watermark" # Optional, defaults to profile name
+  position: "bottom_right" # Options: bottom_right, bottom_left, bottom_center, top_right, top_left, top_center
+  font_size: 25
+  opacity: 150 # 0-255 transparency
+```
 ```
 
 ## External Customization (Prompts)
@@ -178,3 +191,6 @@ You can temporarily override configuration settings via command-line arguments:
 | `--profile` | Use a different profile file for this run. | `python3 main.py --profile profiles/examples/monk_profile.md` |
 | `--text-pos` | Override text positioning. | `python3 main.py --text-pos center` |
 | `--config` | Use a specific config file. | `python3 main.py --config my_custom_config.yaml` |
+| `--watermark` / `--no-watermark` | Enable or disable watermark. | `python3 main.py --no-watermark` |
+| `--watermark-text` | Override watermark text. | `python3 main.py --watermark-text "Day 10"` |
+| `--watermark-opacity` | Override watermark opacity (0-255). | `python3 main.py --watermark-opacity 50` |

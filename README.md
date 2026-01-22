@@ -6,7 +6,10 @@
 
 **A personal experiment in ambient computing.**
 
-![Gen-Wal Banner](docs/images/banner.gif)
+| | | |
+|:---:|:---:|:---:|
+| <img src="docs/images/carousel/1.jpg" width="100%"> | <img src="docs/images/carousel/2.jpg" width="100%"> | <img src="docs/images/carousel/3.jpg" width="100%"> |
+| <img src="docs/images/carousel/4.jpg" width="100%"> | <img src="docs/images/carousel/5.jpg" width="100%"> | <img src="docs/images/carousel/6.jpg" width="100%"> |
 
 > I was curious whether the desktop itself could be part of a productivity system.
 > Specifically, whether passive environmental cues (like a wallpaper) work better than apps, notifications, or dashboards.
@@ -112,7 +115,17 @@ cd ~/.gen-wal && ./uninstall.sh
 
 ------------------------------------------------------------------------
 
-## Developing
+------------------------------------------------------------------------
+ 
+ ## Future Ideas
+ 
+ - **Daily Briefing**: Generating a `TODAY.md` file on the desktop.
+ - **Sonic Mode**: Ambient soundscapes matched to the profile.
+ - **Extended Context**: Quotes from books, articles, and famous figures.
+ 
+ ------------------------------------------------------------------------
+ 
+ ## Developing
 
 This is a personal project. If you want to hack on it:
 

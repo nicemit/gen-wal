@@ -175,7 +175,7 @@ wallpaper_settings:
 # -----------------------------------------------------------------------------
 watermark:
   enabled: true
-  position: "bottom_right" # Options: bottom_right, bottom_left, top_right, top_left
+  position: "bottom_right" # Options: bottom_right, bottom_left, bottom_center, top_right, top_left, top_center
   font_size: 25
-  opacity: 180 # 0-255
-  color: "white"
+  opacity: 50 # 0-255 (Lower is more subtle, e.g. 30-50 for "barely visible")
+  # text:Override defaults to profile name

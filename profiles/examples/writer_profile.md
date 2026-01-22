@@ -1,5 +1,5 @@
 ---
-quote_prompt_template: "Generate a sharp, definitive truth about the craft of writing, discipline, or narrative. No fluff. Max 20 words."
+quote_prompt_template: "Generate an inspiring, insightful truth about the craft of writing, discipline, or narrative. Motivating. Max 20 words."
 image_prompt_template: "Generate a prompt for a cozy, studious atmosphere. Old books, typewriters, or coffee shop vibes. Warm lighting. Max 15 words."
 ---
 # The Writer's Mindsetoryteller Profile

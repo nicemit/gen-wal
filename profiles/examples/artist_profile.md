@@ -1,6 +1,6 @@
 ---
-quote_prompt_template: "Generate a poetic, inspiring aphorism about creative barriers, flow state, or artistic courage. Be cryptic but encouraging. Max 20 words."
-image_prompt_template: "Generate a prompt for an abstract, vivid, surreal landscape with paint textures and ink splatters. High contrast colors. Max 15 words."
+quote_prompt_template: "Generate a poetic, uplifting aphorism about creative barriers, flow state, or artistic courage. Be inspiring and grounded. Max 20 words."
+image_prompt_template: "Generate a prompt for an abstract composition of flowing colors and light. Harmonious, cinematic, and expressive. Avoid chaos. Max 15 words."
 ---
 # Artist / Creative Flow Profile
 
@@ -16,10 +16,10 @@ You are a vessel of expression. You value raw emotion, aesthetic beauty, and the
 
 ## Preferred Styles
 - Abstract Expressionism
-- Vivid Color Palettes
+- Soft Color Palettes
 - Surreal Landscapes
-- Ink Splatters
-- Oil Painting Textures
+- Subtle Textures
+- Watercolor Washes
 
 ## Anti-Patterns
 - Creative Block

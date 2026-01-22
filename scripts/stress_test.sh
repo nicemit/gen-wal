@@ -17,49 +17,59 @@ if [ ! -d "$PROFILE_DIR" ]; then
     exit 1
 fi
 
-echo "🎲 Selecting 4 random profiles from $PROFILE_DIR..."
+# Define 6 specific scenarios (Size:Position)
+SCENARIOS=(
+    "20:bottom_right"    # Smallest
+    "35:bottom_center"   # Bit bigger
+    "50:bottom_left"     # Bigger
+    "80:center"          # Large
+    "120:top_center"     # Massive
+    "180:top_right"      # Biggest
+)
 
-# Find profiles, shuffle them, and pick top 4
-# Using shuf for randomness
-PROFILES=$(find "$PROFILE_DIR" -name "*.md" | shuf -n 4)
+TOTAL_RUNS=${#SCENARIOS[@]}
+count=0
 
-if [ -z "$PROFILES" ]; then
-    echo "❌ No profiles found!"
+# Get all profiles into an array
+mapfile -t ALL_PROFILES < <(find "$PROFILE_DIR" -name "*.md" | shuf)
+NUM_PROFILES=${#ALL_PROFILES[@]}
+
+echo "🔎 Found $NUM_PROFILES profiles."
+
+if [ "$NUM_PROFILES" -eq 0 ]; then
+    echo "❌ No profiles found in $PROFILE_DIR!"
     exit 1
 fi
 
-COUNT=1
-
-# Loop through selected profiles
-POSITIONS=("center" "bottom_right" "top_left" "bottom_center" "left_center")
-
-echo "$PROFILES" | while read -r profile; do
-    # Pick a random position
-    RAND_POS=${POSITIONS[$RANDOM % ${#POSITIONS[@]}]}
+for scenario in "${SCENARIOS[@]}"; do
+    count=$((count + 1))
     
-    # Pick a random font size (between 30 and 90)
-    RAND_FONT=$((30 + RANDOM % 61))
-
+    # Split scenario string using cut
+    font_size=$(echo "$scenario" | cut -d: -f1)
+    position=$(echo "$scenario" | cut -d: -f2)
+    
+    # Rotate through profiles
+    profile_index=$(( (count - 1) % NUM_PROFILES ))
+    profile="${ALL_PROFILES[$profile_index]}"
+    
     echo ""
     echo "==================================================="
-    echo "🔄 Run $COUNT/4: Profile: $(basename "$profile") | Pos: $RAND_POS | Font: $RAND_FONT"
+    echo "🔄 Run $count/$TOTAL_RUNS: Profile: $(basename "$profile")"
+    echo "   📍 Position: $position | 🔠 Font Size: $font_size"
     echo "==================================================="
     
-    # Run Gen-Wal with profile override and random text position
-    # Use venv python if available, else python3
+    # Run Gen-Wal
     if [ -f "venv/bin/python" ]; then
-        venv/bin/python main.py --profile "$profile" --text-pos "$RAND_POS" --font-size "$RAND_FONT"
+        venv/bin/python main.py --profile "$profile" --text-pos "$position" --font-size "$font_size"
     else
-        python3 main.py --profile "$profile" --text-pos "$RAND_POS" --font-size "$RAND_FONT"
+        python3 main.py --profile "$profile" --text-pos "$position" --font-size "$font_size"
     fi
     
-    # Optional cool-down/padding
-    if [ $COUNT -lt 4 ]; then
+    # Optional cool-down
+    if [ $count -lt $TOTAL_RUNS ]; then
         echo "⏳ Cooling down for 3 seconds..."
         sleep 3
     fi
-    
-    ((COUNT++))
 done
 
 echo ""

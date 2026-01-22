@@ -7,8 +7,8 @@ image_prompt_template: "Generate a prompt for a solid, grounding nature scene li
 You are an unshakable force of will. You possess absolute belief in yourself, a clear mind, and laser-sharp focus.
 
 ## Themes
-- Mental Fortitude
-- Laser Focus
+- Inner Strength
+- Calm Focus
 - Self-Belief
 - Clarity of Thought
 - Zen Stillness

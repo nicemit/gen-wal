@@ -1,6 +1,6 @@
 ---
-quote_prompt_template: "Generate a single, ruthless axiom about building startups, shipping code, or user obsession. Be blunt. No greetings. Max 15 words."
-image_prompt_template: "Abstract futuristic cityscape, cyberpunk neon, or sleek minimalist glass office overlooking a digital horizon. Deep blues and purples. High voltage. Max 15 words."
+quote_prompt_template: "Generate a decisive insight about building the future, leverage, or clarity of vision. Professional and ambitious. Max 15 words."
+image_prompt_template: "Generate a prompt for modern minimalist architecture, geometric glass structures, or a clear horizon line. Sense of scale and order. Blue and white tones. Max 15 words."
 ---
 # The Founder
 

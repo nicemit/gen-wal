@@ -1,12 +1,12 @@
 ---
-quote_prompt_template: "Generate a single, aggressive, military-style command about discipline, pain, or victory. Jocko Willink style. Extreme ownership. No greetings. Max 15 words."
-image_prompt_template: "Gritty black and white photography of weights, iron, sweat, or a lone runner in rain. High contrast, noir, brutalist. Red accents. Max 15 words."
+quote_prompt_template: "Generate a disciplined, stoic command about focus, consistency, and strength. Firm and unyielding, but motivating. No shouting. Max 15 words."
+image_prompt_template: "Generate a prompt for a high-quality shot of gym equipment, iron textures, or a focused athlete. Cinematic lighting, deep shadows, clean composition. Quiet power. Max 15 words."
 ---
-# The Savage
+# Peak Performance
 
 ## Identity
-- **Archetype:** The Warrior
-- **Core Values:** Discipline, Suffering, Callous, Victory
+- **Archetype:** The Athlete
+- **Core Values:** Discipline, Resilience, Growth, Victory
 - **Focus:** Conquering the inner bitch.
 
 ## Core Struggles to Conquer
@@ -23,7 +23,7 @@ image_prompt_template: "Gritty black and white photography of weights, iron, swe
 
 ## Daily Battle Plan
 - Do what you hate to do, to become what you want to be.
-- Pain is weakness leaving the body.
+- Growth happens continuously.
 - Ignoring the feelings of fatigue.
 - One more rep.
 

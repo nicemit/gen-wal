@@ -1,6 +1,6 @@
 ---
-quote_prompt_template: "Generate a calming, rational statement about controlling reactions and finding peace. Style of Marcus Aurelius. Max 15 words."
-image_prompt_template: "Generate a prompt for a perfectly still lake, cool blue tones, or smooth stone. Balanced and peaceful. Max 15 words."
+quote_prompt_template: "Generate a calming, uplifting statement about finding peace and clarity. Style of Marcus Aurelius. Max 15 words."
+image_prompt_template: "Generate a prompt for a perfectly still lake, cool blue tones, or smooth stone. Balanced, soft, and peaceful. Max 15 words."
 ---
 # Stoic Calm / Anger Control Profile
 

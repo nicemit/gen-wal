@@ -1,6 +1,6 @@
 ---
-quote_prompt_template: "Generate a single timeless aphorism on resilience, duty, or accepting fate. Style of Marcus Aurelius. Concise, poetic, piercing. Do not start with 'Here is a quote'. Max 20 words."
-image_prompt_template: "Surreal, cinematic hyper-realistic shot of an ancient marble statue in a storm, or a solitary tree on a cliff. High contrast, moody lighting. 8k, unreal engine 5 style. Max 15 words."
+quote_prompt_template: "Generate a single uplifting aphorism on resilience, gratitude, or accepting fate. Style of Marcus Aurelius. Inspiring and grounded. Max 20 words."
+image_prompt_template: "Generate a prompt for a cinematic shot of an ancient marble statue in soft morning light, or a solitary tree. Natural, balanced. 8k, photorealistic. Max 15 words."
 ---
 # Stoic Mindset
 
@@ -21,7 +21,7 @@ image_prompt_template: "Surreal, cinematic hyper-realistic shot of an ancient ma
 - Validating oneself through action, not words.
 
 ## Daily Affirmations
-- I control my mind, not the events.
-- Hardship is the fire that tempers the steel.
-- Today I will meet interference, ingratitude, insolence, disloyalty, ill-will, and selfishness – and it will not move me.
+- I choose how I perceive the world.
+- Challenges build resilience.
+- Today I will meet the world with grace and strength.
 

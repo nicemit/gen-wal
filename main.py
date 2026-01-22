@@ -22,12 +22,25 @@ def main():
     parser.add_argument("--profile", help="Override profile path")
     parser.add_argument("--text-pos", help="Override text position (e.g. center, bottom_right)")
     parser.add_argument("--font-size", type=int, help="Override font size")
+    
+    # Watermark Arguments
+    parser.add_argument("--watermark", action="store_true", help="Enable watermark")
+    parser.add_argument("--no-watermark", action="store_true", help="Disable watermark")
+    parser.add_argument("--watermark-pos", help="Override watermark position")
+    parser.add_argument("--watermark-font-size", type=int, help="Override watermark font size")
+    parser.add_argument("--watermark-opacity", type=int, help="Override watermark opacity (0-255)")
+    parser.add_argument("--watermark-text", help="Override watermark text")
+
     args = parser.parse_args()
 
     # Load Config
     config_path = os.path.join(os.path.dirname(__file__), args.config)
     config = load_config(config_path)
     
+    # Init Watermark Config if missing
+    if 'watermark' not in config:
+        config['watermark'] = {}
+
     # Override Profile if argument provided
     if args.profile:
         config['profile_path'] = args.profile
@@ -38,6 +51,24 @@ def main():
     
     if args.font_size:
         config['font_size'] = args.font_size
+
+    # Override Watermark Settings
+    if args.watermark:
+        config['watermark']['enabled'] = True
+    if args.no_watermark:
+        config['watermark']['enabled'] = False
+        
+    if args.watermark_pos:
+        config['watermark']['position'] = args.watermark_pos
+    
+    if args.watermark_font_size:
+        config['watermark']['font_size'] = args.watermark_font_size
+        
+    if args.watermark_opacity:
+        config['watermark']['opacity'] = args.watermark_opacity
+        
+    if args.watermark_text:
+        config['watermark']['text'] = args.watermark_text
 
     # 1. Load Profile (First, to get metadata for the summary)
     profile_content = ""
@@ -183,7 +214,18 @@ def main():
         position = config.get('text_position', 'center')
         padding = config.get('text_padding', 100)
         
-        final_path = renderer.compose(bg_path, quote, output_path, position=position, padding=padding, target_size=(width, height))
+        # Watermark Setup
+        watermark_config = config.get('watermark', {})
+        if watermark_config.get('enabled', True): # Default to true if not specified but logic passed
+            # Clean Profile Name for display
+            display_name = os.path.splitext(os.path.basename(config.get('profile_path', 'Gen-Wal')))[0]
+            display_name = display_name.replace('_profile', '').replace('_', ' ').title()
+            
+            # Allow config to override text, otherwise use profile name
+            if 'text' not in watermark_config:
+                watermark_config['text'] = display_name
+                
+        final_path = renderer.compose(bg_path, quote, output_path, position=position, padding=padding, target_size=(width, height), watermark_config=watermark_config)
     
     if final_path:
         console.print(f"💾 [bold]Saved to[/bold]        : [link={final_path}]{final_path}[/link]")

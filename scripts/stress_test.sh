@@ -19,22 +19,32 @@ fi
 
 # Define 6 specific scenarios (Size:Position)
 SCENARIOS=(
-    "20:bottom_right"    # Smallest
-    "35:bottom_center"   # Bit bigger
-    "50:bottom_left"     # Bigger
-    "80:center"          # Large
-    "120:top_center"     # Massive
-    "180:top_right"      # Biggest
+    "60:bottom_right"    # Large
+    "80:bottom_center"   # Hero
+    "40:top_right"       # Medium
+    "100:center"         # Statement (Big)
+    "25:bottom_left"     # Subtle
+    "50:bottom_right"    # Standard
 )
 
 TOTAL_RUNS=${#SCENARIOS[@]}
 count=0
 
-# Get all profiles into an array
-mapfile -t ALL_PROFILES < <(find "$PROFILE_DIR" -name "*.md" | shuf)
+# Helper function to get full path
+get_profile() { echo "$PROJECT_ROOT/$PROFILE_DIR/$1"; }
+
+# Explicitly selected profiles for demo
+ALL_PROFILES=(
+    "$(get_profile "stoic_profile.md")"
+    "$(get_profile "f1_racing_profile.md")"
+    "$(get_profile "atomic_habits_profile.md")"
+    "$(get_profile "harry_potter_profile.md")"
+    "$(get_profile "founder_profile.md")"
+    "$(get_profile "war_of_art_profile.md")"
+)
 NUM_PROFILES=${#ALL_PROFILES[@]}
 
-echo "🔎 Found $NUM_PROFILES profiles."
+echo "🔎 Selected $NUM_PROFILES curated profiles."
 
 if [ "$NUM_PROFILES" -eq 0 ]; then
     echo "❌ No profiles found in $PROFILE_DIR!"
@@ -60,9 +70,17 @@ for scenario in "${SCENARIOS[@]}"; do
     
     # Run Gen-Wal
     if [ -f "venv/bin/python" ]; then
-        venv/bin/python main.py --profile "$profile" --text-pos "$position" --font-size "$font_size"
+        venv/bin/python main.py --profile "$profile" \
+            --text-pos "$position" \
+            --font-size "$font_size" \
+            --watermark-pos bottom_center \
+            --watermark-opacity 30
     else
-        python3 main.py --profile "$profile" --text-pos "$position" --font-size "$font_size"
+        python3 main.py --profile "$profile" \
+            --text-pos "$position" \
+            --font-size "$font_size" \
+            --watermark-pos bottom_center \
+            --watermark-opacity 30
     fi
     
     # Optional cool-down

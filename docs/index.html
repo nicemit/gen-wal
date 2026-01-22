@@ -153,82 +153,107 @@
 
         <!-- Hero Section: Split Layout -->
         <div
-            class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-24 items-center mb-12 lg:mb-24 mt-4 lg:mt-0">
+            class="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 md:gap-12 lg:gap-16 xl:gap-24 items-center mb-12 lg:mb-24 mt-4 lg:mt-0">
 
             <!-- Left Column: Content -->
             <div
                 class="space-y-6 md:space-y-8 text-left animate-fade-in-up flex flex-col items-center lg:items-start text-center lg:text-left">
-                <!-- Header -->
-                <header class="space-y-4 md:space-y-6">
-                    <div class="flex items-center justify-center lg:justify-start gap-3 md:gap-4">
+                <header class="space-y-6 md:space-y-8">
+                    <div class="flex items-center justify-center lg:justify-start gap-4 md:gap-6">
                         <img src="images/logo.png?v=8" alt="Gen-Wal Logo"
                             class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                         <h1
-                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight font-orbitron text-white drop-shadow-sm">
+                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter font-orbitron text-white drop-shadow-lg origin-left">
                             Gen-Wal
                         </h1>
                     </div>
-                    <p class="text-lg sm:text-xl font-light text-muted leading-relaxed max-w-lg mx-auto lg:mx-0">
-                        A personal experiment in ambient computing.
-                    </p>
+
+                    <!-- Static Tagline -->
+                    <div>
+                        <p
+                            class="text-3xl sm:text-4xl md:text-5xl font-light text-neutral-400 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                            Environment shapes attention.
+                        </p>
+                        <p class="text-base md:text-lg text-neutral-600 font-mono pt-6">
+                            // A background daemon, running quietly.
+                        </p>
+                    </div>
+
+                    <!-- Grounding Paragraph -->
+                    <div
+                        class="pt-8 max-w-lg mx-auto lg:mx-0 text-neutral-500 font-light text-lg leading-relaxed space-y-4">
+                        <p>
+                            Runs once a day. Generates a new desktop wallpaper. Uses minimal text and visual context.
+                            Designed to be subtle and ignorable.
+                        </p>
+                    </div>
                 </header>
-
-                <!-- Personal Quote -->
-                <div
-                    class="text-gray-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 text-left space-y-4 font-light leading-relaxed">
-                    <p>I spend a lot of time working on my machine. I was curious whether the desktop itself could be
-                        part of an experiment.</p>
-                    <p>Specifically, whether <strong>passive environmental cues</strong> (like a wallpaper) work better
-                        than apps, notifications, or dashboards.</p>
-                    <p class="text-sm opacity-70 italic">— A tiny script, not a product.</p>
-                </div>
-
-
-
-
             </div>
 
-            <!-- Right Column: Video -->
-            <div class="relative w-full animate-fade-in-up delay-200 group mt-4 lg:mt-0">
+            <!-- Right Column: Carousel -->
+            <div
+                class="relative w-[calc(100%+2rem)] -mx-4 md:w-full md:mx-0 aspect-video animate-fade-in-up delay-200 group mt-4 lg:mt-0">
                 <div
                     class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-orange-600 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-1000">
                 </div>
-                <!-- Video Element -->
-                <video autoplay loop muted playsinline
-                    class="relative rounded-xl border border-neutral-800 shadow-2xl w-full bg-black/50">
-                    <source src="headline-video.mp4" type="video/mp4">
-                </video>
+
+                <!-- Carousel Container -->
+                <div id="carousel"
+                    class="relative w-full h-full rounded-xl border border-neutral-800 shadow-2xl bg-black/50 overflow-hidden">
+                    <img src="images/carousel/1.jpg"
+                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100"
+                        alt="Wallpaper Example 1">
+                    <img src="images/carousel/2.jpg"
+                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
+                        alt="Wallpaper Example 2">
+                    <img src="images/carousel/3.jpg"
+                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
+                        alt="Wallpaper Example 3">
+                    <img src="images/carousel/4.jpg"
+                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
+                        alt="Wallpaper Example 4">
+                    <img src="images/carousel/5.jpg"
+                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
+                        alt="Wallpaper Example 5">
+                    <img src="images/carousel/6.jpg"
+                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0"
+                        alt="Wallpaper Example 6">
+                </div>
+
                 <p class="mt-2 md:mt-3 text-[10px] sm:text-xs italic text-gray-600 text-center lg:text-right">
-                    * Wallpapers generated by Gen-Wal on my desktop.
+                    Generated samples.
                 </p>
+
+                <script>
+                    const images = document.querySelectorAll('#carousel img');
+                    let currentIndex = 0;
+
+                    setInterval(() => {
+                        images[currentIndex].classList.remove('opacity-100');
+                        images[currentIndex].classList.add('opacity-0');
+
+                        currentIndex = (currentIndex + 1) % images.length;
+
+                        images[currentIndex].classList.remove('opacity-0');
+                        images[currentIndex].classList.add('opacity-100');
+                    }, 4000); // 4s rotation
+                </script>
             </div>
 
         </div>
 
 
-        <!-- Install Command (Centered) -->
-        <div class="max-w-4xl mx-auto px-4 mb-4 animate-fade-in-up delay-300">
-            <div onclick="copyCommand()"
-                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-5 py-4 font-mono text-xs sm:text-base md:text-lg transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
-                <code class="text-accent break-all">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
-                <button
-                    class="shrink-0 rounded bg-white/5 px-4 py-2 text-xs sm:text-sm text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
-                    Copy
-                </button>
-            </div>
 
-            <div class="mt-6 flex items-center justify-center gap-6 text-sm">
-                <p class="text-gray-400 opacity-80 font-light">
-                    Runs locally. Includes <code>genwal</code> CLI. No accounts.
-                </p>
-            </div>
-        </div>
+
 
         <!-- Visual Archetypes Gallery -->
-        <div class="py-16 animate-fade-in-up delay-400 border-t border-neutral-900/50">
-            <h2 class="text-xl md:text-2xl font-bold mb-12 font-orbitron text-center text-neutral-300">
-                Aesthetic Experiments
+        <div class="py-12 md:py-24 animate-fade-in-up delay-300">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 font-orbitron text-center text-neutral-300">
+                Profiles
             </h2>
+            <p class="text-center text-neutral-500 max-w-lg mx-auto mb-16 font-light text-lg">
+                Text files that define the theme.
+            </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
                 <!-- Card 1: Stoic -->
@@ -237,9 +262,11 @@
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-stone-800 to-stone-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <h3 class="text-xl font-serif text-stone-300 mb-2">The Stoic</h3>
-                        <p class="text-sm text-stone-500 italic">"The obstacle is the way."</p>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center pt-12">
+                        <h3 class="text-2xl font-serif text-stone-300 mb-3">The Philosopher</h3>
+                        <p class="text-base text-stone-500 italic leading-relaxed">"Waste no more time arguing about
+                            what a good man
+                            should be. Be one."</p>
                     </div>
                     <div
                         class="absolute bottom-0 left-0 right-0 h-1 bg-stone-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
@@ -252,9 +279,11 @@
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-blue-900 to-slate-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <h3 class="text-xl font-mono text-blue-300 mb-2">The Founder</h3>
-                        <p class="text-sm text-blue-500 font-mono">Move Fast. Break Things.</p>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center pt-12">
+                        <h3 class="text-2xl font-mono text-blue-300 mb-3">The Creator</h3>
+                        <p class="text-base text-blue-500 font-mono leading-relaxed">"Inspiration exists, but it has to
+                            find you working."
+                        </p>
                     </div>
                     <div
                         class="absolute bottom-0 left-0 right-0 h-1 bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
@@ -265,78 +294,67 @@
                 <div
                     class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from-red-900 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                        class="absolute inset-0 bg-gradient-to-br from-amber-900 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <h3 class="text-xl font-black uppercase text-red-500 mb-2 tracking-widest">Savage</h3>
-                        <p class="text-sm text-red-800 font-bold uppercase">Discipline Equals Freedom</p>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center pt-12">
+                        <h3 class="text-2xl font-bold uppercase text-amber-500 mb-3 tracking-widest">The Searcher</h3>
+                        <p class="text-base text-amber-700 font-bold leading-relaxed">"He who has a why to live can bear
+                            almost any how."
+                        </p>
                     </div>
                     <div
-                        class="absolute bottom-0 left-0 right-0 h-1 bg-red-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-amber-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
                     </div>
                 </div>
             </div>
             <p class="text-center text-xs text-neutral-600 mt-6 font-mono">
-                + Fully customizable via Markdown profiles
+                These profiles only affect tone, language, and visual weight.
             </p>
         </div>
 
-        <!-- How it Works (Formerly Features) -->
-        <div
-            class="grid gap-8 md:gap-12 text-left sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-8 md:pt-16 max-w-5xl mx-auto">
-            <div class="space-y-2">
-                <h3 class="text-lg font-semibold text-white">Understated</h3>
-                <p class="text-sm text-neutral-500 leading-relaxed">
-                    It runs in the background. No GUI. No notifications. Just a quiet visual change once a day.
-                </p>
+
+        <!-- Install Command (Centered) -->
+        <div class="max-w-4xl mx-auto px-4 mb-24 animate-fade-in-up delay-300">
+            <div onclick="copyCommand()"
+                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-8 py-6 font-mono text-sm sm:text-lg md:text-xl transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
+                <code class="text-accent break-all">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
+                <button
+                    class="shrink-0 rounded bg-white/5 px-6 py-3 text-sm font-medium text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
+                    Copy
+                </button>
             </div>
-            <div class="space-y-2">
-                <h3 class="text-lg font-semibold text-white">Configurable</h3>
-                <p class="text-sm text-neutral-500 leading-relaxed">
-                    Adjust text content, positioning, opacity, and timing. It's designed to adapt to your workflow, not
-                    interrupt it.
-                </p>
-            </div>
-            <div class="space-y-2">
-                <h3 class="text-lg font-semibold text-white">Honest</h3>
-                <p class="text-sm text-neutral-500 leading-relaxed">
-                    Local-first. Your mindset profiles stay on your disk. Visuals are generated on demand.
+
+            <div class="mt-8 flex flex-col items-center justify-center gap-2 text-base">
+                <p class="text-gray-500 mt-3 font-light">
+                    Runs locally. No accounts. No tracking. Easy to remove.
                 </p>
             </div>
         </div>
 
-        <!-- Split Section: Philosophy -->
+        <!-- Philosophy / Features (Moved to bottom) -->
         <div
-            class="grid md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 mb-6 border-b border-neutral-900/50 pb-6 animate-fade-in-up delay-400 items-center text-center">
-
-            <!-- Left: The Premise -->
-            <div class="space-y-6">
-                <h2 class="text-xl font-bold text-white font-orbitron">The Premise</h2>
-                <div class="space-y-4 text-gray-500 text-sm md:text-base leading-relaxed font-light mx-auto max-w-sm">
-                    <p>It's not a productivity app.</p>
-                    <p>It doesn’t track you, notify you, or demand attention.</p>
-                    <p>It quietly changes your environment once a day — <br class="hidden md:block">
-                        so your intent stays visible without becoming noise.</p>
-                </div>
+            class="grid gap-8 md:gap-12 text-left sm:grid-cols-3 pb-8 md:pb-16 animate-fade-in-up delay-400 border-t border-neutral-900/50 pt-16 md:pt-24 max-w-5xl mx-auto opacity-60 hover:opacity-100 transition-opacity">
+            <div class="space-y-4">
+                <h3 class="text-2xl font-semibold text-white">Subtle</h3>
+                <p class="text-base text-neutral-500 leading-relaxed">
+                    Runs once per day. No notifications.
+                </p>
             </div>
-
-            <!-- Right: Flexibility -->
-            <div class="space-y-6">
-                <h2 class="text-xl font-bold text-white font-orbitron">Flexibility</h2>
-                <div class="p-6 bg-neutral-900/20 rounded-xl border border-neutral-800/50 mx-auto max-w-sm text-left">
-                    <p class="text-sm text-gray-500 mb-4 text-center">
-                        Everything is a text file. (Or use the CLI).
-                    </p>
-                    <ul class="space-y-2 text-gray-600 text-xs font-mono pl-4">
-                        <li>> text_position: "bottom_right"</li>
-                        <li>> opacity: 0.8</li>
-                        <li>> font: "Inter"</li>
-                        <li>> prompt: "Be concise."</li>
-                    </ul>
-                </div>
-
+            <div class="space-y-4">
+                <h3 class="text-2xl font-semibold text-white">Configurable</h3>
+                <p class="text-base text-neutral-500 leading-relaxed">
+                    Text, opacity, and timing are adjustable.
+                </p>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-2xl font-semibold text-white">Experiment</h3>
+                <p class="text-base text-neutral-500 leading-relaxed">
+                    This is an experiment in ambient computing, not a productivity system.
+                </p>
             </div>
         </div>
+
+
 
 
 
@@ -357,45 +375,63 @@
                 Other Ideas
             </h2>
             <p class="text-muted max-w-2xl mx-auto text-lg font-light">
-                Things I'm thinking about adding.
+                Uncommitted ideas. May never ship.
             </p>
 
             <div class="grid gap-6 sm:grid-cols-2 text-left max-w-4xl mx-auto">
                 <div
-                    class="p-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-accent/40 transition-colors">
-                    <h3 class="text-xl font-semibold mb-2 text-blue-400">📜 Daily Briefing</h3>
-                    <p class="text-sm text-gray-400">Generating a <code
-                            class="bg-neutral-800 px-1 py-0.5 rounded text-xs">TODAY.md</code> file on the desktop.</p>
+                    class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-accent/40 transition-colors">
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-400">📜 Daily Briefing</h3>
+                    <p class="text-base text-gray-400">Generating a <code
+                            class="bg-neutral-800 px-1 py-0.5 rounded text-sm">TODAY.md</code> file on the
+                        desktop.</p>
                 </div>
-                <!-- ... other items removed for brevity / simplicity ... -->
+
                 <div
-                    class="p-6 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-orange-500/40 transition-colors">
-                    <h3 class="text-xl font-semibold mb-2 text-orange-400">🎵 Sonic Mode</h3>
-                    <p class="text-sm text-gray-400">Ambient soundscapes matched to the profile.</p>
+                    class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-orange-500/40 transition-colors">
+                    <h3 class="text-2xl font-semibold mb-3 text-orange-400">🎵 Sonic Mode</h3>
+                    <p class="text-base text-gray-400">Ambient soundscapes matched to the profile.</p>
+                </div>
+
+                <div
+                    class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-purple-500/40 transition-colors">
+                    <h3 class="text-2xl font-semibold mb-3 text-purple-400">📚 Extended Context</h3>
+                    <p class="text-base text-gray-400">Quotes from books, articles, and famous figures.</p>
                 </div>
             </div>
 
-            <div class="mt-12 mb-4 space-y-2 text-sm md:text-base text-gray-400">
+            <div class="mt-12 mb-4 space-y-2 text-base md:text-lg text-gray-400">
                 <p>
                     If you have ideas, <a href="https://github.com/nicemit/gen-wal/issues" target="_blank"
-                        class="text-accent hover:underline decoration-dashed underline-offset-4">open an issue</a>.
+                        class="text-accent hover:underline decoration-dashed underline-offset-4">open an
+                        issue</a>.
                 </p>
             </div>
         </div>
 
         <!-- Footer -->
-        <footer class="pb-12 space-y-6 text-sm text-zinc-600 animate-fade-in-up delay-500">
+        <footer class="pb-12 space-y-8 text-base text-zinc-600 animate-fade-in-up delay-500">
             <div class="flex flex-col items-center gap-4">
                 <p>
-                    Open Source. <span class="text-zinc-400">MIT License</span>. Free to use, modify, and make it your
+                    Open Source. <span class="text-zinc-400">MIT License</span>. Free to use, modify, and make
+                    it your
                     own.
                 </p>
-                <p class="max-w-md mx-auto text-center leading-relaxed">
-                    This is a small but impactful project.<br>
-                    <span class="text-zinc-400">Contributions are welcome!</span> Whether it's new profiles, providers,
-                    or
-                    code.
+                This is a small but impactful project.<br>
+                <span class="text-zinc-400">Contributions are welcome!</span> Whether it's new profiles,
+                providers,
+                or
+                code.
                 </p>
+                <div class="space-y-2 text-center pt-4">
+                    <p class="text-xs text-zinc-500 max-w-xl mx-auto">
+                        Built as an experiment in ambient influence — inspired by the idea that environment shapes
+                        behavior more reliably than willpower.
+                    </p>
+                    <p class="text-xs text-zinc-600">
+                        Slow, deliberate evolution.
+                    </p>
+                </div>
                 <div class="flex gap-6 pt-2">
                     <a href="https://github.com/nicemit/gen-wal" target="_blank"
                         class="hover:text-zinc-400 border-b border-transparent hover:border-zinc-500 transition-colors">GitHub

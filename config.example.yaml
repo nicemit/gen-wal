@@ -22,7 +22,14 @@
 # and 'prompts.image_description' automatically.
 # -----------------------------------------------------------------------------
 profile_provider: "local_file"
-profile_path: "profiles/examples/stoic_profile.md" # Path to your motivation profile
+# Single Profile:
+# profile_path: "profiles/examples/stoic_profile.md"
+#
+# OR Random Rotation (Pick one daily):
+profile_path: 
+  - "profiles/examples/stoic_profile.md"
+  - "profiles/examples/founder_profile.md"
+  - "profiles/examples/war_of_art_profile.md"
 
 # -----------------------------------------------------------------------------
 # 2. Quote Provider
@@ -162,3 +169,13 @@ wallpaper_settings:
   apply_wallpaper: true
   save_path: "~/.cache/gen-wal/archive" # Directory = Archive Mode (New file daily)
   # save_path: "~/.cache/gen-wal/current.jpg" # File = Overwrite Mode
+
+# -----------------------------------------------------------------------------
+# 11. Watermark Settings
+# -----------------------------------------------------------------------------
+watermark:
+  enabled: true
+  position: "bottom_right" # Options: bottom_right, bottom_left, bottom_center, top_right, top_left, top_center
+  font_size: 25
+  opacity: 50 # 0-255 (Lower is more subtle, e.g. 30-50 for "barely visible")
+  # text:Override defaults to profile name

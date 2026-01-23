@@ -35,12 +35,10 @@ get_profile() { echo "$PROJECT_ROOT/$PROFILE_DIR/$1"; }
 
 # Explicitly selected profiles for demo
 ALL_PROFILES=(
-    "$(get_profile "stoic_profile.md")"
-    "$(get_profile "f1_racing_profile.md")"
-    "$(get_profile "atomic_habits_profile.md")"
-    "$(get_profile "harry_potter_profile.md")"
-    "$(get_profile "founder_profile.md")"
-    "$(get_profile "war_of_art_profile.md")"
+    "$(get_profile "stoic.md")"
+    "$(get_profile "deep_work.md")"
+    "$(get_profile "builder.md")"
+    "$(get_profile "zen.md")"
 )
 NUM_PROFILES=${#ALL_PROFILES[@]}
 

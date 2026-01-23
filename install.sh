@@ -80,11 +80,11 @@ log "🎨 Profile setup"
 read -r -p "Your name (default: User): " USER_NAME
 USER_NAME="${USER_NAME:-User}"
 
-echo "Choose your Mindset Profile:"
-echo "  1) Stoic   (Calm, Virtue, Resilience)"
-echo "  2) Founder (Speed, Focus, Building)"
-echo "  3) Savage  (Discipline, Pain, Victory)"
-echo "  4) Custom  (Start fresh)"
+echo "Choose your Mindset Source:"
+echo "  1) Stoic     (Meditations, Seneca)"
+echo "  2) Deep Work (Atomic Habits, War of Art)"
+echo "  3) Builder   (Hackers & Painters, Unix)"
+echo "  4) Zen       (Mindfulness, Tao)"
 read -r -p "Select [1-4] (default: 1): " FOCUS_CHOICE
 FOCUS_CHOICE="${FOCUS_CHOICE:-1}"
 
@@ -128,29 +128,20 @@ PROFILE_PATH="$PROJECT_DIR/profiles/user_profile.md"
 if [ ! -f "$PROFILE_PATH" ]; then
     case "$FOCUS_CHOICE" in
         2)
-            log "Applying Founder Profile..."
-            cp "$PROJECT_DIR/profiles/examples/founder_profile.md" "$PROFILE_PATH"
+            log "Applying Deep Work Profile..."
+            cp "$PROJECT_DIR/profiles/examples/deep_work.md" "$PROFILE_PATH"
             ;;
         3)
-            log "Applying Savage Profile..."
-            cp "$PROJECT_DIR/profiles/examples/gym_profile.md" "$PROFILE_PATH"
+            log "Applying Builder Profile..."
+            cp "$PROJECT_DIR/profiles/examples/builder.md" "$PROFILE_PATH"
             ;;
         4)
-            log "Creating Custom Profile..."
-            cat > "$PROFILE_PATH" <<EOF
-# $USER_NAME's Gen-Wal Profile
-
-## Focus
-Global Domination
-
-## Themes
-- Consistency
-- Growth
-EOF
+            log "Applying Zen Profile..."
+            cp "$PROJECT_DIR/profiles/examples/zen.md" "$PROFILE_PATH"
             ;;
         *)
             log "Applying Stoic Profile..."
-            cp "$PROJECT_DIR/profiles/examples/stoic_profile.md" "$PROFILE_PATH"
+            cp "$PROJECT_DIR/profiles/examples/stoic.md" "$PROFILE_PATH"
             ;;
     esac
 fi
@@ -162,7 +153,15 @@ CONFIG_PATH="$PROJECT_DIR/config.yaml"
 if [ ! -f "$CONFIG_PATH" ]; then
 cat > "$CONFIG_PATH" <<EOF
 profile_provider: local_file
-profile_path: profiles/user_profile.md
+# Default: Use the selected user_profile.md
+# profile_path: profiles/user_profile.md
+
+# Option: Random Rotation (Reference Frames)
+profile_path:
+  - "profiles/examples/stoic.md"
+  - "profiles/examples/deep_work.md"
+  - "profiles/examples/builder.md"
+  - "profiles/examples/zen.md"
 
 quote_provider: pollinations:text
 image_provider: pollinations:image

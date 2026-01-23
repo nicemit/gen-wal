@@ -18,11 +18,11 @@ Gen-Wal profiles support "Smart Prompts" using YAML Frontmatter. This creates se
 **Example `my_profile.md`:**
 ```markdown
 ---
-quote_prompt_template: "Act as a Drill Sergeant. SCREAM the quote. Max 15 words."
-image_prompt_template: "Generate a prompt for a gritty, dark industrial gym. Iron, sweat, shadows. Max 15 words."
+quote_prompt_template: "Act as a Performance Coach. Generate a directive statement about discipline. Max 10 words."
+image_prompt_template: "Generate a visual description for a minimalist gym. Iron, shadows. Max 10 words."
 ---
-# Iron Gym
-I value strength...
+# Deep Work
+Focus is the new IQ...
 ```
 
 To switch to this profile, simply run:
@@ -43,7 +43,7 @@ Gen-Wal uses a powerful **path-based** configuration system. You can point any p
 
 | Key | Description | Default |
 | :--- | :--- | :--- |
-| `profile_path` | Path to your personal motivation profile (Markdown). | `profiles/amit_motivation_profile.md` |
+| `profile_path` | Path to your personal profile or reference frame. | `profiles/examples/stoic.md` |
 | `quote_provider` | Options: `huggingface:text`, `llm:profile`, `pollinations:text`, `csv:profile`. | `zenquotes` |
 | `image_provider` | Options: `huggingface:image`, `pollinations:image`, `local_dir:profile`. | `pollinations:image` |
 | `image_prompt_provider` | Options: `huggingface:text`, `pollinations:text`, `llm:profile`. | `pollinations:text` |
@@ -188,7 +188,7 @@ You can temporarily override configuration settings via command-line arguments:
 
 | Argument | Description | Example |
 | :--- | :--- | :--- |
-| `--profile` | Use a different profile file for this run. | `python3 main.py --profile profiles/examples/monk_profile.md` |
+| `--profile` | Use a different profile file for this run. | `python3 main.py --profile profiles/examples/deep_work.md` |
 | `--text-pos` | Override text positioning. | `python3 main.py --text-pos center` |
 | `--config` | Use a specific config file. | `python3 main.py --config my_custom_config.yaml` |
 | `--watermark` / `--no-watermark` | Enable or disable watermark. | `python3 main.py --no-watermark` |

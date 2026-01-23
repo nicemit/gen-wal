@@ -23,13 +23,14 @@
 # -----------------------------------------------------------------------------
 profile_provider: "local_file"
 # Single Profile:
-# profile_path: "profiles/examples/stoic_profile.md"
+# profile_path: "profiles/examples/stoic.md"
 #
 # OR Random Rotation (Pick one daily):
 profile_path: 
-  - "profiles/examples/stoic_profile.md"
-  - "profiles/examples/founder_profile.md"
-  - "profiles/examples/war_of_art_profile.md"
+  - "profiles/examples/stoic.md"
+  - "profiles/examples/deep_work.md"
+  - "profiles/examples/builder.md"
+  - "profiles/examples/zen.md"
 
 # -----------------------------------------------------------------------------
 # 2. Quote Provider

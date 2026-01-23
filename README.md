@@ -73,21 +73,25 @@ watermark:
 
 # Randomly rotate between mentors/mindsets
 profile_path: 
-  - "profiles/examples/stoic_profile.md"
-  - "profiles/examples/f1_racing_profile.md"
-  - "profiles/examples/war_of_art_profile.md"
+  - "profiles/examples/stoic.md"
+  - "profiles/examples/deep_work.md"
+  - "profiles/examples/builder.md"
+  - "profiles/examples/zen.md"
 ```
 
 ### Profiles
 
-profiles/examples/stoic_profile.md
+profiles/examples/stoic.md
 ```
 
-### Digital Mentors
-Gen-Wal comes with a library of profiles to quietly influence your day:
-- **Mindsets**: Stoic, Founder, Monk, Artist, Writer
-- **Books**: Atomic Habits, The War of Art, Man's Search for Meaning, Meditations, Harry Potter
-- **Sports**: F1 Racing, Cricket, Football
+### Reference Frames
+
+Gen-Wal comes with a curated set of **Mindset Sources** to quietly influence your day. These are not just quotes—they are mental reference frames.
+
+- **Stoic** (Meditations, Letters from a Stoic) -> *Restraint, impermanence, control.*
+- **Deep Work** (Atomic Habits, War of Art) -> *Systems, focus, resistance.*
+- **Builder** (Hackers & Painters, Unix Philosophy) -> *Craft, simplicity, iteration.*
+- **Zen** (Zen Mind, Tao Te Ching) -> *Presence, patience, non-forcing.*
 
 You can point `profile_path` to a list of these to switch between them daily.
 

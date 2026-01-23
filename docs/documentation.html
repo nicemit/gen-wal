@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gen-Wal Docs: Configuration</title>
+    <link rel="icon" type="image/svg+xml" href="logo.svg?v=1">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Courier New', 'Courier', 'monospace'],
+                        orbitron: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        bg: '#0a0a0a',
+                        card: '#171717',
+                        accent: '#3b82f6',
+                        text: '#e5e5e5',
+                        muted: '#888888',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Tailwind Typography Plugin Simulation (Custom Styles) -->
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+        }
+
+        .prose h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .prose h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: #e5e5e5;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #a3a3a3;
+        }
+
+        .prose p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+            color: #d4d4d4;
+        }
+
+        .prose code {
+            background: #262626;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            color: #60a5fa;
+            font-size: 0.9em;
+        }
+
+        .prose pre {
+            background: #171717;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid #333;
+        }
+
+        .prose pre code {
+            background: transparent;
+            padding: 0;
+            color: #e5e5e5;
+            font-size: 0.9rem;
+        }
+
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .prose th {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #444;
+            color: #a3a3a3;
+        }
+
+        .prose td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #262626;
+            color: #d4d4d4;
+        }
+
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #60a5fa;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-accent selection:text-white">
+
+    <!-- Nav -->
+    <nav class="max-w-4xl mx-auto p-8 flex justify-between items-center">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <img src="images/logo.png?v=8" alt="Logo"
+                class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity">
+            <span
+                class="font-orbitron font-bold text-lg text-white group-hover:text-accent transition-colors">Gen-Wal</span>
+        </a>
+        <a href="https://github.com/nicemit/gen-wal"
+            class="text-sm text-muted hover:text-white transition-colors">GitHub</a>
+    </nav>
+
+    <!-- Content -->
+    <main class="max-w-4xl mx-auto px-8 pb-24 prose">
+        <h1>Configuration Guide</h1>
+
+        <p>This guide covers how to customize Gen-Wal to fit your environment.</p>
+
+        <h2>🛠️ Quick Edits</h2>
+        <p>Use the built-in CLI to edit your configuration safely:</p>
+        <pre><code>genwal config</code></pre>
+
+        <h2>🧠 Reference Frames (Profiles)</h2>
+        <p>Gen-Wal profiles support "Smart Prompts" using YAML Frontmatter. This creates self-contained "Mindset Packs"
+            that define specific personas without needing global config.</p>
+
+        <h3>Example: my_focus.md</h3>
+        <pre><code>---
+quote_prompt_template: "Act as a Drill Sergeant. SCREAM the quote. Max 15 words."
+image_prompt_template: "Generate a prompt for a gritty, dark industrial gym. Iron, shadows."
+---
+# Iron Mode
+Strength, Pain, Victory.</code></pre>
+
+        <p>To switch to this profile:</p>
+        <pre><code>genwal profile use my_focus</code></pre>
+
+        <h2>Global Settings (config.yaml)</h2>
+        <p>Gen-Wal uses a path-based configuration system.</p>
+        <ul>
+            <li><code>quote_provider: "llm:ollama"</code> -> Uses config from <code>llm</code> -> <code>ollama</code>.
+            </li>
+            <li><code>quote_provider: "csv:work"</code> -> Uses config from <code>csv</code> -> <code>work</code>.</li>
+        </ul>
+
+        <h3>Core Settings</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>profile_path</code></td>
+                    <td>Path to your personal profile or list of profiles.</td>
+                    <td><code>profiles/examples/stoic.md</code></td>
+                </tr>
+                <tr>
+                    <td><code>quote_provider</code></td>
+                    <td>Source for text generation.</td>
+                    <td><code>zenquotes</code></td>
+                </tr>
+                <tr>
+                    <td><code>image_provider</code></td>
+                    <td>Source for background image.</td>
+                    <td><code>pollinations:image</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Quote Providers</h2>
+
+        <h3>LLM (Local/Cloud)</h3>
+        <pre><code>quote_provider: "llm:ollama"
+
+llm:
+  ollama:
+    base_url: "http://localhost:11434/v1" 
+    api_key: "ollama" 
+    model: "llama3.2"</code></pre>
+
+        <h3>Hugging Face</h3>
+        <pre><code>quote_provider: "huggingface:text"
+huggingface:
+  api_key: "hf_YOUR_TOKEN"</code></pre>
+
+        <h2>Image Providers</h2>
+        <p><strong>Pollinations.ai</strong> (Free, No Auth)</p>
+        <pre><code>image_provider: "pollinations"
+pollinations:
+  model: "flux" 
+  nologo: true</code></pre>
+
+        <h2>Watermark</h2>
+        <p>Overlay a subtle text watermark on the wallpaper.</p>
+        <pre><code>watermark:
+  enabled: true
+  text: "My Custom Watermark" # Optional
+  position: "bottom_right"
+  font_size: 25
+  opacity: 150</code></pre>
+
+        <h2>CLI Overrides</h2>
+        <p>Temporarily override settings at runtime:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Argument</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>--profile</code></td>
+                    <td>Use a specific profile file.</td>
+                </tr>
+                <tr>
+                    <td><code>--text-pos</code></td>
+                    <td>Override text position.</td>
+                </tr>
+                <tr>
+                    <td><code>--no-watermark</code></td>
+                    <td>Disable watermark for this run.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </main>
+
+    <footer class="text-center py-12 border-t border-neutral-900 mx-auto max-w-4xl text-neutral-600">
+        <p>Updated for Gen-Wal v1.0</p>
+    </footer>
+
+</body>
+
+</html>

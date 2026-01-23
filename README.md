@@ -138,6 +138,7 @@ cd ~/.gen-wal && ./uninstall.sh
  - **Focus Window**: Toggle the service for a specific daily period (e.g., 4-6 PM) to transform the desktop into a deep work environment.
  - **Extended Context**: Dynamically generate quotes from a wider range of books, articles, and specific personalities.
  - **Daily Task Intent**: Allow the user to input a specific focus for the day, generating wallpapers that quietly reinforce that single task.
+ - **Profile Marketplace**: A community hub to share, vote on, and download new reference frames directly from the CLI.
 
  
  ------------------------------------------------------------------------

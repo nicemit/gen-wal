@@ -183,8 +183,8 @@
                     <div
                         class="pt-8 max-w-lg mx-auto lg:mx-0 text-neutral-500 font-light text-lg leading-relaxed space-y-4">
                         <p>
-                            Runs once a day. Generates a new desktop wallpaper. Uses minimal text and visual context.
-                            Designed to be subtle and ignorable.
+                            A small experiment born from curiosity. Runs once a day to generate a new desktop wallpaper.
+                            Uses minimal text and visual context. Designed to be subtle and ignorable.
                         </p>
                     </div>
                 </header>
@@ -252,9 +252,10 @@
                 Profiles
             </h2>
             <p class="text-center text-neutral-500 max-w-lg mx-auto mb-16 font-light text-lg">
-                Text files that define the theme.
+                Text files that define the theme. <span class="text-neutral-400 font-normal">Create your own</span> to
+                match your specific goals.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
 
                 <!-- Card 1: Stoic -->
                 <div
@@ -302,6 +303,25 @@
                     </div>
                     <div
                         class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                    </div>
+                </div>
+
+                <!-- Card 4: Create Your Own -->
+                <div
+                    class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-dashed border-neutral-700 bg-neutral-900/50 hover:border-neutral-500 transition-colors cursor-default">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+                        <div
+                            class="w-12 h-12 mb-4 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-700 group-hover:text-white transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-neutral-400 mb-2 group-hover:text-white transition-colors">
+                            Create Your Own</h3>
+                        <p
+                            class="text-sm text-neutral-600 font-mono leading-relaxed group-hover:text-neutral-500 transition-colors">
+                            Define your own source.<br>Simply edit a text file.</p>
                     </div>
                 </div>
             </div>
@@ -376,25 +396,26 @@
                 Uncommitted ideas. May never ship.
             </p>
 
-            <div class="grid gap-6 sm:grid-cols-2 text-left max-w-4xl mx-auto">
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 text-left max-w-5xl mx-auto">
                 <div
                     class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-accent/40 transition-colors">
-                    <h3 class="text-2xl font-semibold mb-3 text-blue-400">📜 Daily Briefing</h3>
-                    <p class="text-base text-gray-400">Generating a <code
-                            class="bg-neutral-800 px-1 py-0.5 rounded text-sm">TODAY.md</code> file on the
-                        desktop.</p>
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-400">🕒 Focus Window</h3>
+                    <p class="text-base text-gray-400">Toggle a specific daily period (e.g., 4-6 PM) to transform the
+                        desktop into a deep work mode.</p>
                 </div>
 
                 <div
                     class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-orange-500/40 transition-colors">
-                    <h3 class="text-2xl font-semibold mb-3 text-orange-400">🎵 Sonic Mode</h3>
-                    <p class="text-base text-gray-400">Ambient soundscapes matched to the profile.</p>
+                    <h3 class="text-2xl font-semibold mb-3 text-orange-400">📚 Extended Context</h3>
+                    <p class="text-base text-gray-400">Dynamically generate quotes from a wider range of books,
+                        articles, and specific personalities.</p>
                 </div>
 
                 <div
                     class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-purple-500/40 transition-colors">
-                    <h3 class="text-2xl font-semibold mb-3 text-purple-400">📚 Extended Context</h3>
-                    <p class="text-base text-gray-400">Quotes from books, articles, and famous figures.</p>
+                    <h3 class="text-2xl font-semibold mb-3 text-purple-400">🎯 Daily Intent</h3>
+                    <p class="text-base text-gray-400">Input a single focus task for the day, and let the wallpaper
+                        quietly reinforce it.</p>
                 </div>
             </div>
 
@@ -408,7 +429,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="pb-12 space-y-8 text-base text-zinc-600 animate-fade-in-up delay-500">
+        <footer class="pb-12 space-y-8 text-lg text-zinc-600 animate-fade-in-up delay-500">
             <div class="flex flex-col items-center gap-4">
                 <p>
                     Open Source. <span class="text-zinc-400">MIT License</span>. Free to use, modify, and make
@@ -422,11 +443,11 @@
                 code.
                 </p>
                 <div class="space-y-2 text-center pt-4">
-                    <p class="text-xs text-zinc-500 max-w-xl mx-auto">
+                    <p class="text-sm text-zinc-500 max-w-xl mx-auto">
                         Built as an experiment in ambient influence — inspired by the idea that environment shapes
                         behavior more reliably than willpower.
                     </p>
-                    <p class="text-xs text-zinc-600">
+                    <p class="text-sm text-zinc-600">
                         Slow, deliberate evolution.
                     </p>
                 </div>

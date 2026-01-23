@@ -93,7 +93,19 @@ Gen-Wal comes with a curated set of **Mindset Sources** to quietly influence you
 - **Builder** (Hackers & Painters, Unix Philosophy) -> *Craft, simplicity, iteration.*
 - **Zen** (Zen Mind, Tao Te Ching) -> *Presence, patience, non-forcing.*
 
-You can point `profile_path` to a list of these to switch between them daily.
+### Create Your Own
+You are not limited to these. Create a new `my_focus.md` file in `profiles/` with your own prompts:
+
+```markdown
+---
+quote_prompt_template: "Act as a Drill Sergeant. SCREAM the quote. Max 15 words."
+image_prompt_template: "Generate a prompt for a gritty, dark industrial gym. Iron, sweat, shadows."
+---
+# Iron Mode
+Strength, Pain, Victory.
+```
+
+Then point your config to it.
 
 ------------------------------------------------------------------------
 
@@ -123,9 +135,10 @@ cd ~/.gen-wal && ./uninstall.sh
  
  ## Future Ideas
  
- - **Daily Briefing**: Generating a `TODAY.md` file on the desktop.
- - **Sonic Mode**: Ambient soundscapes matched to the profile.
- - **Extended Context**: Quotes from books, articles, and famous figures.
+ - **Focus Window**: Toggle the service for a specific daily period (e.g., 4-6 PM) to transform the desktop into a deep work environment.
+ - **Extended Context**: Dynamically generate quotes from a wider range of books, articles, and specific personalities.
+ - **Daily Task Intent**: Allow the user to input a specific focus for the day, generating wallpapers that quietly reinforce that single task.
+
  
  ------------------------------------------------------------------------
  

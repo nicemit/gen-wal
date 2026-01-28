@@ -41,3 +41,37 @@ def set_wallpaper(image_path):
     else:
         # Fallback (Future: Add feh/nitrogen support)
         print(f"Desktop '{desktop}' not fully supported yet. Wallpaper generated at: {image_path}")
+
+def list_profiles(profiles_dir):
+    """List available profile files."""
+    profiles = []
+    if os.path.exists(profiles_dir):
+        for root, _, files in os.walk(profiles_dir):
+            for file in files:
+                if file.endswith(".md"):
+                    # Create a relative path prompt name (e.g. examples/stoic)
+                    rel_path = os.path.relpath(os.path.join(root, file), profiles_dir)
+                    name = os.path.splitext(rel_path)[0]
+                    profiles.append(name)
+    return sorted(profiles)
+
+def update_config(config_path, key, value):
+    """Update a specific key in the config file."""
+    if not os.path.exists(config_path):
+        print(f"Error: Config not found at {config_path}")
+        return False
+
+    try:
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f) or {}
+        
+        # Handle nested keys if needed (simple for now)
+        config[key] = value
+        
+        with open(config_path, 'w') as f:
+            yaml.safe_dump(config, f, default_flow_style=False)
+            
+        return True
+    except Exception as e:
+        print(f"Error updating config: {e}")
+        return False

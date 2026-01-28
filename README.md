@@ -3,155 +3,180 @@
 ![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge&logo=github)
+A **personal experiment in ambient computing**.
 
-**A personal experiment in ambient computing.**
+Gen-Wal explores a simple question:
 
-| | | |
-|:---:|:---:|:---:|
-| <img src="docs/images/carousel/1.jpg" width="100%"> | <img src="docs/images/carousel/2.jpg" width="100%"> | <img src="docs/images/carousel/3.jpg" width="100%"> |
-| <img src="docs/images/carousel/4.jpg" width="100%"> | <img src="docs/images/carousel/5.jpg" width="100%"> | <img src="docs/images/carousel/6.jpg" width="100%"> |
+> What if the desktop itself could act as a passive environmental cue — instead of another app, notification, or dashboard?
 
-> I was curious whether the desktop itself could be part of a productivity system.
-> Specifically, whether passive environmental cues (like a wallpaper) work better than apps, notifications, or dashboards.
+---
 
-------------------------------------------------------------------------
+## What this is NOT
+
+Gen-Wal is **not**:
+- a productivity app
+- a motivational tool
+- a notification system
+- a dashboard or tracker
+
+There is nothing to click.
+Nothing to dismiss.
+Nothing to optimize.
+
+---
 
 ## The Experiment
 
-I spend a lot of time working on my machine. I realized that keeping goals in my head wasn't enough, but I didn't want another app to check.
+I spend a large portion of my day in front of my machine. Keeping goals in my head wasn’t enough, but I also didn’t want yet another app demanding attention.
 
-**Gen-Wal** is a background daemon that changes one thing a day. Nothing more. It generates a wallpaper based on a "profile" (a text file defining a mindset or goal).
+Gen-Wal changes **one visual element of the environment** once per day.
 
-It's not a product. It's just a script I wrote to see if changing my environment quietly could change my focus.
+Quietly.
 
-------------------------------------------------------------------------
+It uses a *profile* (a simple text file describing a mindset or focus) and generates a daily background that acts as a passive reference frame — something you see repeatedly without being interrupted.
+
+This is not meant to push behavior. It’s meant to **exist**.
+
+---
 
 ## What It Is
 
-A Python script that:
+Gen-Wal is a small local daemon written in Python that:
 
-1.  **Reads a text profile** (e.g., "Stoic", "Founder", "Creative").
-2.  **Generates a quote** using a local or cloud LLM.
-3.  **Generates an image** matching that quote.
-4.  **Updates your wallpaper** automatically.
+- Reads a text-based profile (e.g. Stoic, Builder, Zen)
+- Generates short text using a local or remote LLM
+- Optionally generates a matching image
+- Updates the desktop wallpaper automatically
 
-Use it if you want to. Modify it if you need to.
+You can use it, modify it, or ignore it.
 
-------------------------------------------------------------------------
+---
 
 ## Installation
 
-One-line install for Linux (GNOME/Unity/KDE):
+One-line install for Linux (GNOME / KDE / Unity):
 
 ```bash
 curl -sL https://gen-wal.laptopserver.dev/install | bash
 ```
 
 This sets up:
-- The `genwal` CLI tool (for easy config & overrides)
-- A systemd timer (daily update at 9:00 AM)
+
+- The `genwal` CLI (for easy config & overrides)
+- A systemd timer (daily update)
 - Default config in `~/.gen-wal/`
 
-------------------------------------------------------------------------
+---
 
 ## Configuration
 
-The system is fully configurable. You can tweak the text content, font size, position, and timing in `config.yaml`.
+Everything is configurable. You can control how visible or subtle the output is.
 
 ```yaml
-# config.yaml example
+text_position: "bottom_right"   # understated placement
+font_size: 45                   # smaller text
+image_provider: "pollinations:image"  # or "local_dir"
 
-text_position: "bottom_right" # understated placement
-font_size: 45                 # smaller text
-image_provider: "pollinations:image" # or "local_dir"
-
-# Watermark your profile name (e.g. "Stoic", "F1 Racing")
 watermark:
   enabled: true
   position: "bottom_right"
   opacity: 150
 
-# Randomly rotate between mentors/mindsets
-profile_path: 
+profile_path:
   - "profiles/examples/stoic.md"
   - "profiles/examples/deep_work.md"
   - "profiles/examples/builder.md"
   - "profiles/examples/zen.md"
 ```
 
-### Profiles
+---
 
-profiles/examples/stoic.md
-```
+## Profiles (Reference Frames)
 
-### Reference Frames
+Profiles are not just quote collections — they define **mental reference frames**.
 
-Gen-Wal comes with a curated set of **Mindset Sources** to quietly influence your day. These are not just quotes—they are mental reference frames.
+Included examples:
 
-- **Stoic** (Meditations, Letters from a Stoic) -> *Restraint, impermanence, control.*
-- **Deep Work** (Atomic Habits, War of Art) -> *Systems, focus, resistance.*
-- **Builder** (Hackers & Painters, Unix Philosophy) -> *Craft, simplicity, iteration.*
-- **Zen** (Zen Mind, Tao Te Ching) -> *Presence, patience, non-forcing.*
+- **Stoic** — *Restraint, impermanence, control*  
+  *(Meditations, Letters from a Stoic)*
 
-### Create Your Own
-You are not limited to these. Create a new `my_focus.md` file in `profiles/` with your own prompts:
+- **Deep Work** — *Focus, systems, resistance*  
+  *(Deep Work, Atomic Habits, War of Art)*
+
+- **Builder** — *Craft, simplicity, iteration*  
+  *(Hackers & Painters, Unix philosophy)*
+
+- **Zen** — *Presence, patience, non-forcing*  
+  *(Zen Mind, Tao Te Ching)*
+
+---
+
+## Create Your Own Profile
+
+Profiles are plain Markdown files.
 
 ```markdown
 ---
-quote_prompt_template: "Act as a Drill Sergeant. SCREAM the quote. Max 15 words."
-image_prompt_template: "Generate a prompt for a gritty, dark industrial gym. Iron, sweat, shadows."
+quote_prompt_template: "Max 12 words. Calm, direct, non-preachy."
+image_prompt_template: "Muted, minimal, low-contrast background."
 ---
-# Iron Mode
-Strength, Pain, Victory.
+# Quiet Focus
+Presence over pressure.
 ```
 
-Then point your config to it.
+Point your config to it and that’s it.
 
-------------------------------------------------------------------------
+---
 
 ## CLI Usage
 
 ```bash
-genwal run             # Trigger a new wallpaper now
-genwal run --font-size 40 --text-pos center  # Override settings instantly
-genwal config          # Edit your settings
-genwal profile list    # See available profiles
-genwal profile use     # Switch your active profile
+genwal run                         # Generate now
+genwal run --font-size 40           # Override settings
+genwal config                      # Edit config
+genwal profile list                # List profiles
+genwal profile use                 # Switch profile
 ```
 
-------------------------------------------------------------------------
+---
 
-## Uninstallation
+## Uninstall
 
-To remove it completely:
+To remove everything:
 
 ```bash
 cd ~/.gen-wal && ./uninstall.sh
 ```
 
-------------------------------------------------------------------------
+---
 
-------------------------------------------------------------------------
- 
- ## Future Ideas
- 
- - **Focus Window**: Toggle the service for a specific daily period (e.g., 4-6 PM) to transform the desktop into a deep work environment.
- - **Extended Context**: Dynamically generate quotes from a wider range of books, articles, and specific personalities.
- - **Daily Task Intent**: Allow the user to input a specific focus for the day, generating wallpapers that quietly reinforce that single task.
- - **Profile Marketplace**: A community hub to share, vote on, and download new reference frames directly from the CLI.
+## Future Ideas
 
- 
- ------------------------------------------------------------------------
- 
- ## Developing
+- Time-bounded focus windows
+- Extended context from books/articles
+- Daily intent injection
+- Community profile sharing
 
-This is a personal project. If you want to hack on it:
+---
 
-1. Clone the repo
-2. `python3 -m venv venv && source venv/bin/activate`
-3. `pip install -r requirements.txt`
-4. `python3 main.py`
+## Developing
 
-License: MIT.
+This is a personal project.
 
-> If you find this experiment interesting, a star on GitHub helps others find it.
+```bash
+git clone https://github.com/nicemit/gen-wal
+cd gen-wal
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python3 main.py
+```
+
+---
+
+## License
+
+MIT
+
+If you find this experiment interesting, a GitHub star helps others discover it.
+

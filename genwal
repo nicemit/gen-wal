@@ -47,19 +47,61 @@ case "$1" in
              echo "Done. Check logs for progress: genwal logs"
         fi
         ;;
+    profile)
+        shift # remove 'profile'
+        SUBCOMMAND="$1"
+        shift # remove subcommand
+        
+        PYTHON_CMD="python3"
+        if [ -f "$INSTALL_DIR/venv/bin/python" ]; then
+           PYTHON_CMD="$INSTALL_DIR/venv/bin/python"
+        fi
+        
+        case "$SUBCOMMAND" in
+            list)
+                cd "$INSTALL_DIR" || exit 1
+                "$PYTHON_CMD" -c "from src.utils import list_profiles; import os; print('\n'.join(list_profiles('profiles')))"
+                ;;
+            use)
+                PROFILE_NAME="$1"
+                if [ -z "$PROFILE_NAME" ]; then
+                    echo "Usage: genwal profile use <name>"
+                    exit 1
+                fi
+                
+                # Try to find the file
+                PROFILE_PATH="profiles/$PROFILE_NAME.md"
+                
+                cd "$INSTALL_DIR" || exit 1
+                # Update config
+                "$PYTHON_CMD" -c "from src.utils import update_config; update_config('$CONFIG_FILE', 'profile_path', '$PROFILE_PATH')"
+                
+                if [ $? -eq 0 ]; then
+                    echo "✅ Switched to profile: $PROFILE_NAME"
+                else
+                    echo "❌ Failed to update config."
+                fi
+                ;;
+            *)
+                echo "Usage: genwal profile {list|use}"
+                ;;
+        esac
+        ;;
     status)
         systemctl --user status gen-wal.timer
         ;;
     help|*)
-        echo "Usage: genwal {config|logs|run|status}"
+        echo "Usage: genwal {config|logs|run|profile|status}"
         echo ""
-        echo "  config  - Edit configuration file"
-        echo "  logs    - View service logs"
-        echo "  run     - Trigger wallpaper generation (accepts --text-pos, --font-size)"
-        echo "  status  - Check schedule status"
+        echo "  config        - Edit configuration file"
+        echo "  logs          - View service logs"
+        echo "  run           - Trigger wallpaper generation"
+        echo "  profile list  - List available profiles"
+        echo "  profile use   - Switch to a different profile"
+        echo "  status        - Check schedule status"
         echo ""
         echo "Examples:"
         echo "  genwal run --text-pos center"
-        echo "  genwal run --font-size 40"
+        echo "  genwal profile use examples/builder"
         ;;
 esac

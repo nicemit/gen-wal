@@ -140,6 +140,8 @@
             color: #60a5fa;
         }
     </style>
+    <!-- Marked.js for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
 </head>
 
 <body class="antialiased selection:bg-accent selection:text-white">
@@ -157,124 +159,75 @@
     </nav>
 
     <!-- Content -->
-    <main class="max-w-4xl mx-auto px-8 pb-24 prose">
-        <h1>Configuration Guide</h1>
-
-        <p>This guide covers how to customize Gen-Wal to fit your environment.</p>
-
-        <h2>🛠️ Quick Edits</h2>
-        <p>Use the built-in CLI to edit your configuration safely:</p>
-        <pre><code>genwal config</code></pre>
-
-        <h2>🧠 Reference Frames (Profiles)</h2>
-        <p>Gen-Wal profiles support "Smart Prompts" using YAML Frontmatter. This creates self-contained "Mindset Packs"
-            that define specific personas without needing global config.</p>
-
-        <h3>Example: my_focus.md</h3>
-        <pre><code>---
-quote_prompt_template: "Act as a Drill Sergeant. SCREAM the quote. Max 15 words."
-image_prompt_template: "Generate a prompt for a gritty, dark industrial gym. Iron, shadows."
----
-# Iron Mode
-Strength, Pain, Victory.</code></pre>
-
-        <p>To switch to this profile:</p>
-        <pre><code>genwal profile use my_focus</code></pre>
-
-        <h2>Global Settings (config.yaml)</h2>
-        <p>Gen-Wal uses a path-based configuration system.</p>
-        <ul>
-            <li><code>quote_provider: "llm:ollama"</code> -> Uses config from <code>llm</code> -> <code>ollama</code>.
-            </li>
-            <li><code>quote_provider: "csv:work"</code> -> Uses config from <code>csv</code> -> <code>work</code>.</li>
-        </ul>
-
-        <h3>Core Settings</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Key</th>
-                    <th>Description</th>
-                    <th>Default</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>profile_path</code></td>
-                    <td>Path to your personal profile or list of profiles.</td>
-                    <td><code>profiles/examples/stoic.md</code></td>
-                </tr>
-                <tr>
-                    <td><code>quote_provider</code></td>
-                    <td>Source for text generation.</td>
-                    <td><code>zenquotes</code></td>
-                </tr>
-                <tr>
-                    <td><code>image_provider</code></td>
-                    <td>Source for background image.</td>
-                    <td><code>pollinations:image</code></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Quote Providers</h2>
-
-        <h3>LLM (Local/Cloud)</h3>
-        <pre><code>quote_provider: "llm:ollama"
-
-llm:
-  ollama:
-    base_url: "http://localhost:11434/v1" 
-    api_key: "ollama" 
-    model: "llama3.2"</code></pre>
-
-        <h3>Hugging Face</h3>
-        <pre><code>quote_provider: "huggingface:text"
-huggingface:
-  api_key: "hf_YOUR_TOKEN"</code></pre>
-
-        <h2>Image Providers</h2>
-        <p><strong>Pollinations.ai</strong> (Free, No Auth)</p>
-        <pre><code>image_provider: "pollinations"
-pollinations:
-  model: "flux" 
-  nologo: true</code></pre>
-
-        <h2>Watermark</h2>
-        <p>Overlay a subtle text watermark on the wallpaper.</p>
-        <pre><code>watermark:
-  enabled: true
-  text: "My Custom Watermark" # Optional
-  position: "bottom_right"
-  font_size: 25
-  opacity: 150</code></pre>
-
-        <h2>CLI Overrides</h2>
-        <p>Temporarily override settings at runtime:</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Argument</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>--profile</code></td>
-                    <td>Use a specific profile file.</td>
-                </tr>
-                <tr>
-                    <td><code>--text-pos</code></td>
-                    <td>Override text position.</td>
-                </tr>
-                <tr>
-                    <td><code>--no-watermark</code></td>
-                    <td>Disable watermark for this run.</td>
-                </tr>
-            </tbody>
-        </table>
-
+    <main id="content" class="max-w-4xl mx-auto px-8 pb-24 prose">
+        <div class="flex flex-col items-center justify-center py-24 space-y-4 animate-pulse">
+            <div class="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-muted font-mono text-sm">Loading documentation...</p>
+        </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentDiv = document.getElementById('content');
+
+            // Custom Renderer to add IDs to headings (supports {#custom-id})
+            const renderer = new marked.Renderer();
+            renderer.heading = function (text, level) {
+                // Ensure text is a string and safe
+                let safeText = String(text || '');
+                let id = '';
+
+                // Check for custom ID pattern {#my-id}
+                const idMatch = safeText.match(/\{#([^}]+)\}/);
+
+                if (idMatch) {
+                    id = idMatch[1];
+                    safeText = safeText.replace(idMatch[0], '').trim();
+                } else {
+                    // Fallback: Simple slug function
+                    id = safeText.toLowerCase().replace(/[^\w]+/g, '-').replace(/(^-|-$)/g, '');
+                }
+
+                return `<h${level} id="${id}">${safeText}</h${level}>`;
+            };
+
+            fetch('CONFIGURATION.md')
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to load documentation");
+                    return response.text();
+                })
+                .then(markdown => {
+                    // Parse with custom renderer
+                    contentDiv.innerHTML = marked.parse(markdown, { renderer: renderer });
+
+                    // Handle hash navigation after render
+                    if (window.location.hash) {
+                        // Small delay to ensure DOM update
+                        setTimeout(() => {
+                            try {
+                                const id = window.location.hash.substring(1);
+                                const element = document.getElementById(id);
+                                if (element) {
+                                    element.scrollIntoView({ behavior: 'smooth' });
+                                }
+                            } catch (e) {
+                                console.error("Scroll failed", e);
+                            }
+                        }, 100);
+                    }
+                })
+                .catch(err => {
+                    contentDiv.innerHTML = `
+                        <div class="text-center py-12 text-red-500">
+                            <h2 class="text-xl font-bold mb-2">Error Loading Docs</h2>
+                            <p class="font-mono text-sm">${err.message}</p>
+                            <p class="mt-4 text-muted text-xs">Please ensure CONFIGURATION.md exists.</p>
+                        </div>
+                    `;
+                    console.error(err);
+                });
+        });
+    </script>
 
     <footer class="text-center py-12 border-t border-neutral-900 mx-auto max-w-4xl text-neutral-600">
         <p>Updated for Gen-Wal v1.0</p>

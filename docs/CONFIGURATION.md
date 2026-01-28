@@ -10,12 +10,45 @@ genwal config
 
 This ensures you are editing the correct file for your installation.
 
+# Gen-Wal Configuration Guide
+
+## 🛠️ Quick Edits (Recommended)
+
+Use the built-in CLI to edit your configuration safely:
+
+```bash
+genwal config
+```
+
+This ensures you are editing the correct file for your installation.
+
+## How It Works
+
+Gen-Wal is a simple daemon that runs once a day. The process is fully automated:
+
+- **Read Profile:** Loads a text file describing the desired mindset (e.g., "Stoic", "Builder").
+- **Generate Text:** Uses an LLM (Local or Remote) to generate a short, punchy quote based on the profile.
+- **Generate Image:** Creates a matching background image (subtle, abstract) using an image provider.
+- **Set Wallpaper:** Composes the text and image, then updates your desktop background.
+
+## 🧠 Reference Frames (Profiles)
+
+Profiles are the core of Gen-Wal. They are not just collections of quotes; they define a **mental reference frame**. By changing the profile, you change the "flavor" of your environment.
+
+### Included Examples
+
+- **Stoic:** Restraint, control, impermanence.
+- **Builder:** Engineering, craft, iteration.
+- **Deep Work:** Focus, systems, resistance.
+- **Zen:** Presence, patience, non-forcing.
+
 # Configuration Reference
 
-## 🧠 Smart Profiles
+## 🛠️ Creating Your Own Profile {#customization}
 Gen-Wal profiles support "Smart Prompts" using YAML Frontmatter. This creates self-contained "Mindset Packs" that define specific personas without needing global config.
 
 **Example `my_profile.md`:**
+
 ```markdown
 ---
 quote_prompt_template: "Act as a Performance Coach. Generate a directive statement about discipline. Max 10 words."

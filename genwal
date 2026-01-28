@@ -62,6 +62,56 @@ case "$1" in
                 cd "$INSTALL_DIR" || exit 1
                 "$PYTHON_CMD" -c "from src.utils import list_profiles; import os; print('\n'.join(list_profiles('profiles')))"
                 ;;
+            edit)
+                PROFILE_NAME="$1"
+                if [ -z "$PROFILE_NAME" ]; then
+                    echo "Usage: genwal profile edit <name>"
+                    exit 1
+                fi
+                
+                # Normalize name (remove extension if user added it)
+                PROFILE_NAME="${PROFILE_NAME%.md}"
+                PROFILE_PATH="profiles/$PROFILE_NAME.md"
+                
+                # Check if it exists
+                if [ ! -f "$INSTALL_DIR/$PROFILE_PATH" ]; then
+                    echo "🆕 Creating new profile: $PROFILE_NAME"
+                    
+                    # Create directory if it doesn't exist (e.g. profiles/custom)
+                    mkdir -p "$(dirname "$INSTALL_DIR/$PROFILE_PATH")"
+                    
+                    # Write Template
+                    cat > "$INSTALL_DIR/$PROFILE_PATH" <<EOF
+---
+quote_prompt_template: "Act as a [PERSONA]. Generate a [STYLE] quote. Max 15 words."
+image_prompt_template: "Visualize a [STYLE] background. [COLORS]. Abstract."
+---
+# $PROFILE_NAME
+
+[Keywords or core philosophy here]
+EOF
+                fi
+                
+                # Open Editor
+                echo "📝 Opening editor..."
+                ${EDITOR:-nano} "$INSTALL_DIR/$PROFILE_PATH"
+                
+                # Ask to switch
+                echo ""
+                read -p "🔄 Switch to this profile now? [Y/n] " -n 1 -r
+                echo ""
+                if [[ $REPLY =~ ^[Yy]$ || -z $REPLY ]]; then
+                     cd "$INSTALL_DIR" || exit 1
+                    "$PYTHON_CMD" -c "from src.utils import update_config; update_config('$CONFIG_FILE', 'profile_path', '$PROFILE_PATH')"
+                    if [ $? -eq 0 ]; then
+                        echo "✅ Switched to profile: $PROFILE_NAME"
+                    else
+                         echo "❌ Failed to update config."
+                    fi
+                else
+                    echo "👌 Saved, but kept current profile."
+                fi
+                ;;
             use)
                 PROFILE_NAME="$1"
                 if [ -z "$PROFILE_NAME" ]; then
@@ -98,6 +148,7 @@ case "$1" in
         echo "  run           - Trigger wallpaper generation"
         echo "  profile list  - List available profiles"
         echo "  profile use   - Switch to a different profile"
+        echo "  profile edit  - Create or edit a profile"
         echo "  status        - Check schedule status"
         echo ""
         echo "Examples:"

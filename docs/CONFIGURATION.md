@@ -60,7 +60,8 @@ Focus is the new IQ...
 
 To switch to this profile, simply run:
 ```bash
-genwal profile use my_profile
+genwal profile edit my_profile
+# Defines content, saves, and switches automatically
 ```
 
 ## Global Settings (`config.yaml`).

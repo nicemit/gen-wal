@@ -154,17 +154,18 @@ if [ ! -f "$CONFIG_PATH" ]; then
 cat > "$CONFIG_PATH" <<EOF
 profile_provider: local_file
 # Default: Use the selected user_profile.md
-# profile_path: profiles/user_profile.md
+profile_path: "profiles/user_profile.md"
 
 # Option: Random Rotation (Reference Frames)
-profile_path:
-  - "profiles/examples/stoic.md"
-  - "profiles/examples/deep_work.md"
-  - "profiles/examples/builder.md"
-  - "profiles/examples/zen.md"
+# profile_path:
+#   - "profiles/examples/stoic.md"
+#   - "profiles/examples/deep_work.md"
+#   - "profiles/examples/builder.md"
+#   - "profiles/examples/zen.md"
 
 quote_provider: pollinations:text
 image_provider: pollinations:image
+image_prompt_provider: pollinations:text
 
 resolution:
   width: 1920
@@ -236,115 +237,12 @@ systemctl --user enable --now gen-wal.timer
 CLI_DEST="$HOME/.local/bin"
 mkdir -p "$CLI_DEST"
 
-# Generate CLI script dynamically to capture correct INSTALL_DIR
-cat > "$CLI_DEST/genwal" <<EOF
-#!/bin/bash
+# Copy CLI script and update INSTALL_DIR to match actual install location
+log "Installing CLI tool..."
 
-# Gen-Wal CLI Helper (Generated on $(date))
-INSTALL_DIR="$PROJECT_DIR"
-CONFIG_FILE="\$INSTALL_DIR/config.yaml"
-
-if [ ! -f "\$CONFIG_FILE" ]; then
-    echo "❌ Config not found at \$CONFIG_FILE"
-    exit 1
-fi
-
-case "\$1" in
-    profile)
-        # Helper function to list profiles
-        list_profiles() {
-            echo "📂 Standard Profiles (in profiles/examples/):"
-            if [ -d "\$INSTALL_DIR/profiles/examples" ]; then
-                ls -1 "\$INSTALL_DIR/profiles/examples"/*.md 2>/dev/null | xargs -n 1 basename | sed 's/.md$//' | sed 's/^/  - /'
-            else
-                echo "  (No examples found)"
-            fi
-            
-            echo ""
-            echo "👤 User Profiles (in profiles/):"
-             if [ -d "\$INSTALL_DIR/profiles" ]; then
-                ls -1 "\$INSTALL_DIR/profiles"/*.md 2>/dev/null | grep -v "user_profile.md" | xargs -r -n 1 basename | sed 's/.md$//' | sed 's/^/  - /'
-            fi
-            echo "  - user_profile (Current)"
-        }
-
-        case "\$2" in
-            list|ls|"")
-                list_profiles
-                ;;
-                
-            use|set)
-                if [ -z "\$3" ]; then 
-                    echo "❌ Missing profile name."
-                    echo ""
-                    list_profiles
-                    echo ""
-                    echo "Usage: genwal profile use <name>"
-                    exit 1
-                fi
-                
-                NAME="\$3"
-                # Strip .md extension if user typed it
-                NAME=\${NAME%.md}
-                
-                # Search order: 
-                # 1. profiles/<name>.md (User created)
-                # 2. profiles/examples/<name>.md (Standard)
-                
-                TARGET=""
-                if [ -f "\$INSTALL_DIR/profiles/\$NAME.md" ]; then
-                    TARGET="profiles/\$NAME.md"
-                elif [ -f "\$INSTALL_DIR/profiles/examples/\$NAME.md" ]; then
-                    TARGET="profiles/examples/\$NAME.md"
-                fi
-                
-                if [ -z "\$TARGET" ]; then
-                    echo "❌ Profile '\$NAME' not found."
-                    exit 1
-                fi
-                
-                # Update config using venv python
-                "\$INSTALL_DIR/venv/bin/python" -c "import yaml; path='\$CONFIG_FILE'; data=yaml.safe_load(open(path)); data['profile_path']='\$TARGET'; yaml.dump(data, open(path, 'w'))"
-                
-                echo "✅ Active profile set to: \$NAME"
-                echo "💡 Run 'genwal run' to generate a wallpaper with this new persona."
-                ;;
-            *)
-                echo "Usage: genwal profile {list|use <name>}"
-                ;;
-        esac
-        ;;
-    config|edit)
-        echo "📝 Opening config file: \$CONFIG_FILE"
-        \${EDITOR:-nano} "\$CONFIG_FILE"
-        ;;
-    logs)
-        echo "📋 Tailing logs (Ctrl+C to exit)..."
-        journalctl --user -u gen-wal.service -f
-        ;;
-    run|now|start)
-        echo "🚀 Triggering run..."
-        systemctl --user start gen-wal.service
-        echo "Done. Check logs for progress."
-        ;;
-    status)
-        echo "🔍 Checking gen-wal timer status..."
-        systemctl --user status gen-wal.timer
-        ;;
-    help|*)
-        echo "Usage: genwal {run|config|profile|status|logs}"
-        echo ""
-        echo "Commands:"
-        echo "  run              - Trigger immediate wallpaper generation"
-        echo "  config           - Edit configuration file"
-        echo "  profile list     - List available mindset profiles"
-        echo "  profile use <id> - Switch to a different profile"
-        echo "  status           - Check schedule status"
-        echo "  logs             - View service logs"
-        echo ""
-        ;;
-esac
-EOF
+# We use sed to replace the default INSTALL_DIR with the one determined by this script ($PROJECT_DIR)
+# This handles cases where user installs to a different location or runs from source
+sed "s|INSTALL_DIR=\"\$HOME/.gen-wal\"|INSTALL_DIR=\"$PROJECT_DIR\"|g" "$PROJECT_DIR/genwal" > "$CLI_DEST/genwal"
 
 chmod +x "$CLI_DEST/genwal"
 log "Installed 'genwal' CLI to $CLI_DEST"

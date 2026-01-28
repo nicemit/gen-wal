@@ -135,7 +135,9 @@ genwal run                         # Generate now
 genwal run --font-size 40           # Override settings
 genwal config                      # Edit config
 genwal profile list                # List profiles
-genwal profile use                 # Switch profile
+genwal profile use <name>          # Switch profile
+genwal profile edit <name>         # Create/Edit profile (Auto-switch)
+genwal logs                        # View logs
 ```
 
 ---

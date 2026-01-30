@@ -52,6 +52,17 @@ You can use it, modify it, or ignore it.
 
 ---
 
+## Privacy & Local Execution
+
+**Gen-Wal runs as a local daemon.** It has no accounts, no analytics, and no tracking code.
+
+- **Default**: Uses free remote APIs (Pollinations.ai) for zero-setup generation.
+- **Local**: Can be configured to run **100% locally** using Ollama/LocalAI for text and local directories for images.
+
+You control where the data goes.
+
+---
+
 ## Installation
 
 One-line install for Linux (GNOME / KDE / Unity):

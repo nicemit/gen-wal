@@ -6,7 +6,7 @@ class TestFactoryLogic(unittest.TestCase):
         self.config = {
             'image_provider': 'pollinations:image',
             'pollinations': {
-                'text': {'model': 'openai'},
+                'text': {'model': 'gpt-5'},
                 'image': {'model': 'flux', 'seed': 42}
             },
             'llm': {

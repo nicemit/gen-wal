@@ -65,8 +65,15 @@ case "$1" in
             edit)
                 PROFILE_NAME="$1"
                 if [ -z "$PROFILE_NAME" ]; then
-                    echo "Usage: genwal profile edit <name>"
-                    exit 1
+                    cd "$INSTALL_DIR" || exit 1
+                    CURRENT_PROFILE=$("$PYTHON_CMD" -c 'from src.utils import load_config; print(load_config("'$CONFIG_FILE'").get("profile_path", ""))')
+                    if [ -z "$CURRENT_PROFILE" ] || [ "$CURRENT_PROFILE" = "None" ]; then
+                        echo "❌ No current profile found in config."
+                        exit 1
+                    fi
+                    echo "📝 Opening current profile: $CURRENT_PROFILE"
+                    ${EDITOR:-nano} "$INSTALL_DIR/$CURRENT_PROFILE"
+                    exit 0
                 fi
                 
                 # Normalize name (remove extension if user added it)
@@ -147,8 +154,8 @@ EOF
         echo "  logs          - View service logs"
         echo "  run           - Trigger wallpaper generation"
         echo "  profile list  - List available profiles"
-        echo "  profile use   - Switch to a different profile"
-        echo "  profile edit  - Create or edit a profile"
+        echo "  profile use   - Switch to a different profile (select)"
+        echo "  profile edit  - Edit current profile or create/edit a new one (e.g. edit <name>)"
         echo "  status        - Check schedule status"
         echo ""
         echo "Examples:"

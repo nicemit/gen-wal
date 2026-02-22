@@ -101,7 +101,7 @@ llm:
   openai_cloud:
     base_url: "https://api.openai.com/v1"
     api_key: "sk-..."
-    model: "gpt-4"
+    model: "gpt-5"
 ```
 
 ### Hugging Face

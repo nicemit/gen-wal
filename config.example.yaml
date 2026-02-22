@@ -89,7 +89,7 @@ pollinations:
     api_key: "YOUR_API_KEY_HERE" # Optional
     
   text:
-    model: "openai" # Options: openai, mistral, llama
+    model: "gpt-5" # Options: gpt-5, mistral, llama
     # api_key: "..." # Optional
 
 # Hugging Face Configuration

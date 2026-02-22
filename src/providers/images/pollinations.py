@@ -6,8 +6,15 @@ import urllib.parse
 from src.interfaces import ImageProvider
 
 class PollinationsImageProvider(ImageProvider):
-    def __init__(self, model: str = None, nologo: bool = True, api_key: str = None, seed: int = None):
-        self.model = model
+    """
+    Pollinations Image Provider Configuration:
+    - Endpoint: https://gen.pollinations.ai/image/{prompt}
+    - Prompt Strategy: URL-safe, seed passed as query parameter
+    - Retries: Up to 3 attempts with exponential backoff
+    - Models: default 'flux'
+    """
+    def __init__(self, model: str = "flux", nologo: bool = True, api_key: str = None, seed: int = None):
+        self.model = model or "flux"
         self.nologo = nologo
         self.api_key = api_key
         self.seed = seed
@@ -20,35 +27,40 @@ class PollinationsImageProvider(ImageProvider):
         
         seed = self.seed if self.seed is not None else random.randint(0, 1000000)
         
-        # Append seed to prompt to ensure uniqueness and bypass server-side caching
-        full_prompt = f"{prompt} --seed {seed}"
-        safe_prompt = urllib.parse.quote(full_prompt)
+        # Ensure prompt is URL-safe encoded, seed passed as query param (not in prompt)
+        safe_prompt = urllib.parse.quote(prompt)
         
-        if self.api_key:
-            url = f"https://gen.pollinations.ai/image/{safe_prompt}"
-        else:
-            url = f"https://image.pollinations.ai/prompt/{safe_prompt}"
+        url = f"https://gen.pollinations.ai/image/{safe_prompt}"
         
         params = {
             "width": width,
             "height": height,
             "seed": seed,
-            "nologo": str(self.nologo).lower()
+            "nologo": str(self.nologo).lower(),
+            "model": self.model
         }
-        
-        if self.model:
-            params["model"] = self.model
             
         headers = {}
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
-        
-        try:
-            response = requests.get(url, params=params, headers=headers, timeout=120)
-            response.raise_for_status()
-            with open(filename, 'wb') as f:
-                f.write(response.content)
-            return filename
-        except Exception as e:
-            print(f"Error fetching image: {e}")
-            return ""
+            
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                response = requests.get(url, params=params, headers=headers, timeout=120)
+                response.raise_for_status()
+                with open(filename, 'wb') as f:
+                    f.write(response.content)
+                return filename
+            except Exception as e:
+                msg = str(e)
+                if 'response' in locals() and hasattr(response, 'text'):
+                    msg += f" | Body: {response.text}"
+                elif hasattr(e, 'response') and e.response:
+                    msg += f" | Body: {e.response.text}"
+                print(f"Error fetching image (Attempt {attempt + 1}/{max_retries}): {msg}")
+                if attempt == max_retries - 1:
+                    return ""
+                time.sleep(2 ** attempt)
+
+        return ""

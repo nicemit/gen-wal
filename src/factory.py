@@ -60,7 +60,7 @@ def get_quote_provider(config):
              specific_config = specific_config.get('text', {})
 
         return PollinationsQuoteProvider(
-            model=specific_config.get('model', 'openai'),
+            model=specific_config.get('model', 'gpt-5'),
             api_key=specific_config.get('api_key'),
             prompt_template=specific_config.get('prompt_template') or config.get('prompts', {}).get('quote'),
             request_params=specific_config.get('request_params', {})
@@ -131,7 +131,7 @@ def get_text_provider(config, provider_name):
              specific_config = specific_config.get('text', {})
 
         return PollinationsTextProvider(
-            model=specific_config.get('model', 'openai'),
+            model=specific_config.get('model', 'gpt-5'),
             api_key=specific_config.get('api_key')
         )
     elif base_name == 'huggingface':

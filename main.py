@@ -103,7 +103,7 @@ def main():
     # Extract Model Names
     quote_model = "Unknown"
     if "pollinations" in quote_provider_name:
-         quote_model = config.get('pollinations', {}).get('text', {}).get('model', 'openai')
+         quote_model = config.get('pollinations', {}).get('text', {}).get('model', 'gpt-5')
     elif "llm" in quote_provider_name:
          parts = quote_provider_name.split(':')
          sub = parts[1] if len(parts) > 1 else 'ollama'

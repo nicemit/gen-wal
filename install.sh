@@ -114,74 +114,27 @@ PYTHON_EXEC="$PROJECT_DIR/venv/bin/python"
 log "Using Python: $PYTHON_EXEC"
 
 # --------------------------------------------------
-# Directories
+# Directories (XDG Standard)
 # --------------------------------------------------
 SYSTEMD_DIR="$HOME/.config/systemd/user"
-CACHE_DIR="$HOME/.cache/gen-wal"
+mkdir -p "$SYSTEMD_DIR"
 
-mkdir -p "$SYSTEMD_DIR" "$CACHE_DIR"
-
-# --------------------------------------------------
-# Profile Setup
-# --------------------------------------------------
-PROFILE_PATH="$PROJECT_DIR/profiles/user_profile.md"
-if [ ! -f "$PROFILE_PATH" ]; then
-    case "$FOCUS_CHOICE" in
-        2)
-            log "Applying Deep Work Profile..."
-            cp "$PROJECT_DIR/profiles/examples/deep_work.md" "$PROFILE_PATH"
-            ;;
-        3)
-            log "Applying Builder Profile..."
-            cp "$PROJECT_DIR/profiles/examples/builder.md" "$PROFILE_PATH"
-            ;;
-        4)
-            log "Applying Zen Profile..."
-            cp "$PROJECT_DIR/profiles/examples/zen.md" "$PROFILE_PATH"
-            ;;
-        *)
-            log "Applying Stoic Profile..."
-            cp "$PROJECT_DIR/profiles/examples/stoic.md" "$PROFILE_PATH"
-            ;;
-    esac
-fi
+# Ensure XDG directories via Python config helper
+log "Configuring XDG directories..."
+"$PYTHON_EXEC" -c "from src.config import ensure_xdg_dirs; ensure_xdg_dirs()"
 
 # --------------------------------------------------
-# Config
+# Default Core Config (Zero-API Key)
 # --------------------------------------------------
-CONFIG_PATH="$PROJECT_DIR/config.yaml"
-if [ ! -f "$CONFIG_PATH" ]; then
-cat > "$CONFIG_PATH" <<EOF
-profile_provider: local_file
-# Default: Use the selected user_profile.md
-profile_path: "profiles/user_profile.md"
-
-# Option: Random Rotation (Reference Frames)
-# profile_path:
-#   - "profiles/examples/stoic.md"
-#   - "profiles/examples/deep_work.md"
-#   - "profiles/examples/builder.md"
-#   - "profiles/examples/zen.md"
-
-quote_provider: pollinations:text
-image_provider: pollinations:image
-image_prompt_provider: pollinations:text
-
-resolution:
-  width: 1920
-  height: 1080
-
-watermark:
-  enabled: true
-  position: "bottom_right"
-  font_size: 25
-  opacity: 180
-
-wallpaper_settings:
-  apply_wallpaper: true
-  save_path: "$CACHE_DIR/current_wallpaper.jpg"
-EOF
-fi
+log "Setting default local-first configuration..."
+"$PYTHON_EXEC" -c "from src.config import update_config
+update_config('palette_provider', 'system_theme')
+update_config('image_provider', 'gradient')
+update_config('quote_provider', 'csv')
+update_config('theme', 'minimal')
+update_config('layout', 'minimal')
+update_config('seed', 'auto')
+update_config('resolution', {'width': 1920, 'height': 1080})"
 
 # --------------------------------------------------
 # Systemd Service
@@ -197,7 +150,7 @@ Wants=network-online.target
 [Service]
 Type=oneshot
 WorkingDirectory=$PROJECT_DIR
-ExecStart=$PYTHON_EXEC main.py
+ExecStart=$PYTHON_EXEC src/cli.py run
 Environment=DISPLAY=:0
 Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
 
@@ -254,8 +207,8 @@ fi
 
 log "Installation Complete! 🚀"
 echo ""
-log "   - Config: $PROJECT_DIR/config.yaml"
-log "   - Profile: $PROFILE_PATH"
+log "   - Config: ~/.config/genwal/config.yaml"
+log "   - Themes: ~/.local/share/genwal/themes/"
 log "   - Next run: Tomorrow at $RUN_AT"
 echo ""
 log "🔥 NEW: Use the CLI to manage everything!"

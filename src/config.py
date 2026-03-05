@@ -1,10 +1,10 @@
 import os
-import yaml
+import json
 
 # XDG Paths
 XDG_CONFIG_HOME = os.environ.get('XDG_CONFIG_HOME', os.path.expanduser('~/.config'))
 CONFIG_DIR = os.path.join(XDG_CONFIG_HOME, 'genwal')
-CONFIG_PATH = os.path.join(CONFIG_DIR, 'config.yaml')
+CONFIG_PATH = os.path.join(CONFIG_DIR, 'config.json')
 
 XDG_DATA_HOME = os.environ.get('XDG_DATA_HOME', os.path.expanduser('~/.local/share'))
 THEMES_DIR = os.path.join(XDG_DATA_HOME, 'genwal', 'themes')
@@ -31,12 +31,15 @@ def load_config():
             "quote_provider": "csv"
         }
     with open(CONFIG_PATH, 'r') as f:
-        return yaml.safe_load(f) or {}
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
 
 def update_config(key, value):
     ensure_xdg_dirs()
     config = load_config()
     config[key] = value
     with open(CONFIG_PATH, 'w') as f:
-        yaml.safe_dump(config, f, default_flow_style=False)
+        json.dump(config, f, indent=4)
     return True

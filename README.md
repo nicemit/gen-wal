@@ -43,9 +43,9 @@ This is not meant to push behavior. It’s meant to **exist**.
 
 Gen-Wal is a small local daemon written in Python that:
 
-- Reads a text-based profile (e.g. Stoic, Builder, Zen)
-- Generates short text using a local or remote LLM
-- Optionally generates a matching image
+- Reads a text-based theme (e.g. Stoic, Builder, Terminal)
+- Generates short text using a local or remote AI provider
+- Optionally generates a matching base image / gradient
 - Updates the desktop wallpaper automatically
 
 You can use it, modify it, or ignore it.
@@ -73,9 +73,9 @@ curl -sL https://gen-wal.laptopserver.dev/install | bash
 
 This sets up:
 
-- The `genwal` CLI (for easy config & overrides)
+- The `genwal` CLI (for config, themes, scheduling)
 - A systemd timer (daily update)
-- Default config in `~/.gen-wal/`
+- XDG-compliant data directories (`~/.config/genwal/`, `~/.local/share/genwal/themes/`)
 
 ---
 
@@ -84,27 +84,22 @@ This sets up:
 Everything is configurable. You can control how visible or subtle the output is.
 
 ```yaml
-text_position: "bottom_right"   # understated placement
-font_size: 45                   # smaller text
-image_provider: "pollinations:image"  # or "local_dir"
+theme: "stoic"
+layout: "bottom_right"
+seed: "auto"
 
-watermark:
-  enabled: true
-  position: "bottom_right"
-  opacity: 150
+quote_provider: "pollinations:text"
+image_provider: "pollinations:image"
+palette_provider: "system_theme"
 
-profile_path:
-  - "profiles/examples/stoic.md"
-  - "profiles/examples/deep_work.md"
-  - "profiles/examples/builder.md"
-  - "profiles/examples/zen.md"
+# Themes are sourced from ~/.local/share/genwal/themes/
 ```
 
 ---
 
-## Profiles (Reference Frames)
+## Themes (Mindsets)
 
-Profiles are not just quote collections — they define **mental reference frames**.
+Themes are not just aesthetic tweaks — they define **mental reference frames**.
 
 Included examples:
 
@@ -122,14 +117,15 @@ Included examples:
 
 ---
 
-## Create Your Own Profile
+## Create Your Own Theme
 
-Profiles are plain Markdown files.
+Themes are plain Markdown files stored in `~/.local/share/genwal/themes/`.
 
 ```markdown
 ---
-quote_prompt_template: "Max 12 words. Calm, direct, non-preachy."
-image_prompt_template: "Muted, minimal, low-contrast background."
+layout_hint: minimal
+palette_hint: dark abstract
+quote_style: short, calm, stoic
 ---
 # Quiet Focus
 Presence over pressure.
@@ -142,14 +138,17 @@ Point your config to it and that’s it.
 ## CLI Usage
 
 ```bash
-genwal run                         # Generate now
-genwal run --font-size 40           # Override settings
-genwal config                      # Edit config
-genwal profile list                # List profiles
-genwal profile use <name>          # Switch profile (select)
-genwal profile edit                # Edit current active profile
-genwal profile edit <name>         # Create/Edit profile (Auto-switch)
-genwal logs                        # View logs
+genwal run                         # Generate now in the background
+genwal preview                     # Generate to tmp, do not apply to OS
+genwal config show                 # View active configuration
+genwal config edit                 # Edit configuration
+genwal theme list                  # List available themes
+genwal theme use <name>            # Switch to active theme
+genwal theme edit <name>           # Create/Edit theme file
+genwal seed                        # Check the deterministic seed
+genwal history                     # View generated wallpaper history
+genwal schedule set 08:00          # Schedule a daily run
+genwal doctor                      # Check system health & directories
 ```
 
 ---

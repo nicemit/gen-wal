@@ -14,37 +14,33 @@
 #     my_gym_quotes: { file: "gym.csv" }
 #   quote_provider: "csv:my_gym_quotes"
 # -----------------------------------------------------------------------------
-# Choose where to load the user profile from.
-# Options: "local_file"
-#
-# TIP: Profiles can be "Smart Packs" containing custom prompt overrides!
-# Add a YAML frontmatter block to your profile.md to override 'prompts.quote'
-# and 'prompts.image_description' automatically.
 # -----------------------------------------------------------------------------
-profile_provider: "local_file"
-# Single Profile:
-# profile_path: "profiles/examples/stoic.md"
-#
-# OR Random Rotation (Pick one daily):
-profile_path: 
-  - "profiles/examples/stoic.md"
-  - "profiles/examples/deep_work.md"
-  - "profiles/examples/builder.md"
-  - "profiles/examples/zen.md"
+# 1. Theme and Core Config
+# -----------------------------------------------------------------------------
+# Choose which theme to use. Themes are markdown files in ~/.local/share/genwal/themes/
+# Defaults included: minimal, stoic, terminal.
+theme: "stoic"
+
+# Seed deterministic generation. "auto" uses the date and theme name. Provide an integer for fixed seed.
+seed: "auto"
 
 # -----------------------------------------------------------------------------
-# 2. Quote Provider
+# 2. Layout & Renderer
 # -----------------------------------------------------------------------------
-# Quote Provider options: "huggingface:text", "llm:ollama", "pollinations:text", "csv:work_quotes"
-# quote_provider: "llm:ollama"
+# Defines how the image is composed. Available: "minimal", "centered"
+layout: "minimal"
+
+# -----------------------------------------------------------------------------
+# 3. Providers
+# -----------------------------------------------------------------------------
+# Options: "pollinations:text", "csv"
 quote_provider: "pollinations:text"
 
-# -----------------------------------------------------------------------------
-# 3. Image Provider
-# -----------------------------------------------------------------------------
-# Choose how to generate backgrounds.
-# Options: "huggingface:image", "pollinations:image", "local_dir"
+# Options: "pollinations:image", "gradient"
 image_provider: "pollinations:image"
+
+# Options: "system_theme"
+palette_provider: "system_theme"
 
 # Image Prompt Provider (Optional)
 # Generates a dynamic visual description based on the quote + profile.
@@ -111,57 +107,23 @@ resolution:
   height: 1080
 
 # -----------------------------------------------------------------------------
-# 7. Text Rendering
-# -----------------------------------------------------------------------------
-# text_position Options: 
-#   center, top_left, top_right, bottom_left, bottom_right, 
-#   top_center, bottom_center, left_center, right_center
-text_position: "bottom_right"
-
-text_padding: 100 # Distance from screen edges in pixels
-font_size: 60     # Size of the quote text
-
-# -----------------------------------------------------------------------------
-# 8. Local & Custom Data Sources
+# 5. Local & Custom Data Sources
 # -----------------------------------------------------------------------------
 
-# CSV Quote Provider (Access via 'quote_provider: "csv"')
+# CSV Quote Provider
 csv:
-  # Default
-  file: "my_quotes.csv"
-  
-  # Custom Profile Example
-  # work_quotes:
-  #   file: "work.csv" # Access via "csv:work_quotes"
-
-# Local Directory Image Provider (Access via 'image_provider: "local_dir"')
-local_dir:
-  # Default
-  path: "/home/user/Pictures/Wallpapers"
-  
-  # Custom Profile Example
-  # nature_shots:
-  #   path: "/home/user/Photos/Nature" # Access via "local_dir:nature_shots"
+  file: "~/.local/share/genwal/quotes.csv"
 
 
 # -----------------------------------------------------------------------------
-# 9. Prompt Customization (Externalized Logic)
+# 6. Prompt Customization
 # -----------------------------------------------------------------------------
 prompts:
   quote: |
-    Generate a single, short, punchy, direct motivational quote based on the following profile (max 20 words).
-    Do not explain. Do not use quotes around the text. No greetings.
-    
-    PROFILE:
-    {profile_content}
-
+    Generate a single, short, punchy, direct motivational quote based on the following theme hints.
+  
   image_description: |
-    Generate a concise visual description for an image to accompany this motivational quote. 
-    Focus on abstract, nature, or technological themes. No text in the image. 
-    Max 15 words.
-    
-    QUOTE: {quote}
-    PROFILE: {profile_content}
+    Generate a concise visual description for an image to accompany this quote. Focus on abstract, nature, or technological themes. No text in the image.
 
 # -----------------------------------------------------------------------------
 # 10. Wallpaper Settings

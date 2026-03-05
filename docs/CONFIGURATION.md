@@ -5,226 +5,124 @@
 Use the built-in CLI to edit your configuration safely:
 
 ```bash
-genwal config
+genwal config edit
 ```
 
-This ensures you are editing the correct file for your installation.
-
-# Gen-Wal Configuration Guide
-
-## 🛠️ Quick Edits (Recommended)
-
-Use the built-in CLI to edit your configuration safely:
-
-```bash
-genwal config
-```
-
-This ensures you are editing the correct file for your installation.
+This ensures you are editing the correct file for your installation (located at `~/.config/genwal/config.yaml`).
 
 ## How It Works
 
 Gen-Wal is a simple daemon that runs once a day. The process is fully automated:
 
-- **Read Profile:** Loads a text file describing the desired mindset (e.g., "Stoic", "Builder").
-- **Generate Text:** Uses an LLM (Local or Remote) to generate a short, punchy quote based on the profile.
-- **Generate Image:** Creates a matching background image (subtle, abstract) using an image provider.
-- **Set Wallpaper:** Composes the text and image, then updates your desktop background.
+- **Read Theme:** Loads a markdown file describing the desired mindset (e.g., "stoic", "terminal").
+- **Generate Text:** Uses an AI provider to generate a short, punchy quote based on the theme.
+- **Generate Background:** Creates a matching background image (subtle, abstract) using an image provider.
+- **Set Wallpaper:** Composes the text and image using a layout, then updates your desktop background.
 
-## 🧠 Reference Frames (Profiles)
+## 🧠 Reference Frames (Themes)
 
-Profiles are the core of Gen-Wal. They are not just collections of quotes; they define a **mental reference frame**. By changing the profile, you change the "flavor" of your environment.
+Themes are the core of Gen-Wal. They are not just collections of quotes; they define a **mental reference frame**. By changing the theme, you change the "flavor" of your environment.
 
 ### Included Examples
 
-- **Stoic:** Restraint, control, impermanence.
-- **Builder:** Engineering, craft, iteration.
-- **Deep Work:** Focus, systems, resistance.
-- **Zen:** Presence, patience, non-forcing.
+- **minimal:** Clean, understated, and clear.
+- **stoic:** Restraint, control, impermanence.
+- **terminal:** Code, craft, iteration.
 
-# Configuration Reference
+## 🛠️ Creating Your Own Theme {#customization}
+Themes are plain Markdown files stored in `~/.local/share/genwal/themes/`. They provide hints to the generation engines.
 
-## 🛠️ Creating Your Own Profile {#customization}
-Gen-Wal profiles support "Smart Prompts" using YAML Frontmatter. This creates self-contained "Mindset Packs" that define specific personas without needing global config.
-
-**Example `my_profile.md`:**
+**Example `~/.local/share/genwal/themes/deep_work.md`:**
 
 ```markdown
 ---
-quote_prompt_template: "Act as a Performance Coach. Generate a directive statement about discipline. Max 10 words."
-image_prompt_template: "Generate a visual description for a minimalist gym. Iron, shadows. Max 10 words."
+layout_hint: centered
+palette_hint: dark abstract, deep focus, blue and black
+quote_style: raw discipline, focus, no excuses
 ---
 # Deep Work
-Focus is the new IQ...
+Focus is the new IQ.
+Deep work is the ability to focus without distraction on a cognitively demanding task.
 ```
 
-To switch to this profile, simply run:
+To switch to this theme, simply run:
 ```bash
-genwal profile edit my_profile
-# Defines content, saves, and switches automatically
+genwal theme use deep_work
 ```
 
-## Global Settings (`config.yaml`).
+## Global Settings (`config.yaml`)
 
-### Configuration Logic
-Gen-Wal uses a powerful **path-based** configuration system. You can point any provider to a specific section of your config using `provider:subtype`.
-
-**Example:**
-- `quote_provider: "llm:ollama"` -> Uses config from `llm` -> `ollama`.
-- `quote_provider: "csv:work"` -> Uses config from `csv` -> `work`.
-
-## Core Settings
+### Core Settings
 
 | Key | Description | Default |
 | :--- | :--- | :--- |
-| `profile_path` | Path to your personal profile or reference frame. | `profiles/examples/stoic.md` |
-| `quote_provider` | Options: `huggingface:text`, `llm:profile`, `pollinations:text`, `csv:profile`. | `zenquotes` |
-| `image_provider` | Options: `huggingface:image`, `pollinations:image`, `local_dir:profile`. | `pollinations:image` |
-| `image_prompt_provider` | Options: `huggingface:text`, `pollinations:text`, `llm:profile`. | `pollinations:text` |
+| `theme` | Name of the theme to use (from `~/.local/share/genwal/themes/`). | `minimal` |
+| `seed` | Deterministic seed. Use `"auto"` for daily cycle, or pass an integer. | `"auto"` |
+| `layout` | Strategy for composing text/image. Options: `minimal`, `centered`. | `minimal` |
+| `quote_provider` | Text generation engine. Options: `pollinations:text`, `csv`. | `pollinations:text` |
+| `image_provider` | Image generation engine. Options: `pollinations:image`, `gradient`. | `pollinations:image` |
+| `palette_provider` | Color scheme generation. Options: `system_theme`. | `system_theme` |
 
 ## Quote Providers
 
-### LLM (Local/Cloud)
-Define multiple profiles under the `llm` block and select one.
+### Pollinations AI (Remote, Default)
+Uses free, keyless AI endpoints to generate dynamic quotes matching your theme.
 
 ```yaml
-quote_provider: "llm:ollama"
-
-llm:
-  # Profile 1: Local Ollama
-  ollama:
-    base_url: "http://localhost:11434/v1" 
-    api_key: "ollama" 
-    model: "llama3.2" 
-
-  # Profile 2: Llama.cpp or OpenAI
-  openai_cloud:
-    base_url: "https://api.openai.com/v1"
-    api_key: "sk-..."
-    model: "gpt-5"
+quote_provider: "pollinations:text"
 ```
 
-### Hugging Face
-Use the free Hugging Face Inference API for high-availability access to open models.
-
-```yaml
-quote_provider: "huggingface:text"
-huggingface:
-  api_key: "hf_YOUR_TOKEN"
-  # Optional overrides
-  # text_model: "Qwen/Qwen2.5-7B-Instruct"
-  # image_model: "stabilityai/stable-diffusion-2-1"
-```
-
-### CSV / YAML
-Load your own collection of quotes.
+### CSV
+Loads pre-written quotes from a local CSV file.
 
 ```yaml
 quote_provider: "csv" 
 csv:
-  file: "my_quotes.csv"
-
-# Or nested:
-# quote_provider: "csv:work"
-# csv:
-#   work:
-#     file: "work_quotes.csv"
+  file: "~/.local/share/genwal/quotes.csv"
 ```
 
 ## Image Providers
 
-### Pollinations.ai (AI Generation)
-Generates free AI images based on prompts.
+### Pollinations AI (Remote, Default)
+Generates free AI background images based on theme hints.
 
 ```yaml
-image_provider: "pollinations"
-pollinations:
-  model: "flux" # Options: flux, turbo, etc.
-  nologo: true # Set to false if you want the logo (why?)
+image_provider: "pollinations:image"
 ```
 
-### Local Directory
-Picks a random image from a folder.
+### Gradient (Local)
+A blazing-fast deterministic local gradient generator built cleanly in Python.
 
 ```yaml
-image_provider: "local_dir"
-local_dir:
-  path: "/path/to/wallpapers"
+image_provider: "gradient"
 ```
 
 ## Rendering & Styling
 
-Customize how the wallpaper looks.
+Customize the canvas resolution:
 
 ```yaml
 resolution:
   width: 1920
   height: 1080
-
-text_position: "center" # bottom_left, bottom_center, bottom_right, left_center, right_center, top_left, center, etc.
-text_padding: 100 # Distance from screen edge in pixels
-
-## Watermark
-
-Overlay a subtle text watermark on the wallpaper.
-
-```yaml
-watermark:
-  enabled: true
-  text: "My Custom Watermark" # Optional, defaults to profile name
-  position: "bottom_right" # Options: bottom_right, bottom_left, bottom_center, top_right, top_left, top_center
-  font_size: 25
-  opacity: 150 # 0-255 transparency
-```
 ```
 
-## External Customization (Prompts)
+*Note: Visual placements (text positioning, padding, fonts) are now handled exclusively by the `layout` engine (e.g., `minimal` places text bottom-right, `centered` centers it).*
 
-You can tweak the "personality" of the AI without touching code by editing the `prompts` section in `config.yaml`.
+## CLI Utilities
 
-```yaml
-prompts:
-  quote: |
-    You are a motivational coach. Based on the following profile, generate a single, short...
-    PROFILE:
-    {profile_content}
+You can manage Gen-Wal entirely from the command line:
 
-  image_description: |
-    Generate a concise visual description...
-    QUOTE: {quote}
-    PROFILE: {profile_content}
-```
-
-- **`{profile_content}`**: Injected automatically from your selected markdown profile.
-- **`{quote}`**: Injected automatically into the image description prompt.
-
-## Wallpaper Settings
-
-Control where the wallpaper is saved and if it is applied.
-
-| Key | Type | Description | Default |
-| :--- | :--- | :--- | :--- |
-| `save_path` | string | Absolute path (or path with `~`) to save the final image. | `~/.cache/gen-wal/current_wallpaper.jpg` |
-| `apply_wallpaper` | boolean | If `true`, sets the desktop background. If `false`, only saves the file. | `true` |
-
-```yaml
-# -----------------------------------------------------------------------------
-# 1. Wallpaper Settings
-# -----------------------------------------------------------------------------
-wallpaper_settings:
-  apply_wallpaper: true  # Set to false to generate image but not set desktop background
-  save_path: "~/.cache/gen-wal/current_wallpaper.jpg" # Where to save the generated image
-```
-
-## CLI Overrides
-
-You can temporarily override configuration settings via command-line arguments:
-
-| Argument | Description | Example |
-| :--- | :--- | :--- |
-| `--profile` | Use a different profile file for this run. | `python3 main.py --profile profiles/examples/deep_work.md` |
-| `--text-pos` | Override text positioning. | `python3 main.py --text-pos center` |
-| `--config` | Use a specific config file. | `python3 main.py --config my_custom_config.yaml` |
-| `--watermark` / `--no-watermark` | Enable or disable watermark. | `python3 main.py --no-watermark` |
-| `--watermark-text` | Override watermark text. | `python3 main.py --watermark-text "Day 10"` |
-| `--watermark-opacity` | Override watermark opacity (0-255). | `python3 main.py --watermark-opacity 50` |
+| Command | Description |
+| :--- | :--- |
+| `genwal run` | Generate now in the background |
+| `genwal preview` | Generate to `tmp/`, do not apply to OS |
+| `genwal theme list` | List available themes |
+| `genwal theme edit <name>` | Create/Edit a theme |
+| `genwal config show` | Print current active configuration |
+| `genwal config edit` | Open config in your default `$EDITOR` |
+| `genwal history` | View recent generated wallpapers |
+| `genwal history apply <N>` | Restore a previous generated wallpaper |
+| `genwal seed` | Inspect the active deterministic seed |
+| `genwal schedule set <Time>` | Change the daily systemd execution schedule |
+| `genwal doctor` | Diagnose paths and configuration health |

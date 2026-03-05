@@ -2,8 +2,11 @@ import argparse
 import sys
 import os
 import subprocess
-import subprocess
-import yaml
+
+# Guarantee Python can resolve "src.*" when this file is executed directly by systemd/bash wrappers
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import json
 from src.config import load_config
 from src.themes import list_themes, use_theme, edit_theme
 from src.pipeline import run_pipeline
@@ -59,6 +62,11 @@ def main():
     # genwal seed
     subparsers.add_parser("seed", help="Prints current active deterministic seed details")
 
+    # genwal palette
+    palette_parser = subparsers.add_parser("palette", help="Manage color palettes")
+    palette_sub = palette_parser.add_subparsers(dest="subcommand")
+    palette_sub.add_parser("preview", help="Preview 5 deterministic color palette variations")
+
     # genwal doctor
     subparsers.add_parser("doctor", help="Validation and environment checks")
 
@@ -82,7 +90,7 @@ def main():
     elif args.command == "config":
         if getattr(args, 'subcommand', None) == "show":
             config = load_config()
-            print(yaml.dump(config, default_flow_style=False))
+            print(json.dumps(config, indent=2))
         elif getattr(args, 'subcommand', None) in ("edit", None):
             from src.config import CONFIG_PATH
             print(f"📝 Opening config file: {CONFIG_PATH}")
@@ -141,6 +149,64 @@ WantedBy=timers.target
             list_history()
         elif args.subcommand == "apply":
             apply_history(args.index)
+            
+    elif args.command == "palette":
+        if args.subcommand == "preview":
+            from src.env import collect_env_signals
+            from src.themes import load_theme
+            from src.seed import generate_daily_seed, derive_seed
+            from src.providers import get_provider
+            from src.color.strategies import apply_strategy, compute_color_strategy
+            from PIL import Image, ImageDraw
+            
+            config = load_config()
+            theme_name = config.get('theme', 'minimal')
+            theme_hints, _ = load_theme(theme_name)
+            env = collect_env_signals()
+            auto_register()
+            palette_name = config.get('palette_provider', 'system_theme')
+            palette_prov = get_provider('palette', palette_name, config)
+            color_mode = config.get('color_mode', 'balanced')
+
+            seed_cfg = config.get('seed', 'auto')
+            base_seed = generate_daily_seed(theme_name, seed_cfg)
+
+            print(f"🎨 Palette Preview (Theme: {theme_name}, Mode: {color_mode})")
+            
+            out_dir = "/tmp/genwal_palette_preview"
+            os.makedirs(out_dir, exist_ok=True)
+            
+            for i in range(5):
+                iter_base_seed = derive_seed(base_seed, f"iter_{i}")
+                color_seed = derive_seed(iter_base_seed, "color")
+                
+                base_palette = palette_prov.generate(iter_base_seed, env, theme_hints)
+                strategy = compute_color_strategy(color_mode, color_seed)
+                palette = apply_strategy(base_palette, strategy, color_seed)
+                
+                bg = palette.get("background", "#000000")
+                sec = palette.get("secondary", "#555555")
+                acc = palette.get("accent", "#ffffff")
+                
+                print(f"\nVariation {i+1} [{strategy}]:")
+                print(f"  Background : {bg}")
+                print(f"  Secondary  : {sec}")
+                print(f"  Accent     : {acc}")
+                
+                img = Image.new('RGB', (300, 100))
+                draw = ImageDraw.Draw(img)
+                def h2rgb(h):
+                    if not h: return (0,0,0)
+                    h = h.lstrip('#')
+                    return tuple(int(h[j:j+2], 16) for j in (0, 2, 4))
+                
+                draw.rectangle([0, 0, 100, 100], fill=h2rgb(bg))
+                draw.rectangle([100, 0, 200, 100], fill=h2rgb(sec))
+                draw.rectangle([200, 0, 300, 100], fill=h2rgb(acc))
+                
+                out_path = os.path.join(out_dir, f"preview_{i+1}_{strategy}.png")
+                img.save(out_path)
+                print(f"  saved -> {out_path}")
             
     elif args.command == "doctor":
         print("🩺 Running Gen-Wal Diagnostics...")

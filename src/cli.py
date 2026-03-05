@@ -1,6 +1,7 @@
 import argparse
 import sys
 import os
+import subprocess
 from src.config import load_config
 from src.themes import list_themes, use_theme, edit_theme
 from src.pipeline import run_pipeline
@@ -92,7 +93,6 @@ def main():
         print(f"Current seed: {info['seed']}")
         print(f"Derived from: {info['derived']}")
     elif args.command == "schedule":
-        import subprocess
         if args.subcommand == "show":
             print("🗓️  Schedule Status:")
             subprocess.run(["systemctl", "--user", "status", "gen-wal.timer"])
@@ -103,7 +103,6 @@ def main():
             time_str = args.time
             print(f"⏰ Reconfiguring schedule for {time_str}...")
             # Ideally this writes to the systemd unit, but for MVP we match what install.sh does
-            import os
             timer_dir = os.path.expanduser("~/.config/systemd/user")
             timer_file = os.path.join(timer_dir, "gen-wal.timer")
             
@@ -144,7 +143,6 @@ WantedBy=timers.target
             
     elif args.command == "doctor":
         print("🩺 Running Gen-Wal Diagnostics...")
-        import os
         from src.config import CONFIG_DIR, THEMES_DIR, HISTORY_DIR, CONFIG_PATH, load_config
         
         print("\n📂 Directories:")

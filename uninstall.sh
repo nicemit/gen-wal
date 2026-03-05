@@ -45,18 +45,28 @@ if [ -d "$INSTALL_DIR" ]; then
     rm -rf "$INSTALL_DIR"
 fi
 
-# 4. Remove Cache (Optional)
-CACHE_DIR="$HOME/.cache/gen-wal"
+# 4. Remove Config
+CONFIG_DIR="$HOME/.config/genwal"
+if [ -d "$CONFIG_DIR" ]; then
+    log "Removing configuration at $CONFIG_DIR..."
+    rm -rf "$CONFIG_DIR"
+fi
+
+# 5. Remove Themes
+THEMES_DIR="$HOME/.local/share/genwal"
+if [ -d "$THEMES_DIR" ]; then
+    log "Removing themes at $THEMES_DIR..."
+    rm -rf "$THEMES_DIR"
+fi
+
+# 6. Remove History/Cache
+CACHE_DIR="$HOME/.cache/genwal"
 if [ -d "$CACHE_DIR" ]; then
-    log "Cleaning up cache..."
+    log "Cleaning up history and cache at $CACHE_DIR..."
     rm -rf "$CACHE_DIR"
 fi
 
-# 5. Config (Ask user or just notify)
-CONFIG_DIR="$HOME/.config/gen-wal" # Note: install.sh didn't seem to create this explicitly in a std location, config is usually inside the repo.
-# If config was inside the repo ($INSTALL_DIR), it's already gone.
-
-# 5. Remove CLI Tool
+# 7. Remove CLI Tool
 CLI_PATH="$HOME/.local/bin/genwal"
 if [ -f "$CLI_PATH" ]; then
     log "Removing CLI tool..."

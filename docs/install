@@ -128,9 +128,9 @@ log "Configuring XDG directories..."
 # --------------------------------------------------
 log "Setting default local-first configuration..."
 CONFIG_DIR="$HOME/.config/genwal"
-CONFIG_DEST="$CONFIG_DIR/config.yaml"
+CONFIG_DEST="$CONFIG_DIR/config.json"
 if [ ! -f "$CONFIG_DEST" ]; then
-    cp "$PROJECT_DIR/config.example.yaml" "$CONFIG_DEST"
+    cp "$PROJECT_DIR/config.example.json" "$CONFIG_DEST"
     log "Copied default configuration to $CONFIG_DEST"
 fi
 
@@ -205,7 +205,7 @@ fi
 
 log "Installation Complete! 🚀"
 echo ""
-log "   - Config: ~/.config/genwal/config.yaml"
+log "   - Config: ~/.config/genwal/config.json"
 log "   - Themes: ~/.local/share/genwal/themes/"
 log "   - Next run: Tomorrow at $RUN_AT"
 echo ""

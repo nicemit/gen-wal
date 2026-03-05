@@ -22,9 +22,9 @@ pip install -r requirements.txt
 ### 2. Configuration
 Copy the example config to the root directory:
 ```bash
-cp config.yaml.example config.yaml
+cp config.json.example config.json
 # Or just create a simple one:
-# touch config.yaml (The app has defaults, but adding your API keys helps)
+# touch config.json (The app has defaults, but adding your API keys helps)
 ```
 
 ### 3. Running Manually

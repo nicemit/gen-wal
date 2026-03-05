@@ -1,13 +1,16 @@
 import os
-import yaml
+import json
 import subprocess
 
-def load_config(path="config.yaml"):
+def load_config(path="config.json"):
     if not os.path.exists(path):
         # Fallback to looking in parent directory or current directory if path is relative
         pass # Assume explicit path or current dir for now
     with open(path, 'r') as f:
-        return yaml.safe_load(f)
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
 
 def set_wallpaper(image_path):
     # Detect Desktop Environment
@@ -63,13 +66,16 @@ def update_config(config_path, key, value):
 
     try:
         with open(config_path, 'r') as f:
-            config = yaml.safe_load(f) or {}
+            try:
+                config = json.load(f)
+            except json.JSONDecodeError:
+                config = {}
         
         # Handle nested keys if needed (simple for now)
         config[key] = value
         
         with open(config_path, 'w') as f:
-            yaml.safe_dump(config, f, default_flow_style=False)
+            json.dump(config, f, indent=4)
             
         return True
     except Exception as e:

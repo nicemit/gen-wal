@@ -1,0 +1,65 @@
+{
+    "theme": "stoic",
+    "seed": "auto",
+    "color_mode": "balanced",
+    "layout": "minimal",
+    "quote_provider": "csv",
+    "image_provider": "mesh",
+    "palette_provider": "system_theme",
+    "image_prompt_provider": "pollinations:text",
+    "llm": {
+        "ollama": {
+            "base_url": "http://localhost:11434/v1",
+            "api_key": "ollama",
+            "model": "llama3"
+        },
+        "local_server": {
+            "base_url": "http://localhost:8080/v1",
+            "api_key": "sk-no-key-needed",
+            "model": "MaziyarPanahi/Qwen3-4B-GGUF:Q6_K",
+            "request_params": {
+                "temperature": 0.8,
+                "max_tokens": 2000
+            }
+        }
+    },
+    "noise": {
+        "scale": 10,
+        "opacity": 0.25,
+        "style": "smooth"
+    },
+    "pollinations": {
+        "image": {
+            "model": "flux",
+            "nologo": true,
+            "api_key": "YOUR_API_KEY_HERE"
+        },
+        "text": {
+            "model": "gpt-5"
+        }
+    },
+    "huggingface": {
+        "api_key": "hf_YOUR_TOKEN_HERE"
+    },
+    "resolution": {
+        "width": 1920,
+        "height": 1080
+    },
+    "csv": {
+        "file": "~/.local/share/genwal/quotes.csv"
+    },
+    "prompts": {
+        "quote": "Generate a single, short, punchy, direct motivational quote based on the following theme hints.\n",
+        "image_description": "Generate a concise visual description for an image to accompany this quote. Focus on abstract, nature, or technological themes. No text in the image.\n"
+    },
+    "wallpaper_settings": {
+        "apply_wallpaper": true,
+        "save_path": "~/.cache/gen-wal/archive"
+    },
+    "watermark": {
+        "enabled": true,
+        "position": "bottom_right",
+        "font_size": 25,
+        "opacity": 50
+    }
+}

@@ -8,7 +8,7 @@ Use the built-in CLI to edit your configuration safely:
 genwal config edit
 ```
 
-This ensures you are editing the correct file for your installation (located at `~/.config/genwal/config.yaml`).
+This ensures you are editing the correct file for your installation (located at `~/.config/genwal/config.json`).
 
 ## How It Works
 
@@ -50,7 +50,7 @@ To switch to this theme, simply run:
 genwal theme use deep_work
 ```
 
-## Global Settings (`config.yaml`)
+## Global Settings (`config.json`)
 
 ### Core Settings
 

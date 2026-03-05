@@ -4,38 +4,35 @@ Thanks for considering contributing! This is a personal project, but I love seei
 
 ## 🛠️ Development Setup
 
-If you want to run Gen-Wal locally for development (without the systemd installer), follow these steps:
+If you want to run Gen-Wal locally for development (without the systemd installer):
 
 ### 1. Clone & Setup
 ```bash
 git clone https://github.com/nicemit/gen-wal.git
 cd gen-wal
 
-# Create a virtual environment
 python3 -m venv venv
 source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
 ### 2. Configuration
-Copy the example config to the root directory:
+Copy the example config to your XDG config directory:
 ```bash
-cp config.json.example config.json
-# Or just create a simple one:
-# touch config.json (The app has defaults, but adding your API keys helps)
+mkdir -p ~/.config/genwal
+cp config.example.json ~/.config/genwal/config.json
 ```
 
 ### 3. Running Manually
-You can trigger a run directly via Python:
 ```bash
-python3 main.py
+python3 main.py run      # Generate and apply wallpaper
+python3 main.py preview  # Generate to /tmp only
+python3 main.py config get  # Check current config
 ```
-This will generate a wallpaper in `~/.cache/gen-wal/` and attempt to set it.
+
+Wallpapers are saved to `~/.cache/genwal/history/`.
 
 ### 4. Running Tests
-We use `unittest`. Please ensure all tests pass before submitting a PR.
 ```bash
 python3 -m unittest discover tests
 ```
@@ -44,30 +41,51 @@ python3 -m unittest discover tests
 
 ## 📂 Project Structure
 
-- `src/`: Core logic
-    - `providers/`: Adapters for different APIs (Pollinations, OpenAI, etc.)
-    - `utils.py`: Desktop environment interaction code
-    - `factory.py`: Dependency injection logic
-- `profiles/`: Markdown files defining personas
-- `install.sh`: The installer script (also serves as the CLI generator)
+```
+gen-wal/
+├── src/
+│   ├── cli.py           # CLI definition (argparse)
+│   ├── pipeline.py      # Generation orchestrator
+│   ├── config.py        # JSON config loader (XDG paths)
+│   ├── themes.py        # Theme manager (Markdown → config macro)
+│   ├── seed.py          # Deterministic seed system
+│   ├── renderer.py      # Post-processing (vignette, grain)
+│   ├── color/
+│   │   └── strategies.py  # Seeded color theory transforms
+│   ├── providers/
+│   │   ├── images/      # mesh, gradient, noise, flow, voronoi, aurora, pollinations
+│   │   ├── palettes/    # system_theme, theme_palette, random
+│   │   └── quotes/      # csv, pollinations
+│   └── layouts/         # minimal, centered
+├── themes/              # Shipped theme presets (Markdown)
+├── assets/fonts/        # Bundled fonts
+├── scripts/
+│   └── genwal-completion.bash  # Bash autocompletion
+├── config.example.json  # Full annotated config reference
+├── install.sh
+└── uninstall.sh
+```
+
+---
 
 ## 🤝 How can I help?
 
-1.  **Add a Profile**: Created a cool "Cyberpunk" or "Nature" profile? Submit a PR adding it to `profiles/examples/`.
-2.  **Fix Bugs**: If something breaks on your specific Linux distro (KDE, XFCE, Mate), fixes in `src/utils.py` are welcome.
-3.  **Improve Providers**: Want to add a new Image Generator or LLM provider? Go for it.
+1. **Add a Theme**: Created a cool "Cyberpunk" or "Nature" theme? Submit a PR adding it to `themes/`.
+2. **Fix Bugs**: If something breaks on your distro (KDE, XFCE, Mate), fixes in `src/wallpaper.py` are welcome.
+3. **Add Providers**: Want a new image generator or quote provider? See `src/providers/images/gradient.py` as a template.
 
 ## The Flow
 
-1.  Fork the repo.
-2.  Create your branch (`git checkout -b feature/amazing-profile`)
-3.  Commit your changes.
-4.  Open a Pull Request.
+1. Fork the repo.
+2. Create your branch (`git checkout -b feature/amazing-theme`)
+3. Commit your changes.
+4. Open a Pull Request.
 
 ## Philosophy
 
-*   **Keep it simple**: We don't need a heavy database or GUI.
-*   **Local-first**: Prefer tools that can run on the user's machine.
-*   **Flexible**: Allow users to change prompts and logic easily.
+- **Keep it simple**: No GUI, no database, no cloud accounts.
+- **Local-first**: Everything works offline by default.
+- **Single config**: All state lives in `~/.config/genwal/config.json`.
+- **Deterministic**: Same seed, same wallpaper, every time.
 
 Happy hacking! 🧠

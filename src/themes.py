@@ -47,7 +47,22 @@ def use_theme(name):
         print(f"❌ Theme '{name}' not found.")
         return False
         
-    update_config('theme', name)
+    from src.config import load_config, ensure_xdg_dirs, CONFIG_PATH
+    import json
+    
+    hints, _ = load_theme(name)
+    
+    ensure_xdg_dirs()
+    config = load_config()
+    config['theme'] = name
+    
+    # Inject all theme hints directly into the JSON configuration
+    for k, v in hints.items():
+        config[k] = v
+        
+    with open(CONFIG_PATH, 'w') as f:
+        json.dump(config, f, indent=4)
+        
     print(f"✅ Switched to theme: {name}")
     return True
 

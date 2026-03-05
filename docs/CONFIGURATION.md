@@ -1,128 +1,196 @@
 # Gen-Wal Configuration Guide
 
-## 🛠️ Quick Edits (Recommended)
+## Quick Setup
 
-Use the built-in CLI to edit your configuration safely:
+Use the CLI to inspect and modify your configuration without ever opening a file:
 
 ```bash
-genwal config edit
+genwal config get              # Print entire active config as JSON
+genwal config get seed         # Get a single key
+genwal config set seed random  # Set a key (tab-completion shows valid values)
+genwal config set noise.opacity 0.5    # Dot-notation for nested keys
+genwal config edit             # Open in $EDITOR
 ```
 
-This ensures you are editing the correct file for your installation (located at `~/.config/genwal/config.json`).
+Config file lives at: `~/.config/genwal/config.json`
+
+---
 
 ## How It Works
 
-Gen-Wal is a simple daemon that runs once a day. The process is fully automated:
+Gen-Wal is a simple daemon that fires once per day via systemd. The pipeline:
 
-- **Read Theme:** Loads a markdown file describing the desired mindset (e.g., "stoic", "terminal").
-- **Generate Text:** Uses an AI provider to generate a short, punchy quote based on the theme.
-- **Generate Background:** Creates a matching background image (subtle, abstract) using an image provider.
-- **Set Wallpaper:** Composes the text and image using a layout, then updates your desktop background.
+1. **Load Config** — Reads `~/.config/genwal/config.json` as the single source of truth.
+2. **Derive Seed** — Generates a deterministic or random seed for the run.
+3. **Generate Palette** — Creates a color scheme using the active palette provider.
+4. **Apply Color Strategy** — Transforms the palette using seeded color theory rules.
+5. **Fetch Quote** — Gets a short text from the configured quote provider.
+6. **Generate Image** — Creates a procedural background (mesh, voronoi, noise, etc.).
+7. **Post-Processing** — Applies vignette and grain effects.
+8. **Layout** — Composes the quote and image using the selected layout engine.
+9. **Set Wallpaper** — Updates the desktop background.
 
-## 🧠 Reference Frames (Themes)
+---
 
-Themes are the core of Gen-Wal. They are not just collections of quotes; they define a **mental reference frame**. By changing the theme, you change the "flavor" of your environment.
+## Core Settings
 
-### Included Examples
+| Key | Description | Options | Default |
+| :--- | :--- | :--- | :--- |
+| `theme` | Active theme name | any theme in `themes/` | `minimal` |
+| `seed` | Generation seed mode | `auto`, `random`, or integer | `auto` |
+| `color_mode` | Color variation intensity | `minimal`, `balanced`, `vibrant`, `wild` | `balanced` |
+| `image_provider` | Background generator | `mesh`, `gradient`, `noise`, `flow`, `voronoi`, `aurora`, `pollinations` | `mesh` |
+| `palette_provider` | Color scheme source | `system_theme`, `theme_palette`, `random` | `system_theme` |
+| `quote_provider` | Quote source | `csv`, `pollinations` | `csv` |
+| `layout` | Text composition strategy | `minimal`, `centered` | `minimal` |
+| `layout_hint` | Layout hint from theme | `minimal`, `centered` | `minimal` |
+| `palette_hint` | Palette hint from theme | `dark`, `light`, `warm`, `cool` | `dark` |
+| `quote_style` | Quote style hint from theme | `stoic`, `concise`, `builder`, `zen`, `deepwork` | `stoic` |
 
-- **minimal:** Clean, understated, and clear.
-- **stoic:** Restraint, control, impermanence.
-- **terminal:** Code, craft, iteration.
+---
 
-## 🛠️ Creating Your Own Theme {#customization}
-Themes are plain Markdown files stored in `~/.local/share/genwal/themes/`. They provide hints to the generation engines.
+## Resolution
+
+```json
+"resolution": {
+  "width": 1920,
+  "height": 1080
+}
+```
+
+Set via CLI: `genwal config set resolution.width 2560`
+
+---
+
+## Image Providers
+
+### Local (No Network Required)
+
+| Provider | Description |
+|---|---|
+| `mesh` | Apple-style mesh gradients (default) |
+| `gradient` | Smooth linear/radial gradients |
+| `noise` | Configurable geometric noise patterns |
+| `flow` | Abstract vector field generative art |
+| `voronoi` | Geometric Voronoi cell diagrams |
+| `aurora` | Aurora borealis-style soft gradients |
+
+### Remote
+
+| Provider | Description |
+|---|---|
+| `pollinations` | Free AI-generated images (no API key needed) |
+
+Switch providers: `genwal config set image_provider voronoi`
+
+### Noise Provider Settings
+
+```json
+"noise": {
+  "scale": 10,
+  "opacity": 0.25,
+  "style": "smooth"
+}
+```
+
+`style` options: `smooth`, `blocky`
+
+---
+
+## Quote Providers
+
+### CSV (Local, Default)
+
+```json
+"quote_provider": "csv",
+"csv": {
+  "file": "~/.local/share/genwal/quotes.csv"
+}
+```
+
+CSV format: one quote per line.
+
+### Pollinations AI (Remote)
+
+```json
+"quote_provider": "pollinations"
+```
+
+Uses free AI endpoints. No API key required.
+
+---
+
+## Color Strategies
+
+Gen-Wal applies seeded color theory transforms to the base palette each run.
+
+| `color_mode` | Strategies Used |
+|---|---|
+| `minimal` | monochrome |
+| `balanced` | analogous, complementary, accent |
+| `vibrant` | complementary, triadic, analogous |
+| `wild` | all strategies randomly |
+
+Set via: `genwal config set color_mode vibrant`
+
+---
+
+## Themes
+
+Themes are Markdown files in `~/.local/share/genwal/themes/` (or `themes/` in the repo). Running `genwal theme use <name>` reads the frontmatter and writes those values directly into `config.json`.
 
 **Example `~/.local/share/genwal/themes/deep_work.md`:**
 
 ```markdown
 ---
 layout_hint: centered
-palette_hint: dark abstract, deep focus, blue and black
-quote_style: raw discipline, focus, no excuses
+palette_hint: dark
+quote_style: deepwork
 ---
 # Deep Work
 Focus is the new IQ.
-Deep work is the ability to focus without distraction on a cognitively demanding task.
 ```
 
-To switch to this theme, simply run:
 ```bash
-genwal theme use deep_work
+genwal theme use deep_work   # Applies frontmatter keys into config.json
+genwal theme list            # List all available themes
+genwal theme edit deep_work  # Edit or create a theme
 ```
 
-## Global Settings (`config.json`)
+---
 
-### Core Settings
+## Scheduling
 
-| Key | Description | Default |
-| :--- | :--- | :--- |
-| `theme` | Name of the theme to use (from `~/.local/share/genwal/themes/`). | `minimal` |
-| `seed` | Deterministic seed. Use `"auto"` for daily cycle, or pass an integer. | `"auto"` |
-| `layout` | Strategy for composing text/image. Options: `minimal`, `centered`. | `minimal` |
-| `quote_provider` | Text generation engine. Options: `pollinations:text`, `csv`. | `pollinations:text` |
-| `image_provider` | Image generation engine. Options: `pollinations:image`, `gradient`. | `pollinations:image` |
-| `palette_provider` | Color scheme generation. Options: `system_theme`. | `system_theme` |
-
-## Quote Providers
-
-### Pollinations AI (Remote, Default)
-Uses free, keyless AI endpoints to generate dynamic quotes matching your theme.
-
-```yaml
-quote_provider: "pollinations:text"
+```bash
+genwal schedule list           # Show current schedule and systemd status
+genwal schedule set 08:00      # Set daily run time (validates HH:MM format)
+genwal schedule remove         # Remove the timer entirely
+genwal schedule show           # Full systemd debug output
 ```
 
-### CSV
-Loads pre-written quotes from a local CSV file.
+---
 
-```yaml
-quote_provider: "csv" 
-csv:
-  file: "~/.local/share/genwal/quotes.csv"
-```
-
-## Image Providers
-
-### Pollinations AI (Remote, Default)
-Generates free AI background images based on theme hints.
-
-```yaml
-image_provider: "pollinations:image"
-```
-
-### Gradient (Local)
-A blazing-fast deterministic local gradient generator built cleanly in Python.
-
-```yaml
-image_provider: "gradient"
-```
-
-## Rendering & Styling
-
-Customize the canvas resolution:
-
-```yaml
-resolution:
-  width: 1920
-  height: 1080
-```
-
-*Note: Visual placements (text positioning, padding, fonts) are now handled exclusively by the `layout` engine (e.g., `minimal` places text bottom-right, `centered` centers it).*
-
-## CLI Utilities
-
-You can manage Gen-Wal entirely from the command line:
+## CLI Reference
 
 | Command | Description |
 | :--- | :--- |
-| `genwal run` | Generate now in the background |
-| `genwal preview` | Generate to `tmp/`, do not apply to OS |
+| `genwal run` | Generate and apply wallpaper now |
+| `genwal preview` | Generate to `/tmp`, don't apply to OS |
 | `genwal theme list` | List available themes |
-| `genwal theme edit <name>` | Create/Edit a theme |
-| `genwal config show` | Print current active configuration |
-| `genwal config edit` | Open config in your default `$EDITOR` |
-| `genwal history` | View recent generated wallpapers |
-| `genwal history apply <N>` | Restore a previous generated wallpaper |
+| `genwal theme use <name>` | Switch active theme (writes to config) |
+| `genwal theme edit <name>` | Create/edit a theme file |
+| `genwal config get` | Print full config as JSON |
+| `genwal config get <key>` | Print a specific value |
+| `genwal config set <key> <val>` | Set any config key (dot.notation supported) |
+| `genwal config edit` | Open config in `$EDITOR` |
+| `genwal schedule list` | Show current schedule and status |
+| `genwal schedule set <HH:MM>` | Set daily run time |
+| `genwal schedule remove` | Remove the schedule |
+| `genwal palette preview` | Preview 5 color palette variations |
+| `genwal history` | View generated wallpaper history |
+| `genwal history apply <N>` | Restore a previous wallpaper |
+| `genwal providers list` | List all registered providers |
 | `genwal seed` | Inspect the active deterministic seed |
-| `genwal schedule set <Time>` | Change the daily systemd execution schedule |
-| `genwal doctor` | Diagnose paths and configuration health |
+| `genwal doctor` | Diagnose paths and config health |
+| `genwal logs` | Tail systemd service logs |
+| `genwal uninstall` | Completely remove Gen-Wal |

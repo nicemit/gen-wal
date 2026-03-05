@@ -3,6 +3,7 @@
 ![Python Version](https://img.shields.io/badge/python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge&logo=github)
+
 A **personal experiment in ambient computing**.
 
 Gen-Wal explores a simple question:
@@ -27,15 +28,15 @@ Nothing to optimize.
 
 ## The Experiment
 
-I spend a large portion of my day in front of my machine. Keeping goals in my head wasn’t enough, but I also didn’t want yet another app demanding attention.
+I spend a large portion of my day in front of my machine. Keeping goals in my head wasn't enough, but I also didn't want yet another app demanding attention.
 
 Gen-Wal changes **one visual element of the environment** once per day.
 
 Quietly.
 
-It uses a *profile* (a simple text file describing a mindset or focus) and generates a daily background that acts as a passive reference frame — something you see repeatedly without being interrupted.
+It uses a *theme* (a simple text file describing a mindset or focus) and generates a daily background that acts as a passive reference frame — something you see repeatedly without being interrupted.
 
-This is not meant to push behavior. It’s meant to **exist**.
+This is not meant to push behavior. It's meant to **exist**.
 
 ---
 
@@ -43,10 +44,11 @@ This is not meant to push behavior. It’s meant to **exist**.
 
 Gen-Wal is a small local daemon written in Python that:
 
-- Reads a text-based theme (e.g. Stoic, Builder, Terminal)
-- Generates short text using a local or remote AI provider
-- Optionally generates a matching base image / gradient
-- Updates the desktop wallpaper automatically
+- Reads a text-based theme (e.g. Stoic, Builder, Terminal) and applies it to `config.json`
+- Generates a short quote using a local CSV or remote AI provider
+- Generates a matching procedural background image (mesh, voronoi, gradient, flow, aurora…)
+- Applies post-processing effects (vignette, grain)
+- Updates the desktop wallpaper automatically via systemd
 
 You can use it, modify it, or ignore it.
 
@@ -56,8 +58,8 @@ You can use it, modify it, or ignore it.
 
 **Gen-Wal runs as a local daemon.** It has no accounts, no analytics, and no tracking code.
 
-- **Default**: Uses free remote APIs (Pollinations.ai) for zero-setup generation.
-- **Local**: Can be configured to run **100% locally** using Ollama/LocalAI for text and local directories for images.
+- **Default**: Fully local procedural image generation. No network required.
+- **Optional**: Can use remote APIs (Pollinations.ai, Ollama) for AI-generated quotes and images.
 
 You control where the data goes.
 
@@ -73,27 +75,50 @@ curl -sL https://gen-wal.laptopserver.dev/install | bash
 
 This sets up:
 
-- The `genwal` CLI (for config, themes, scheduling)
-- A systemd timer (daily update)
-- XDG-compliant data directories (`~/.config/genwal/`, `~/.local/share/genwal/themes/`)
+- The `genwal` CLI (installed to `~/.local/bin/genwal`)
+- A systemd timer (daily update, configurable)
+- XDG-compliant data directories
+- Bash autocompletion (including dynamic config key suggestions)
 
 ---
 
 ## Configuration
 
-Everything is configurable. You can control how visible or subtle the output is.
+All configuration lives in a single JSON file at `~/.config/genwal/config.json`.
 
-```yaml
-theme: "stoic"
-layout: "bottom_right"
-seed: "auto"
+You can edit it directly, or use the CLI:
 
-quote_provider: "pollinations:text"
-image_provider: "pollinations:image"
-palette_provider: "system_theme"
-
-# Themes are sourced from ~/.local/share/genwal/themes/
+```bash
+genwal config edit             # Open in $EDITOR
+genwal config get              # Print entire config as JSON
+genwal config get seed         # Print a specific key
+genwal config set seed random  # Set a key (supports dot notation)
+genwal config set noise.opacity 0.4
 ```
+
+Key config options with their valid values:
+
+```json
+{
+  "theme": "stoic",
+  "seed": "auto",
+  "color_mode": "balanced",
+  "image_provider": "mesh",
+  "palette_provider": "system_theme",
+  "quote_provider": "csv",
+  "layout": "minimal",
+  "resolution": { "width": 1920, "height": 1080 }
+}
+```
+
+| Key | Options |
+|---|---|
+| `seed` | `auto`, `random` |
+| `image_provider` | `mesh`, `gradient`, `noise`, `flow`, `voronoi`, `aurora`, `pollinations` |
+| `color_mode` | `minimal`, `balanced`, `vibrant`, `wild` |
+| `layout` | `minimal`, `centered` |
+| `palette_provider` | `system_theme`, `theme_palette`, `random` |
+| `quote_provider` | `csv`, `pollinations` |
 
 ---
 
@@ -101,54 +126,66 @@ palette_provider: "system_theme"
 
 Themes are not just aesthetic tweaks — they define **mental reference frames**.
 
-Included examples:
+Running `genwal theme use <name>` applies the theme's preset values directly into your `config.json` as a one-time macro. The pipeline runs entirely off the JSON, with no runtime file parsing.
 
-- **Stoic** — *Restraint, impermanence, control*  
-  *(Meditations, Letters from a Stoic)*
+Included themes:
 
-- **Deep Work** — *Focus, systems, resistance*  
-  *(Deep Work, Atomic Habits, War of Art)*
-
-- **Builder** — *Craft, simplicity, iteration*  
-  *(Hackers & Painters, Unix philosophy)*
-
-- **Zen** — *Presence, patience, non-forcing*  
-  *(Zen Mind, Tao Te Ching)*
+- **stoic** — *Restraint, impermanence, control*
+- **minimal** — *Clean, understated, clear*
+- **terminal** — *Code, craft, iteration*
 
 ---
 
 ## Create Your Own Theme
 
-Themes are plain Markdown files stored in `~/.local/share/genwal/themes/`.
+Themes are Markdown files stored in `~/.local/share/genwal/themes/`.
 
 ```markdown
 ---
-layout_hint: minimal
-palette_hint: dark abstract
-quote_style: short, calm, stoic
+layout_hint: centered
+palette_hint: dark
+quote_style: concise
 ---
-# Quiet Focus
-Presence over pressure.
+# Deep Work
+Focus is the new IQ.
 ```
 
-Point your config to it and that’s it.
+Apply it with `genwal theme use deep_work`. The frontmatter keys get written directly into your config.
 
 ---
 
-## CLI Usage
+## CLI Reference
 
 ```bash
-genwal run                         # Generate now in the background
-genwal preview                     # Generate to tmp, do not apply to OS
-genwal config show                 # View active configuration
-genwal config edit                 # Edit configuration
+# Generation
+genwal run                         # Generate and apply wallpaper now
+genwal preview                     # Generate to /tmp, don't apply
+
+# Themes
 genwal theme list                  # List available themes
-genwal theme use <name>            # Switch to active theme
-genwal theme edit <name>           # Create/Edit theme file
-genwal seed                        # Check the deterministic seed
+genwal theme use <name>            # Switch active theme
+genwal theme edit <name>           # Create/edit a theme file
+
+# Configuration
+genwal config get                  # Print full config as JSON
+genwal config get <key>            # Print a specific value (supports dot.notation)
+genwal config set <key> <value>    # Set a config key (with tab-completion!)
+genwal config edit                 # Open config in $EDITOR
+
+# Scheduling
+genwal schedule list               # Show current schedule and status
+genwal schedule set 08:00          # Set daily run time (HH:MM)
+genwal schedule remove             # Remove the schedule
+genwal schedule show               # Full systemd timer status
+
+# Utilities
+genwal seed                        # Inspect the active deterministic seed
+genwal palette preview             # Preview 5 color palette variations
 genwal history                     # View generated wallpaper history
-genwal schedule set 08:00          # Schedule a daily run
-genwal doctor                      # Check system health & directories
+genwal history apply <N>           # Restore a previous wallpaper
+genwal providers list              # List all registered providers
+genwal doctor                      # Diagnose paths and config health
+genwal logs                        # Tail the systemd service logs
 genwal uninstall                   # Completely remove Gen-Wal
 ```
 
@@ -156,26 +193,19 @@ genwal uninstall                   # Completely remove Gen-Wal
 
 ## Uninstall
 
-To remove everything:
+```bash
+genwal uninstall
+```
+
+Or directly:
 
 ```bash
-cd ~/.gen-wal && ./uninstall.sh
+cd /path/to/gen-wal && ./uninstall.sh
 ```
 
 ---
 
-## Future Ideas
-
-- Time-bounded focus windows
-- Extended context from books/articles
-- Daily intent injection
-- Community profile sharing
-
----
-
 ## Developing
-
-This is a personal project.
 
 ```bash
 git clone https://github.com/nicemit/gen-wal
@@ -183,7 +213,7 @@ cd gen-wal
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python3 main.py
+python3 main.py run
 ```
 
 ---
@@ -193,4 +223,3 @@ python3 main.py
 MIT
 
 If you find this experiment interesting, a GitHub star helps others discover it.
-

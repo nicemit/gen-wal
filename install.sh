@@ -198,6 +198,12 @@ sed "s|INSTALL_DIR=\"\$HOME/.gen-wal\"|INSTALL_DIR=\"$PROJECT_DIR\"|g" "$PROJECT
 chmod +x "$CLI_DEST/genwal"
 log "Installed 'genwal' CLI to $CLI_DEST"
 
+# Install Bash Autocompletion
+BASH_COMP_DIR="$HOME/.local/share/bash-completion/completions"
+mkdir -p "$BASH_COMP_DIR"
+cp "$PROJECT_DIR/scripts/genwal-completion.bash" "$BASH_COMP_DIR/genwal"
+log "Installed bash auto-completion"
+
 # Check PATH
 if [[ ":$PATH:" != *":$CLI_DEST:"* ]]; then
     warn "Your PATH does not include $CLI_DEST. You may need to add it to run 'genwal' directly."

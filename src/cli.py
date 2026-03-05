@@ -1,9 +1,15 @@
 import argparse
 import sys
 import os
+import subprocess
+import subprocess
+import yaml
 from src.config import load_config
 from src.themes import list_themes, use_theme, edit_theme
 from src.pipeline import run_pipeline
+from src.seed import get_seed_info
+from src.providers import auto_register, list_registered_providers
+from src.history import list_history, apply_history
 
 def main():
     parser = argparse.ArgumentParser(description="Gen-Wal: Deterministic Generative Wallpaper Daemon")
@@ -76,7 +82,6 @@ def main():
     elif args.command == "config":
         if getattr(args, 'subcommand', None) == "show":
             config = load_config()
-            import yaml
             print(yaml.dump(config, default_flow_style=False))
         elif getattr(args, 'subcommand', None) in ("edit", None):
             from src.config import CONFIG_PATH
@@ -84,7 +89,6 @@ def main():
             editor = os.environ.get('EDITOR', 'nano')
             subprocess.run([editor, CONFIG_PATH])
     elif args.command == "seed":
-        from src.seed import get_seed_info
         config = load_config()
         theme_name = config.get("theme", "minimal")
         seed_cfg = config.get("seed", "auto")
@@ -92,7 +96,6 @@ def main():
         print(f"Current seed: {info['seed']}")
         print(f"Derived from: {info['derived']}")
     elif args.command == "schedule":
-        import subprocess
         if args.subcommand == "show":
             print("🗓️  Schedule Status:")
             subprocess.run(["systemctl", "--user", "status", "gen-wal.timer"])
@@ -103,7 +106,6 @@ def main():
             time_str = args.time
             print(f"⏰ Reconfiguring schedule for {time_str}...")
             # Ideally this writes to the systemd unit, but for MVP we match what install.sh does
-            import os
             timer_dir = os.path.expanduser("~/.config/systemd/user")
             timer_file = os.path.join(timer_dir, "gen-wal.timer")
             
@@ -127,7 +129,6 @@ WantedBy=timers.target
             
     elif args.command == "providers":
         if args.subcommand == "list":
-            from src.providers import auto_register, list_registered_providers
             auto_register()
             providers = list_registered_providers()
             print("Registered Providers:")
@@ -136,7 +137,6 @@ WantedBy=timers.target
                 for item in items:
                     print(f"    - {item}")
     elif args.command == "history":
-        from src.history import list_history, apply_history
         if getattr(args, 'subcommand', None) in ("list", None):
             list_history()
         elif args.subcommand == "apply":
@@ -144,8 +144,7 @@ WantedBy=timers.target
             
     elif args.command == "doctor":
         print("🩺 Running Gen-Wal Diagnostics...")
-        import os
-        from src.config import CONFIG_DIR, THEMES_DIR, HISTORY_DIR, CONFIG_PATH, load_config
+        from src.config import CONFIG_DIR, THEMES_DIR, HISTORY_DIR, CONFIG_PATH
         
         print("\n📂 Directories:")
         print(f"  Config:  {CONFIG_DIR} {'✅' if os.path.exists(CONFIG_DIR) else '❌'}")

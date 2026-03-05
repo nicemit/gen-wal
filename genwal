@@ -61,6 +61,19 @@ case "$1" in
             echo "Usage: genwal theme {list|use|edit}"
         fi
         ;;
+    uninstall)
+        echo -e "\033[0;31m⚠️  WARNING: You are about to completely remove Gen-Wal and all its settings.\033[0m"
+        read -r -p "Are you sure? [y/N] " response
+        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            if [ -f "$INSTALL_DIR/uninstall.sh" ]; then
+                bash "$INSTALL_DIR/uninstall.sh"
+            else
+                echo "❌ Could not find uninstall.sh in $INSTALL_DIR"
+            fi
+        else
+            echo "Uninstallation cancelled."
+        fi
+        ;;
     help|--help|-h)
         cd "$INSTALL_DIR" || exit 1
         PYTHONPATH="$INSTALL_DIR" "$PYTHON_CMD" "$CLI_ENTRY" --help
@@ -68,6 +81,7 @@ case "$1" in
         echo "Service Commands:"
         echo "  logs          - View service logs"
         echo "  status        - Check background timer status"
+        echo "  uninstall     - Completely remove Gen-Wal"
         ;;
     *)
         # Route all other commands (theme, config, schedule, history, etc.) directly to the Python CLI

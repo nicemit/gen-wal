@@ -11,6 +11,10 @@ def generate_daily_seed(theme_name: str, config_seed) -> int:
         seed_str = f"{date.today().isoformat()}-{theme_name}"
         return int(hashlib.sha1(seed_str.encode()).hexdigest(), 16)
         
+    if str(config_seed).lower() == 'random':
+        import random
+        return random.randint(1, 10**16)
+        
     try:
         return int(config_seed)
     except ValueError:
@@ -25,5 +29,7 @@ def get_seed_info(theme_name: str, config_seed):
     if str(config_seed).lower() == 'auto':
         derived_from = f"{date.today().isoformat()} + {theme_name}"
         return {"seed": seed, "derived": derived_from}
+    elif str(config_seed).lower() == 'random':
+        return {"seed": seed, "derived": "Pseudo-Random Number Generator (PRNG)"}
     else:
         return {"seed": seed, "derived": "config.yaml (explicit)"}

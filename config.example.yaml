@@ -21,7 +21,10 @@
 # Defaults included: minimal, stoic, terminal.
 theme: "stoic"
 
-# Seed deterministic generation. "auto" uses the date and theme name. Provide an integer for fixed seed.
+# Seed deterministic generation. 
+# "auto" = Locks generation so running it multiple times today gives the identical wallpaper.
+# "random" = Creates a completely unique wallpaper every time it runs.
+# integer = Provide an integer to lock it to a permanent specific generation.
 seed: "auto"
 
 # -----------------------------------------------------------------------------

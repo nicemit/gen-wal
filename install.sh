@@ -127,14 +127,12 @@ log "Configuring XDG directories..."
 # Default Core Config (Zero-API Key)
 # --------------------------------------------------
 log "Setting default local-first configuration..."
-"$PYTHON_EXEC" -c "from src.config import update_config
-update_config('palette_provider', 'system_theme')
-update_config('image_provider', 'gradient')
-update_config('quote_provider', 'csv')
-update_config('theme', 'minimal')
-update_config('layout', 'minimal')
-update_config('seed', 'auto')
-update_config('resolution', {'width': 1920, 'height': 1080})"
+CONFIG_DIR="$HOME/.config/genwal"
+CONFIG_DEST="$CONFIG_DIR/config.yaml"
+if [ ! -f "$CONFIG_DEST" ]; then
+    cp "$PROJECT_DIR/config.example.yaml" "$CONFIG_DEST"
+    log "Copied default configuration to $CONFIG_DEST"
+fi
 
 # --------------------------------------------------
 # Systemd Service

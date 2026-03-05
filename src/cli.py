@@ -74,10 +74,11 @@ def main():
         elif args.subcommand == "edit":
             edit_theme(args.name)
     elif args.command == "config":
-        if args.subcommand == "show":
+        if getattr(args, 'subcommand', None) == "show":
             config = load_config()
+            import yaml
             print(yaml.dump(config, default_flow_style=False))
-        elif args.subcommand == "edit":
+        elif getattr(args, 'subcommand', None) in ("edit", None):
             from src.config import CONFIG_PATH
             print(f"📝 Opening config file: {CONFIG_PATH}")
             editor = os.environ.get('EDITOR', 'nano')

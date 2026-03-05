@@ -149,6 +149,7 @@ genwal seed                        # Check the deterministic seed
 genwal history                     # View generated wallpaper history
 genwal schedule set 08:00          # Schedule a daily run
 genwal doctor                      # Check system health & directories
+genwal uninstall                   # Completely remove Gen-Wal
 ```
 
 ---

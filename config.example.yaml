@@ -34,10 +34,12 @@ layout: "minimal"
 # 3. Providers
 # -----------------------------------------------------------------------------
 # Options: "pollinations:text", "csv"
-quote_provider: "pollinations:text"
+# quote_provider: "pollinations:text"
+quote_provider: "csv"
 
 # Options: "pollinations:image", "gradient"
-image_provider: "pollinations:image"
+# image_provider: "pollinations:image"
+image_provider: "gradient"
 
 # Options: "system_theme"
 palette_provider: "system_theme"

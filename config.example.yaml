@@ -42,7 +42,7 @@ quote_provider: "csv"
 
 # Options: "pollinations:image", "gradient"
 # image_provider: "pollinations:image"
-image_provider: "gradient"
+image_provider: "aurora"
 
 # Options: "system_theme"
 palette_provider: "system_theme"

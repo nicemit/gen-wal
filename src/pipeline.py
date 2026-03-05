@@ -3,7 +3,7 @@ from datetime import datetime
 from src.config import load_config, HISTORY_DIR
 from src.themes import load_theme
 from src.env import collect_env_signals
-from src.seed import generate_daily_seed
+from src.seed import generate_daily_seed, derive_seed
 from src.providers import auto_register, get_provider
 from src.layouts import get_layout
 from src.wallpaper import set_wallpaper
@@ -20,10 +20,14 @@ def run_pipeline(preview=False):
     
     env = collect_env_signals()
     seed_cfg = config.get('seed', 'auto')
-    deterministic_seed = generate_daily_seed(theme_name, seed_cfg)
+    base_seed = generate_daily_seed(theme_name, seed_cfg)
+    
+    color_seed = derive_seed(base_seed, "color")
+    pattern_seed = derive_seed(base_seed, "pattern")
+    layout_seed = derive_seed(base_seed, "layout")
     
     print(f"  ➜ Theme: {theme_name}")
-    print(f"  ➜ Seed : {deterministic_seed}")
+    print(f"  ➜ Seed : {base_seed}")
 
     width = config.get('resolution', {}).get('width', 1920)
     height = config.get('resolution', {}).get('height', 1080)
@@ -41,15 +45,29 @@ def run_pipeline(preview=False):
     image_prov = get_provider('image', image_name, config)
     
     print("🎨 Generating Palette...")
-    palette = palette_prov.generate(deterministic_seed, env, theme_hints)
+    base_palette = palette_prov.generate(base_seed, env, theme_hints)
+    
+    color_mode = config.get('color_mode', 'balanced')
+    from src.color.strategies import apply_strategy, compute_color_strategy
+    strategy = compute_color_strategy(color_mode, color_seed)
+    print(f"  ➜ Color Strategy: {strategy} ({color_mode} mode)")
+    palette = apply_strategy(base_palette, strategy, color_seed)
+    
+    # CRITICAL: Overwrite the env palette so Image Providers pull the modified seeded colors!
+    env['palette'] = palette
     
     print("📝 Fetching Quote...")
-    quote = quote_prov.generate(deterministic_seed, env, theme_hints)
+    quote = quote_prov.generate(base_seed, env, theme_hints)
     print(f"    > \"{quote}\"")
     
     print("🖼️  Generating Image...")
-    # Some providers might need resolution
-    base_image = image_prov.generate(deterministic_seed, env, theme_hints, width, height)
+    # Providers consume pattern_seed for geometric/random visual variation
+    base_image = image_prov.generate(pattern_seed, env, theme_hints, width, height)
+    
+    print("✨ Applying Post-Processing Enhancements...")
+    from src.renderer import apply_grain, apply_vignette
+    base_image = apply_vignette(base_image, strength=0.2)
+    base_image = apply_grain(base_image, seed=pattern_seed, strength=8)
     
     # 3. Composition
     layout_name = config.get('layout', theme_hints.get('layout_hint', 'minimal'))
@@ -59,7 +77,7 @@ def run_pipeline(preview=False):
     
     # 4. Storage
     date_str = datetime.now().strftime('%Y-%m-%d')
-    filename = f"{date_str}_{theme_name}_{deterministic_seed}.jpg"
+    filename = f"{date_str}_{theme_name}_{base_seed}.jpg"
     if preview:
         output_path = f"/tmp/genwal_preview_{filename}"
     else:

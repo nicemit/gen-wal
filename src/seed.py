@@ -32,4 +32,9 @@ def get_seed_info(theme_name: str, config_seed):
     elif str(config_seed).lower() == 'random':
         return {"seed": seed, "derived": "Pseudo-Random Number Generator (PRNG)"}
     else:
-        return {"seed": seed, "derived": "config.yaml (explicit)"}
+        return {"seed": seed, "derived": "config.json (explicit)"}
+
+def derive_seed(base_seed: int, label: str) -> int:
+    """Split a base seed deterministically into child seeds by combining with a label."""
+    s = f"{base_seed}-{label}"
+    return int(hashlib.sha1(s.encode()).hexdigest(), 16)

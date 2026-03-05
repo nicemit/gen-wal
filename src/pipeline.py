@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 from src.config import load_config, HISTORY_DIR
-from src.themes import load_theme
 from src.env import collect_env_signals
 from src.seed import generate_daily_seed, derive_seed
 from src.providers import auto_register, get_provider
@@ -16,7 +15,7 @@ def run_pipeline(preview=False):
     config = load_config()
     
     theme_name = config.get('theme', 'minimal')
-    theme_hints, _ = load_theme(theme_name)
+    theme_hints = config # The config IS the theme now
     
     env = collect_env_signals()
     seed_cfg = config.get('seed', 'auto')
@@ -26,9 +25,6 @@ def run_pipeline(preview=False):
     pattern_seed = derive_seed(base_seed, "pattern")
     layout_seed = derive_seed(base_seed, "layout")
     
-    print(f"  ➜ Theme: {theme_name}")
-    print(f"  ➜ Seed : {base_seed}")
-
     width = config.get('resolution', {}).get('width', 1920)
     height = config.get('resolution', {}).get('height', 1080)
     resolution = (width, height)
@@ -39,6 +35,17 @@ def run_pipeline(preview=False):
     palette_name = config.get('palette_provider', 'system_theme')
     quote_name = config.get('quote_provider', 'csv')
     image_name = config.get('image_provider', 'gradient')
+    color_mode = config.get('color_mode', 'balanced')
+    layout_name = config.get('layout', config.get('layout_hint', 'minimal'))
+
+    print(f"  ➜ Theme    : {theme_name}")
+    print(f"  ➜ Seed     : {base_seed} ({seed_cfg})")
+    print(f"  ➜ Image    : {image_name}")
+    print(f"  ➜ Palette  : {palette_name}")
+    print(f"  ➜ Quotes   : {quote_name}")
+    print(f"  ➜ Layout   : {layout_name}")
+    print(f"  ➜ Color    : {color_mode}")
+    print(f"  ➜ Canvas   : {width}×{height}")
     
     palette_prov = get_provider('palette', palette_name, config)
     quote_prov = get_provider('quote', quote_name, config)
@@ -47,10 +54,9 @@ def run_pipeline(preview=False):
     print("🎨 Generating Palette...")
     base_palette = palette_prov.generate(base_seed, env, theme_hints)
     
-    color_mode = config.get('color_mode', 'balanced')
     from src.color.strategies import apply_strategy, compute_color_strategy
     strategy = compute_color_strategy(color_mode, color_seed)
-    print(f"  ➜ Color Strategy: {strategy} ({color_mode} mode)")
+    print(f"  ➜ Color Strategy: {strategy}")
     palette = apply_strategy(base_palette, strategy, color_seed)
     
     # CRITICAL: Overwrite the env palette so Image Providers pull the modified seeded colors!
@@ -70,7 +76,6 @@ def run_pipeline(preview=False):
     base_image = apply_grain(base_image, seed=pattern_seed, strength=8)
     
     # 3. Composition
-    layout_name = config.get('layout', theme_hints.get('layout_hint', 'minimal'))
     print(f"📐 Applying Layout: {layout_name}...")
     layout_engine = get_layout(layout_name, config)
     final_image = layout_engine.compose(base_image, quote, palette, resolution)

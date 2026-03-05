@@ -73,4 +73,11 @@ if [ -f "$CLI_PATH" ]; then
     rm "$CLI_PATH"
 fi
 
+# 8. Remove Bash Autocompletion
+BASH_COMP_FILE="$HOME/.local/share/bash-completion/completions/genwal"
+if [ -f "$BASH_COMP_FILE" ]; then
+    log "Removing bash auto-completion..."
+    rm "$BASH_COMP_FILE"
+fi
+
 log "Uninstallation Complete. Local files and schedule have been removed."

@@ -37,15 +37,26 @@ def main():
     config_parser = subparsers.add_parser("config", help="Manage configuration")
     config_sub = config_parser.add_subparsers(dest="subcommand")
     config_sub.add_parser("edit", help="Edit settings easily")
-    config_sub.add_parser("show", help="Print current active configuration")
+    get_parser = config_sub.add_parser("get", help="Print current active configuration or a specific key")
+    get_parser.add_argument("key", nargs="?", help="Specific key to get (supports dot.notation)")
+    config_sub.add_parser("keys", help=argparse.SUPPRESS) # Hidden command for autocompletion
+    
+    options_parser = config_sub.add_parser("options", help=argparse.SUPPRESS) # Hidden: returns valid values for a key
+    options_parser.add_argument("key", help="Key to get options for")
+
+    set_parser = config_sub.add_parser("set", help="Set a configuration key (supports dot.notation)")
+    set_parser.add_argument("key", help="Key to update (e.g., 'layout', 'noise.opacity')")
+    set_parser.add_argument("value", help="Value to set")
 
     # genwal schedule
     schedule_parser = subparsers.add_parser("schedule", help="Manage daemon scheduling")
     schedule_sub = schedule_parser.add_subparsers(dest="subcommand")
-    set_parser = schedule_sub.add_parser("set", help="Interacts with systemd timer")
+    set_parser = schedule_sub.add_parser("set", help="Set daily run time (HH:MM)")
     set_parser.add_argument("time", help="Time in HH:MM format")
-    schedule_sub.add_parser("show", help="View timer status")
-    schedule_sub.add_parser("disable", help="Stop the timer")
+    schedule_sub.add_parser("list", help="Show current schedule")
+    schedule_sub.add_parser("show", help="View full systemd timer status")
+    schedule_sub.add_parser("remove", help="Remove the schedule entirely")
+    schedule_sub.add_parser("disable", help=argparse.SUPPRESS) # Hidden alias for remove
 
     # genwal providers
     providers_parser = subparsers.add_parser("providers", help="Manage providers")
@@ -88,14 +99,89 @@ def main():
         elif args.subcommand == "edit":
             edit_theme(args.name)
     elif args.command == "config":
-        if getattr(args, 'subcommand', None) == "show":
+        if getattr(args, 'subcommand', None) == "get":
             config = load_config()
-            print(json.dumps(config, indent=2))
+            if args.key:
+                keys = args.key.split('.')
+                curr = config
+                for k in keys:
+                    if isinstance(curr, dict) and k in curr:
+                        curr = curr[k]
+                    else:
+                        print(f"Key '{args.key}' not found.")
+                        return
+                if isinstance(curr, dict):
+                    print(json.dumps(curr, indent=2))
+                else:
+                    print(curr)
+            else:
+                print(json.dumps(config, indent=2))
         elif getattr(args, 'subcommand', None) in ("edit", None):
             from src.config import CONFIG_PATH
             print(f"📝 Opening config file: {CONFIG_PATH}")
             editor = os.environ.get('EDITOR', 'nano')
             subprocess.run([editor, CONFIG_PATH])
+        elif getattr(args, 'subcommand', None) == "set":
+            from src.config import CONFIG_PATH
+            
+            # Autocast value dynamically
+            val_str = args.value
+            if val_str.isdigit(): val_str = int(val_str)
+            elif val_str.replace('.','',1).isdigit() and val_str.count('.') < 2: val_str = float(val_str)
+            elif val_str.lower() == 'true': val_str = True
+            elif val_str.lower() == 'false': val_str = False
+            
+            config = load_config()
+            
+            # Handle dot notation (noise.opacity -> config["noise"]["opacity"])
+            keys = args.key.split('.')
+            curr = config
+            for k in keys[:-1]:
+                if k not in curr or not isinstance(curr[k], dict):
+                    curr[k] = {}
+                curr = curr[k]
+            
+            curr[keys[-1]] = val_str
+            
+            with open(CONFIG_PATH, 'w') as f:
+                json.dump(config, f, indent=4)
+                
+            print(f"✅ Set {args.key} = {val_str}")
+        elif getattr(args, 'subcommand', None) == "keys":
+            config = load_config()
+            def get_all_paths(d, current_path=""):
+                paths = []
+                for k, v in d.items():
+                    path = f"{current_path}.{k}" if current_path else k
+                    paths.append(path)
+                    if isinstance(v, dict):
+                        paths.extend(get_all_paths(v, path))
+                return paths
+            print(" ".join(get_all_paths(config)))
+        elif getattr(args, 'subcommand', None) == "options":
+            # Known value maps for autocompletion
+            OPTIONS_MAP = {
+                "seed": ["auto", "random"],
+                "theme": ["minimal", "stoic", "terminal"],
+                "image_provider": ["mesh", "gradient", "noise", "flow", "voronoi", "aurora", "pollinations"],
+                "palette_provider": ["system_theme", "theme_palette", "random"],
+                "quote_provider": ["csv", "pollinations"],
+                "layout": ["minimal", "centered"],
+                "color_mode": ["minimal", "balanced", "vibrant", "wild"],
+                "layout_hint": ["minimal", "centered"],
+                "palette_hint": ["dark", "light", "warm", "cool"],
+                "quote_style": ["stoic", "concise", "builder", "zen", "deepwork"],
+                "noise.style": ["smooth", "blocky"],
+                "watermark.position": ["top_left", "top_right", "bottom_left", "bottom_right"],
+                "watermark.enabled": ["true", "false"],
+                "wallpaper_settings.apply_wallpaper": ["true", "false"],
+                "pollinations.image.nologo": ["true", "false"],
+            }
+            key = args.key
+            if key in OPTIONS_MAP:
+                print(" ".join(OPTIONS_MAP[key]))
+            else:
+                print("")
     elif args.command == "seed":
         config = load_config()
         theme_name = config.get("theme", "minimal")
@@ -104,16 +190,51 @@ def main():
         print(f"Current seed: {info['seed']}")
         print(f"Derived from: {info['derived']}")
     elif args.command == "schedule":
-        if args.subcommand == "show":
+        if getattr(args, 'subcommand', None) in ("list", None):
+            timer_file = os.path.expanduser("~/.config/systemd/user/gen-wal.timer")
+            if os.path.exists(timer_file):
+                with open(timer_file, 'r') as f:
+                    for line in f:
+                        if line.startswith("OnCalendar="):
+                            time_val = line.strip().split("=", 1)[1].replace(":00", "").replace("*-*-* ", "")
+                            print(f"🗓️  Gen-Wal runs daily at {time_val}")
+                            break
+                # Check if active
+                result = subprocess.run(
+                    ["systemctl", "--user", "is-active", "gen-wal.timer"],
+                    capture_output=True, text=True
+                )
+                status = result.stdout.strip()
+                if status == "active":
+                    print("  ➜ Status: ✅ active")
+                else:
+                    print(f"  ➜ Status: ⚠️  {status}")
+            else:
+                print("🗓️  No schedule configured. Use: genwal schedule set HH:MM")
+        elif args.subcommand == "show":
             print("🗓️  Schedule Status:")
             subprocess.run(["systemctl", "--user", "status", "gen-wal.timer"])
-        elif args.subcommand == "disable":
-            print("🛑 Disabling schedule...")
-            subprocess.run(["systemctl", "--user", "disable", "--now", "gen-wal.timer"])
+        elif args.subcommand in ("remove", "disable"):
+            print("🛑 Removing schedule...")
+            subprocess.run(["systemctl", "--user", "disable", "--now", "gen-wal.timer"], capture_output=True)
+            timer_file = os.path.expanduser("~/.config/systemd/user/gen-wal.timer")
+            if os.path.exists(timer_file):
+                os.remove(timer_file)
+            subprocess.run(["systemctl", "--user", "daemon-reload"], capture_output=True)
+            print("✅ Schedule removed.")
         elif args.subcommand == "set":
+            import re
             time_str = args.time
+            
+            # Normalize H:MM → HH:MM
+            if re.match(r'^\d:[0-5]\d$', time_str):
+                time_str = f"0{time_str}"
+            
+            if not re.match(r'^[0-2]\d:[0-5]\d$', time_str):
+                print(f"❌ Invalid time format: '{args.time}'. Use HH:MM (e.g., 06:30, 23:45)")
+                sys.exit(1)
+            
             print(f"⏰ Reconfiguring schedule for {time_str}...")
-            # Ideally this writes to the systemd unit, but for MVP we match what install.sh does
             timer_dir = os.path.expanduser("~/.config/systemd/user")
             timer_file = os.path.join(timer_dir, "gen-wal.timer")
             
@@ -153,7 +274,6 @@ WantedBy=timers.target
     elif args.command == "palette":
         if args.subcommand == "preview":
             from src.env import collect_env_signals
-            from src.themes import load_theme
             from src.seed import generate_daily_seed, derive_seed
             from src.providers import get_provider
             from src.color.strategies import apply_strategy, compute_color_strategy
@@ -161,7 +281,7 @@ WantedBy=timers.target
             
             config = load_config()
             theme_name = config.get('theme', 'minimal')
-            theme_hints, _ = load_theme(theme_name)
+            theme_hints = config # Configuration is the unified root truth for hints
             env = collect_env_signals()
             auto_register()
             palette_name = config.get('palette_provider', 'system_theme')

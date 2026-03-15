@@ -46,7 +46,7 @@ Gen-Wal is a small local daemon written in Python that:
 
 - Reads a text-based theme (e.g. Stoic, Builder, Terminal) and applies it to `config.json`
 - Generates a short quote using a local CSV or remote AI provider
-- Generates a matching procedural background image (mesh, voronoi, gradient, flow, aurora…)
+- Generates a matching procedural background image (mesh, voronoi, gradient, flow, aurora, waves, ribbons, reaction…)
 - Applies post-processing effects (vignette, grain)
 - Updates the desktop wallpaper automatically via systemd
 
@@ -114,7 +114,7 @@ Key config options with their valid values:
 | Key | Options |
 |---|---|
 | `seed` | `auto`, `random` |
-| `image_provider` | `mesh`, `gradient`, `noise`, `flow`, `voronoi`, `aurora`, `pollinations` |
+| `image_provider` | `mesh`, `gradient`, `noise`, `flow`, `voronoi`, `aurora`, `waves`, `ribbons`, `reaction`, `pollinations` |
 | `color_mode` | `minimal`, `balanced`, `vibrant`, `wild` |
 | `layout` | `minimal`, `centered` |
 | `palette_provider` | `system_theme`, `theme_palette`, `random` |

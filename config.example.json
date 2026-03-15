@@ -1,14 +1,20 @@
 {
     "theme": "stoic",
     "seed": "auto",
+    "__seed_options__": "auto, random, or any numerical integer value",
     "color_mode": "balanced",
+    "__color_mode_options__": "minimal, balanced, vibrant, wild",
     "layout_hint": "minimal",
     "palette_hint": "dark",
     "quote_style": "stoic",
     "layout": "minimal",
+    "__layout_options__": "minimal, centered",
     "quote_provider": "csv",
+    "__quote_provider_options__": "csv, pollinations",
     "image_provider": "mesh",
+    "__image_provider_options__": "mesh, gradient, noise, flow, voronoi, aurora, waves, ribbons, reaction, pollinations",
     "palette_provider": "system_theme",
+    "__palette_provider_options__": "system_theme, theme_palette, random",
     "image_prompt_provider": "pollinations:text",
     "llm": {
         "ollama": {

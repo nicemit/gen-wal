@@ -53,7 +53,7 @@ gen-wal/
 │   ├── color/
 │   │   └── strategies.py  # Seeded color theory transforms
 │   ├── providers/
-│   │   ├── images/      # mesh, gradient, noise, flow, voronoi, aurora, pollinations
+│   │   ├── images/      # mesh, gradient, noise, flow, voronoi, aurora, waves, ribbons, reaction, pollinations
 │   │   ├── palettes/    # system_theme, theme_palette, random
 │   │   └── quotes/      # csv, pollinations
 │   └── layouts/         # minimal, centered

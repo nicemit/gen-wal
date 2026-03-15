@@ -25,7 +25,7 @@ Gen-Wal is a simple daemon that fires once per day via systemd. The pipeline:
 3. **Generate Palette** — Creates a color scheme using the active palette provider.
 4. **Apply Color Strategy** — Transforms the palette using seeded color theory rules.
 5. **Fetch Quote** — Gets a short text from the configured quote provider.
-6. **Generate Image** — Creates a procedural background (mesh, voronoi, noise, etc.).
+6. **Generate Image** — Creates a procedural background (mesh, voronoi, waves, ribbons, reaction, aurora, etc.).
 7. **Post-Processing** — Applies vignette and grain effects.
 8. **Layout** — Composes the quote and image using the selected layout engine.
 9. **Set Wallpaper** — Updates the desktop background.
@@ -39,7 +39,7 @@ Gen-Wal is a simple daemon that fires once per day via systemd. The pipeline:
 | `theme` | Active theme name | any theme in `themes/` | `minimal` |
 | `seed` | Generation seed mode | `auto`, `random`, or integer | `auto` |
 | `color_mode` | Color variation intensity | `minimal`, `balanced`, `vibrant`, `wild` | `balanced` |
-| `image_provider` | Background generator | `mesh`, `gradient`, `noise`, `flow`, `voronoi`, `aurora`, `pollinations` | `mesh` |
+| `image_provider` | Background generator | `mesh`, `gradient`, `noise`, `flow`, `voronoi`, `aurora`, `waves`, `ribbons`, `reaction`, `pollinations` | `mesh` |
 | `palette_provider` | Color scheme source | `system_theme`, `theme_palette`, `random` | `system_theme` |
 | `quote_provider` | Quote source | `csv`, `pollinations` | `csv` |
 | `layout` | Text composition strategy | `minimal`, `centered` | `minimal` |
@@ -74,6 +74,9 @@ Set via CLI: `genwal config set resolution.width 2560`
 | `flow` | Abstract vector field generative art |
 | `voronoi` | Geometric Voronoi cell diagrams |
 | `aurora` | Aurora borealis-style soft gradients |
+| `waves` | Layered sine-wave shapes with transparency |
+| `ribbons` | Elegant curved ribbon vector art |
+| `reaction` | Gray-Scott reaction-diffusion cellular patterns |
 
 ### Remote
 

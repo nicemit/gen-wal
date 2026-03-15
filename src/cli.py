@@ -163,7 +163,7 @@ def main():
             OPTIONS_MAP = {
                 "seed": ["auto", "random"],
                 "theme": ["minimal", "stoic", "terminal"],
-                "image_provider": ["mesh", "gradient", "noise", "flow", "voronoi", "aurora", "pollinations"],
+                "image_provider": ["mesh", "gradient", "noise", "flow", "voronoi", "aurora", "waves", "ribbons", "reaction", "pollinations"],
                 "palette_provider": ["system_theme", "theme_palette", "random"],
                 "quote_provider": ["csv", "pollinations"],
                 "layout": ["minimal", "centered"],

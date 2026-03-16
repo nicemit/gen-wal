@@ -23,6 +23,10 @@ def main():
     
     # genwal preview
     preview_parser = subparsers.add_parser("preview", help="Generate to tmp, do not apply to OS")
+    preview_parser.add_argument("--provider", help="Temporarily override the image provider")
+
+    # genwal showcase
+    showcase_parser = subparsers.add_parser("showcase", help="Generate gallery showcasing multiple providers")
 
     # genwal theme
     theme_parser = subparsers.add_parser("theme", help="Manage themes")
@@ -59,9 +63,12 @@ def main():
     schedule_sub.add_parser("disable", help=argparse.SUPPRESS) # Hidden alias for remove
 
     # genwal providers
-    providers_parser = subparsers.add_parser("providers", help="Manage providers")
+    providers_parser = subparsers.add_parser("providers", aliases=['provider'], help="Manage providers")
     providers_sub = providers_parser.add_subparsers(dest="subcommand")
     providers_sub.add_parser("list", help="Show available providers")
+    create_parser = providers_sub.add_parser("create", help="Create a new user provider from template")
+    create_parser.add_argument("type", choices=["image", "palette", "quote"], help="Type of provider")
+    create_parser.add_argument("name", help="Name of the new provider")
 
     # genwal history
     history_parser = subparsers.add_parser("history", help="Manage generated history")
@@ -90,7 +97,45 @@ def main():
     if args.command == "run":
         run_pipeline(preview=False)
     elif args.command == "preview":
-        run_pipeline(preview=True)
+        overrides = {}
+        if getattr(args, 'provider', None):
+            overrides['image_provider'] = args.provider
+        run_pipeline(preview=True, overrides=overrides)
+    elif args.command == "showcase":
+        # Generate showcasing using several builtin providers
+        providers = ["mesh", "flow", "voronoi", "reaction", "waves"]
+        out_dir = "/tmp/genwal-showcase"
+        os.makedirs(out_dir, exist_ok=True)
+        print(f"🖼️ Generating genwal showcase in {out_dir}...")
+        
+        config = load_config()
+        # Keep consistent seed so comparisons run smoothly
+        config['seed'] = 'auto'
+        
+        # Monkeypatch the save target logic from pipeline
+        import src.wallpaper
+        original_set = src.wallpaper.set_wallpaper
+        
+        for p in providers:
+            print(f"  → Showcasing provider: {p}")
+            config['image_provider'] = p
+            
+            def custom_set(img_path, ext):
+                import shutil
+                dest = os.path.join(out_dir, f"showcase_{p}{ext}")
+                shutil.copy(img_path, dest)
+                print(f"    Saved {dest}")
+                
+            src.wallpaper.set_wallpaper = custom_set
+            try:
+                run_pipeline(preview=True, overrides={'image_provider': p})
+            except Exception as e:
+                print(f"    ❌ Failed: {e}")
+                
+        # Restore
+        src.wallpaper.set_wallpaper = original_set
+        print(f"✅ Showcase complete in {out_dir}")
+
     elif args.command == "theme":
         if args.subcommand == "list":
             list_themes()
@@ -256,15 +301,102 @@ WantedBy=timers.target
             subprocess.run(["systemctl", "--user", "enable", "--now", "gen-wal.timer"])
             print("✅ Schedule updated.")
             
-    elif args.command == "providers":
+    elif args.command in ("providers", "provider"):
         if args.subcommand == "list":
             auto_register()
             providers = list_registered_providers()
             print("Registered Providers:")
-            for category, items in providers.items():
+            for category, registry in providers.items():
                 print(f"  {category.capitalize()}:")
-                for item in items:
-                    print(f"    - {item}")
+                from collections import defaultdict
+                grouped = defaultdict(list)
+                for name, meta in registry.items():
+                    grouped[meta["origin"]].append(name)
+                
+                for origin in ["builtin", "user", "ai"]:
+                    if origin in grouped:
+                        print(f"    [{origin.capitalize()}]")
+                        for item in sorted(grouped[origin]):
+                            print(f"      - {item}")
+        elif args.subcommand == "create":
+            from src.config import PROVIDERS_DIR
+            out_file = os.path.join(PROVIDERS_DIR, f"{args.type}s", f"{args.name}.py")
+            if os.path.exists(out_file):
+                print(f"❌ Provider '{args.name}' already exists at {out_file}")
+                return
+                
+            class_name = args.name.capitalize() + "Provider"
+            base_class = args.type.capitalize() + "Provider"
+            
+            if args.type == "image":
+                template = f'''from src.providers.base import {base_class}, register_provider
+from PIL import Image
+
+class {class_name}({base_class}):
+    def __init__(self, config):
+        self.config = config
+
+    @classmethod
+    def name(cls):
+        return "{args.name}"
+
+    def generate(self, seed: int, env: dict, theme_hints: dict, width: int = 1920, height: int = 1080):
+        """
+        Generate and return your artifact here.
+        By default, this stub returns a solid red image.
+        """
+        img = Image.new('RGB', (width, height), color=(255, 0, 0))
+        return img
+
+# Register as a user plugin
+register_provider("{args.type}", {class_name}, origin="user")
+'''
+            elif args.type == "quote":
+                template = f'''from src.providers.base import {base_class}, register_provider
+
+class {class_name}({base_class}):
+    def __init__(self, config):
+        self.config = config
+
+    @classmethod
+    def name(cls):
+        return "{args.name}"
+
+    def generate(self, seed: int, env: dict, theme_hints: dict):
+        return "Your custom quote here."
+
+# Register as a user plugin
+register_provider("{args.type}", {class_name}, origin="user")
+'''
+            elif args.type == "palette":
+                template = f'''from src.providers.base import {base_class}, register_provider
+
+class {class_name}({base_class}):
+    def __init__(self, config):
+        self.config = config
+
+    @classmethod
+    def name(cls):
+        return "{args.name}"
+
+    def generate(self, seed: int, env: dict, theme_hints: dict):
+        return {{
+            "background": "#000000",
+            "secondary": "#555555",
+            "accent": "#ffffff"
+        }}
+
+# Register as a user plugin
+register_provider("{args.type}", {class_name}, origin="user")
+'''
+            
+            os.makedirs(os.path.dirname(out_file), exist_ok=True)
+            with open(out_file, 'w') as f:
+                f.write(template)
+            
+            print(f"✅ Created {args.type} provider '{args.name}' at:")
+            print(f"   {out_file}")
+            print(f"   Test it with: genwal preview --provider {args.name}")
     elif args.command == "history":
         if getattr(args, 'subcommand', None) in ("list", None):
             list_history()

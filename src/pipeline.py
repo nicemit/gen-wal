@@ -7,12 +7,16 @@ from src.providers import auto_register, get_provider
 from src.layouts import get_layout
 from src.wallpaper import set_wallpaper
 
-def run_pipeline(preview=False):
+def run_pipeline(preview=False, overrides=None):
     """Executes the deterministic wallpaper generation pipeline."""
     print("🚀 Starting Gen-Wal Pipeline...")
     
     # 1. Setup
     config = load_config()
+    if overrides:
+        for k, v in overrides.items():
+            config[k] = v
+            
     
     theme_name = config.get('theme', 'minimal')
     theme_hints = config # The config IS the theme now

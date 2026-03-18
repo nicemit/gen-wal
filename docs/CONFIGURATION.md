@@ -10,6 +10,7 @@ genwal config get seed         # Get a single key
 genwal config set seed random  # Set a key (tab-completion shows valid values)
 genwal config set noise.opacity 0.5    # Dot-notation for nested keys
 genwal config edit             # Open in $EDITOR
+genwal config load '{"image_provider": "mesh"}' # Load/Merge full JSON config
 ```
 
 Config file lives at: `~/.config/genwal/config.json`
@@ -158,6 +159,40 @@ Focus is the new IQ.
 genwal theme use deep_work   # Applies frontmatter keys into config.json
 genwal theme list            # List all available themes
 genwal theme edit deep_work  # Edit or create a theme
+```
+
+---
+
+## Profiles
+
+Profiles are `.md` files that define detailed **AI prompting templates** for quote or image generators. Unlike Themes (which are config presets), Profiles feed explicit instruction contexts directly into LLMs.
+
+Profiles live in `~/.config/genwal/profiles/`.
+
+### Profile Format
+
+Profiles can contain a dynamic YAML frontmatter to override prompt templates layout:
+
+```markdown
+---
+quote_prompt_template: "Act as a curator of wisdom. Select a specific quote relating to this focus. Max 15 words."
+image_prompt_template: "Generate a visual description for a minimalist wallpaper. sparse, serious, quiet."
+---
+# My Profile
+
+## Core Philosophy
+This text describes your focus frame. The LLM interprets this context when generating quotes.
+```
+
+### Profile CLI Commands
+
+```bash
+genwal profile create <name>   # Generates a skeleton profile safely
+```
+
+To tell the pipeline to use your custom file, point your config to it:
+```bash
+genwal config set profile_path "~/.config/genwal/profiles/my_profile.md"
 ```
 
 ---

@@ -36,6 +36,8 @@ def main():
     use_parser.add_argument("name", help="Theme name to use")
     edit_parser = theme_sub.add_parser("edit", help="Open theme file in editor")
     edit_parser.add_argument("name", help="Theme name to edit")
+    create_parser = theme_sub.add_parser("create", help="Create a new theme template")
+    create_parser.add_argument("name", help="Name of the theme (e.g. stoic, zen)")
 
     # genwal config
     config_parser = subparsers.add_parser("config", help="Manage configuration")
@@ -47,6 +49,9 @@ def main():
     
     options_parser = config_sub.add_parser("options", help=argparse.SUPPRESS) # Hidden: returns valid values for a key
     options_parser.add_argument("key", help="Key to get options for")
+    
+    load_parser = config_sub.add_parser("load", help="Load full JSON configuration from file or string")
+    load_parser.add_argument("source", help="JSON string or path to .json file")
 
     set_parser = config_sub.add_parser("set", help="Set a configuration key (supports dot.notation)")
     set_parser.add_argument("key", help="Key to update (e.g., 'layout', 'noise.opacity')")
@@ -86,10 +91,7 @@ def main():
     palette_sub.add_parser("preview", help="Preview 5 deterministic color palette variations")
 
     # genwal profile
-    profile_parser = subparsers.add_parser("profile", help="Manage templates and prompts")
-    profile_sub = profile_parser.add_subparsers(dest="subcommand")
-    create_p_parser = profile_sub.add_parser("create", help="Create a new template profile (.md)")
-    create_p_parser.add_argument("name", help="Name of the profile (e.g. stoic, zen)")
+    # Profile group removed layout merging into theme
 
     # genwal doctor
     subparsers.add_parser("doctor", help="Validation and environment checks")
@@ -149,6 +151,8 @@ def main():
             use_theme(args.name)
         elif args.subcommand == "edit":
             edit_theme(args.name)
+        elif args.subcommand == "create":
+            edit_theme(args.name) # already creates template & opens editor
     elif args.command == "config":
         if getattr(args, 'subcommand', None) == "get":
             config = load_config()
@@ -198,6 +202,36 @@ def main():
                 json.dump(config, f, indent=4)
                 
             print(f"✅ Set {args.key} = {val_str}")
+        elif getattr(args, 'subcommand', None) == "load":
+            from src.config import CONFIG_PATH
+            import glob
+            
+            source = args.source
+            new_data = {}
+            try:
+                if os.path.exists(source):
+                    with open(source, 'r') as f:
+                        new_data = json.load(f)
+                else:
+                    new_data = json.loads(source)
+                
+                config = load_config()
+                # Recursive merging for nested providers overrides
+                def merge(d, u):
+                    for k, v in u.items():
+                        if isinstance(v, dict):
+                            d[k] = merge(d.get(k, {}), v)
+                        else:
+                            d[k] = v
+                    return d
+                
+                config = merge(config, new_data)
+                
+                with open(CONFIG_PATH, 'w') as f:
+                    json.dump(config, f, indent=4)
+                print("✅ Configuration loaded and merged successfully.")
+            except Exception as e:
+                print(f"❌ Failed to load config: {e}")
         elif getattr(args, 'subcommand', None) == "keys":
             config = load_config()
             def get_all_paths(d, current_path=""):
@@ -409,36 +443,7 @@ register_provider("{args.type}", {class_name}, origin="user")
         elif args.subcommand == "apply":
             apply_history(args.index)
             
-    elif args.command == "profile":
-        if args.subcommand == "create":
-            from src.config import PROFILES_DIR
-            name = args.name
-            if not name.endswith(".md"): name = name + ".md"
-            out_file = os.path.join(PROFILES_DIR, name)
-            
-            if os.path.exists(out_file):
-                print(f"❌ Profile '{args.name}' already exists at {out_file}")
-            else:
-                template = """---
-quote_prompt_template: "Act as a curator of wisdom. Select a specific quote relating to this focus. Max 15 words."
-image_prompt_template: "Generate a visual description for a minimalist wallpaper. sparse, serious, quiet. No text. Max 15 words."
----
-# My New Profile
-
-## Mindset Sources
-- placeholder inspiration 1
-- placeholder inspiration 2
-
-## Core Philosophy
-This is my philosophical reference structure. Make the AI render scenes interpreting this abstractly.
-"""
-                os.makedirs(PROFILES_DIR, exist_ok=True)
-                with open(out_file, 'w') as f:
-                    f.write(template)
-                
-                print(f"✅ Created profile '{args.name}' template at:")
-                print(f"   {out_file}")
-                print(f"   Apply it with: genwal config set profile_path '{out_file}'")
+    # Profile execution deleted, handled by theme create
                 
     elif args.command == "palette":
         if args.subcommand == "preview":

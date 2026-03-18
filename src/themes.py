@@ -50,7 +50,7 @@ def use_theme(name):
     from src.config import load_config, ensure_xdg_dirs, CONFIG_PATH
     import json
     
-    hints, _ = load_theme(name)
+    hints, body = load_theme(name)
     
     ensure_xdg_dirs()
     config = load_config()
@@ -59,6 +59,7 @@ def use_theme(name):
     # Inject all theme hints directly into the JSON configuration
     for k, v in hints.items():
         config[k] = v
+    config['description'] = body
         
     with open(CONFIG_PATH, 'w') as f:
         json.dump(config, f, indent=4)
@@ -85,7 +86,7 @@ def edit_theme(name):
         ensure_theme_dir()
         path = os.path.join(THEMES_DIR, f"{name}.md")
         with open(path, 'w') as f:
-            f.write("---\nlayout_hint: minimal\npalette_hint: dark\nquote_style: concise\n---\n\nWrite your theme philosophy here.\n")
+            f.write("---\nlayout_hint: minimal\npalette_hint: dark\nquote_style: concise\nquote_prompt_template: \"Act as a curator of wisdom. Select a quote relating to this focus. Max 15 words.\"\nimage_prompt_template: \"Generate a visual description for a minimalist wallpaper. sparse, quiet. Max 15 words.\"\n---\n\nWrite your theme philosophy here.\n")
             
     print(f"📝 Opening theme: {name}")
     editor = os.environ.get('EDITOR', 'nano')

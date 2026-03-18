@@ -13,7 +13,7 @@ XDG_CACHE_HOME = os.environ.get('XDG_CACHE_HOME', os.path.expanduser('~/.cache')
 HISTORY_DIR = os.path.join(XDG_CACHE_HOME, 'genwal', 'history')
 
 PROVIDERS_DIR = os.path.join(XDG_DATA_HOME, 'genwal', 'providers')
-PROFILES_DIR = os.path.join(CONFIG_DIR, 'profiles')
+# PROFILES_DIR deprecated and merged into THEMES_DIR
 
 def ensure_provider_dirs():
     os.makedirs(os.path.join(PROVIDERS_DIR, 'images'), exist_ok=True)
@@ -24,7 +24,7 @@ def ensure_xdg_dirs():
     os.makedirs(CONFIG_DIR, exist_ok=True)
     os.makedirs(THEMES_DIR, exist_ok=True)
     os.makedirs(HISTORY_DIR, exist_ok=True)
-    os.makedirs(PROFILES_DIR, exist_ok=True)
+    # PROFILES_DIR makedirs removed
     ensure_provider_dirs()
 
 def load_config():

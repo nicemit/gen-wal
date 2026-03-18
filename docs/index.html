@@ -164,16 +164,25 @@
                         </h1>
                     </div>
 
-                    <p class="text-xl sm:text-2xl text-neutral-300 font-light max-w-2xl mx-auto px-4">
-                        A tiny daemon that changes your wallpaper once a day.
-                    </p>
-                    
-                    <a href="https://github.com/nicemit/gen-wal" target="_blank" class="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors border border-neutral-800 rounded-full px-4 py-1.5 hover:border-neutral-600 bg-neutral-900/50 mt-2">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-                        </svg>
-                        <span>GitHub</span>
-                    </a>
+                    <!-- Dynamic Tagline Slider -->
+                    <div class="min-h-[140px] flex flex-col justify-center">
+                        <p id="hero-title"
+                            class="text-3xl sm:text-4xl md:text-5xl font-light text-neutral-200 leading-relaxed max-w-2xl mx-auto transition-opacity duration-500 opacity-0 font-orbitron">
+                            <!-- content loaded via js -->
+                        </p>
+                        <p id="hero-subtitle"
+                            class="text-base md:text-lg text-neutral-500 font-mono pt-4 transition-opacity duration-500 delay-200 opacity-0">
+                            <!-- content loaded via js -->
+                        </p>
+                    </div>
+
+                    <!-- Grounding Paragraph -->
+                    <div class="pt-6 max-w-2xl mx-auto text-neutral-400 font-light text-base md:text-lg leading-relaxed px-4">
+                        <p>
+                            A small experiment born from curiosity. Runs once a day to generate a new desktop wallpaper.
+                            Uses minimal text and visual context. Designed to be subtle and ignorable.
+                        </p>
+                    </div>
 
                     <!-- Install Command -->
                     <div class="w-full max-w-3xl mx-auto px-4 mt-8 animate-fade-in-up delay-100">
@@ -186,28 +195,23 @@
                             </button>
                         </div>
 
-                        <div class="mt-6 flex flex-col items-center text-sm md:text-base font-mono space-y-2">
+                        <div class="mt-6 flex flex-col items-center text-sm md:text-base font-mono space-y-4">
                             <p class="text-neutral-500 text-center">
                                 Runs locally by default. Optional AI providers can be enabled.
                             </p>
+                            <div class="flex gap-4 justify-center mt-4">
+                                <a href="documentation.html" class="bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 font-medium px-6 py-3 rounded-lg text-sm shadow-md transition-all hover:scale-105">
+                                    📖 View Config Docs
+                                </a>
+                                <a href="gallery.html" class="bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-neutral-300 font-medium px-6 py-3 rounded-lg text-sm shadow-md transition-all hover:scale-105">
+                                    🎨 Theme Gallery
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </header>
 
-                <!-- Divider -->
-                <div class="w-full max-w-2xl mx-auto h-[1px] bg-neutral-900 border-b border-white/5 my-8"></div>
-
-                <!-- Static Tagline -->
-                <div class="min-h-[160px] flex flex-col justify-center">
-                    <p id="hero-title"
-                        class="text-3xl sm:text-4xl md:text-5xl font-light text-neutral-400 leading-relaxed max-w-2xl mx-auto transition-opacity duration-500 opacity-0">
-                        <!-- content loaded via js -->
-                    </p>
-                    <p id="hero-subtitle"
-                        class="text-base md:text-lg text-neutral-600 font-mono pt-6 transition-opacity duration-500 delay-200 opacity-0">
-                        <!-- content loaded via js -->
-                    </p>
-                </div>
+                <!-- Dynamic Slider Moved Up -->
 
                 <script>
                     const heroTexts = [
@@ -223,6 +227,7 @@
                             title: "An experiment in ambient focus.",
                             subtitle: "One small change, once a day."
                         },
+
                         {
                             title: "Motivation apps scream.",
                             subtitle: "This one whispers."
@@ -261,13 +266,7 @@
                     });
                 </script>
 
-                <!-- Grounding Paragraph -->
-                <div class="pt-8 max-w-2xl mx-auto text-neutral-500 font-light text-lg leading-relaxed space-y-4">
-                    <p>
-                        A small experiment born from curiosity. Runs once a day to generate a new desktop wallpaper.
-                        Uses minimal text and visual context. Designed to be subtle and ignorable.
-                    </p>
-                </div>
+                <!-- Grounding Paragraph Moved Up -->
             </div>
         </div>
 
@@ -393,13 +392,12 @@
         <!-- Visual Archetypes Gallery -->
         <div class="pt-4 pb-12 md:pb-24 animate-fade-in-up delay-300">
             <h2 class="text-3xl md:text-4xl font-bold mb-6 font-orbitron text-center text-neutral-300">
-                Themes
+                Desktop Themes
             </h2>
             <p class="text-center text-neutral-500 max-w-lg mx-auto mb-16 font-light text-lg">
-                Text files that define the theme. <a href="documentation.html#customization"
-                    class="text-accent font-normal hover:text-white transition-colors underline decoration-dashed underline-offset-4">Create
-                    your own</a> to
-                match your specific goals.
+                Markdown templates that frame your target mindset, philosophy lists, and ambient visual prompts. <a href="gallery.html"
+                    class="text-accent font-normal hover:text-white transition-colors underline decoration-dashed underline-offset-4">Browse
+                    the Gallery</a> to adopt a reference frame.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
 
@@ -419,39 +417,39 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Minimal -->
+                <!-- Card 2: Zen -->
                 <div
                     class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center pt-12">
-                        <h3 class="text-2xl font-light tracking-widest uppercase text-zinc-300 mb-3">Minimal</h3>
-                        <p class="text-base text-zinc-500 leading-relaxed italic">"Clarity over complexity."</p>
+                        <h3 class="text-2xl font-light tracking-widest uppercase text-zinc-300 mb-3">Zen</h3>
+                        <p class="text-base text-zinc-500 leading-relaxed italic">"Form is emptiness, emptiness is form."</p>
                     </div>
                     <div
                         class="absolute bottom-0 left-0 right-0 h-1 bg-zinc-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
                     </div>
                 </div>
 
-                <!-- Card 3: Terminal -->
+                <!-- Card 3: Deep Work -->
                 <div
                     class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-neutral-800 bg-neutral-900">
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from-emerald-900 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                        class="absolute inset-0 bg-gradient-to-br from-blue-900 to-zinc-950 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
                     </div>
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center pt-12">
-                        <h3 class="text-2xl font-bold uppercase text-emerald-500 mb-3 tracking-widest">Terminal</h3>
-                        <p class="text-base text-emerald-700 font-bold leading-relaxed">"Ship it. Iterate. Ship again."
+                        <h3 class="text-2xl font-bold uppercase text-blue-400 mb-3 tracking-widest">Deep Work</h3>
+                        <p class="text-base text-blue-600 font-bold leading-relaxed">"Focus is the new IQ."
                         </p>
                     </div>
                     <div
-                        class="absolute bottom-0 left-0 right-0 h-1 bg-emerald-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-500">
                     </div>
                 </div>
 
                 <!-- Card 4: Create Your Own -->
-                <a href="documentation.html#customization"
+                <a href="gallery.html"
                     class="group relative aspect-[16/9] rounded-xl overflow-hidden border border-dashed border-neutral-700 bg-neutral-900/50 hover:border-neutral-500 transition-colors cursor-pointer block">
                     <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
                         <div
@@ -462,10 +460,10 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-bold text-neutral-400 mb-2 group-hover:text-white transition-colors">
-                            Create Your Own</h3>
+                            Browse Gallery</h3>
                         <p
                             class="text-sm text-neutral-600 font-mono leading-relaxed group-hover:text-neutral-500 transition-colors">
-                            Define your own source.<br>Simply edit a text file.</p>
+                            View ready-made templates.<br>Copy and run in one click.</p>
                     </div>
                 </a>
             </div>
@@ -509,8 +507,8 @@
 
                 <div
                     class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-pink-500/40 transition-colors">
-                    <h3 class="text-2xl font-semibold mb-3 text-pink-400">🌍 Marketplace</h3>
-                    <p class="text-base text-gray-400">Browse, copy, and paste community-created reference frames directly from our static online gallery list.</p>
+                    <h3 class="text-2xl font-semibold mb-3 text-pink-400">🌊 Temporal Shifting</h3>
+                    <p class="text-base text-gray-400">Automatically shift wallpaper mesh vectors from morning focus tones to evening wind-down aesthetics.</p>
                 </div>
             </div>
 

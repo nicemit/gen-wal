@@ -28,33 +28,11 @@ class PollinationsTextProvider(QuoteProvider):
         else:
             selected_model = model_cfg
         
-        # Load profile_content from full config
+        # Load content from full config (Theme body description)
         from src.config import load_config
         full_cfg = load_config()
-        profile_path = full_cfg.get('profile_path', 'profiles/examples/stoic.md')
-        
-        if isinstance(profile_path, list):
-            profile_path = rng.choice(profile_path)
-            
-        profile_content = ""
-        quote_prompt_template = ""
-        try:
-            if os.path.exists(profile_path):
-                with open(profile_path, 'r') as f:
-                    content_raw = f.read()
-                    if content_raw.startswith("---"):
-                        parts = content_raw.split("---", 2)
-                        if len(parts) >= 3:
-                            yaml_text = parts[1].strip()
-                            profile_content = parts[2].strip()
-                            # Basic string parsing for template since full yaml may not be imported
-                            for line in yaml_text.split("\n"):
-                                if "quote_prompt_template:" in line:
-                                    quote_prompt_template = line.split("quote_prompt_template:", 1)[1].strip().strip('"')
-                    else:
-                        profile_content = content_raw
-        except Exception as e:
-            print(f"Warning: Failed to load profile for pollinations text: {e}")
+        profile_content = full_cfg.get('description', '')
+        quote_prompt_template = full_cfg.get('quote_prompt_template', '')
 
         # Highly detailed prompt profile template from config fallback
         template = quote_prompt_template or full_cfg.get("prompts", {}).get("quote", (

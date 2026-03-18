@@ -85,6 +85,12 @@ def main():
     palette_sub = palette_parser.add_subparsers(dest="subcommand")
     palette_sub.add_parser("preview", help="Preview 5 deterministic color palette variations")
 
+    # genwal profile
+    profile_parser = subparsers.add_parser("profile", help="Manage templates and prompts")
+    profile_sub = profile_parser.add_subparsers(dest="subcommand")
+    create_p_parser = profile_sub.add_parser("create", help="Create a new template profile (.md)")
+    create_p_parser.add_argument("name", help="Name of the profile (e.g. stoic, zen)")
+
     # genwal doctor
     subparsers.add_parser("doctor", help="Validation and environment checks")
 
@@ -403,6 +409,37 @@ register_provider("{args.type}", {class_name}, origin="user")
         elif args.subcommand == "apply":
             apply_history(args.index)
             
+    elif args.command == "profile":
+        if args.subcommand == "create":
+            from src.config import PROFILES_DIR
+            name = args.name
+            if not name.endswith(".md"): name = name + ".md"
+            out_file = os.path.join(PROFILES_DIR, name)
+            
+            if os.path.exists(out_file):
+                print(f"❌ Profile '{args.name}' already exists at {out_file}")
+            else:
+                template = """---
+quote_prompt_template: "Act as a curator of wisdom. Select a specific quote relating to this focus. Max 15 words."
+image_prompt_template: "Generate a visual description for a minimalist wallpaper. sparse, serious, quiet. No text. Max 15 words."
+---
+# My New Profile
+
+## Mindset Sources
+- placeholder inspiration 1
+- placeholder inspiration 2
+
+## Core Philosophy
+This is my philosophical reference structure. Make the AI render scenes interpreting this abstractly.
+"""
+                os.makedirs(PROFILES_DIR, exist_ok=True)
+                with open(out_file, 'w') as f:
+                    f.write(template)
+                
+                print(f"✅ Created profile '{args.name}' template at:")
+                print(f"   {out_file}")
+                print(f"   Apply it with: genwal config set profile_path '{out_file}'")
+                
     elif args.command == "palette":
         if args.subcommand == "preview":
             from src.env import collect_env_signals

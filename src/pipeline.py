@@ -49,6 +49,7 @@ def run_pipeline(preview=False, overrides=None):
     print(f"  ➜ Quotes   : {quote_name}")
     print(f"  ➜ Layout   : {layout_name}")
     print(f"  ➜ Color    : {color_mode}")
+    print(f"  ➜ Profile  : {config.get('profile_path', 'profiles/examples/stoic.md')}")
     print(f"  ➜ Canvas   : {width}×{height}")
     
     palette_prov = get_provider('palette', palette_name, config)

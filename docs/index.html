@@ -151,127 +151,243 @@
 
     <div class="relative z-10 w-full max-w-7xl my-auto p-4 md:p-8">
 
-        <!-- Hero Section: Split Layout -->
-        <!-- Hero Section: Centered Layout due to no screenshots -->
-        <div class="flex flex-col items-center justify-center mb-12 lg:mb-24 mt-4 lg:mt-12">
-
+        <!-- Hero Section: Centered Layout -->
+        <div class="flex flex-col items-center justify-center mb-12 lg:mb-24 mt-4 lg:mt-12 w-full">
             <!-- Content -->
-            <div
-                class="space-y-6 md:space-y-8 text-center animate-fade-in-up flex flex-col items-center max-w-4xl mx-auto">
-                <header class="space-y-6 md:space-y-8 flex flex-col items-center">
+            <div class="space-y-6 md:space-y-8 text-center animate-fade-in-up flex flex-col items-center max-w-4xl mx-auto w-full">
+                <header class="space-y-6 md:space-y-8 flex flex-col items-center w-full">
                     <div class="flex items-center justify-center gap-4 md:gap-6">
                         <img src="images/logo.png?v=8" alt="Gen-Wal Logo"
                             class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                        <h1
-                            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter font-orbitron text-white drop-shadow-lg">
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter font-orbitron text-white drop-shadow-lg">
                             Gen-Wal
                         </h1>
                     </div>
 
-                    <!-- Static Tagline -->
-                    <div class="min-h-[160px] flex flex-col justify-center"> <!-- Min-height to prevent layout shift -->
-                        <p id="hero-title"
-                            class="text-3xl sm:text-4xl md:text-5xl font-light text-neutral-400 leading-relaxed max-w-2xl mx-auto transition-opacity duration-500 opacity-0">
-                            <!-- content loaded via js -->
-                        </p>
-                        <p id="hero-subtitle"
-                            class="text-base md:text-lg text-neutral-600 font-mono pt-6 transition-opacity duration-500 delay-200 opacity-0">
-                            <!-- content loaded via js -->
-                        </p>
-                    </div>
+                    <p class="text-xl sm:text-2xl text-neutral-300 font-light max-w-2xl mx-auto px-4">
+                        A tiny daemon that changes your wallpaper once a day.
+                    </p>
+                    
+                    <a href="https://github.com/nicemit/gen-wal" target="_blank" class="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors border border-neutral-800 rounded-full px-4 py-1.5 hover:border-neutral-600 bg-neutral-900/50 mt-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+                        </svg>
+                        <span>GitHub</span>
+                    </a>
 
-                    <script>
-                        const heroTexts = [
-                            {
-                                title: "You already look at your desktop all day.",
-                                subtitle: "What if it worked for you?"
-                            },
-                            {
-                                title: "Nothing to click.",
-                                subtitle: "Nothing to check."
-                            },
-                            {
-                                title: "An experiment in ambient focus.",
-                                subtitle: "One small change, once a day."
-                            },
-                            {
-                                title: "Motivation apps scream.",
-                                subtitle: "This one whispers."
-                            },
-                            {
-                                title: "Your environment is already teaching you.",
-                                subtitle: "You just haven’t been listening."
-                            },
-                            {
-                                title: "Attention follows what surrounds it.",
-                                subtitle: "Change the surroundings."
-                            },
-                            {
-                                title: "I wondered if subtle cues work better than reminders.",
-                                subtitle: "So I tried it."
-                            },
-                            {
-                                title: "What you see every day matters.",
-                                subtitle: "Even if you don’t notice it."
-                            }
-                        ];
+                    <!-- Install Command -->
+                    <div class="w-full max-w-3xl mx-auto px-4 mt-8 animate-fade-in-up delay-100">
+                        <div onclick="copyCommand()"
+                            class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-6 sm:px-8 py-5 sm:py-6 font-mono text-sm sm:text-base md:text-lg lg:text-xl transition-colors hover:border-neutral-700 cursor-pointer shadow-lg w-full">
+                            <code class="text-accent break-all text-left">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
+                            <button
+                                class="shrink-0 rounded bg-white/5 px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
+                                Copy
+                            </button>
+                        </div>
 
-                        const randomIndex = Math.floor(Math.random() * heroTexts.length);
-                        const selectedText = heroTexts[randomIndex];
-
-                        const titleEl = document.getElementById('hero-title');
-                        const subtitleEl = document.getElementById('hero-subtitle');
-
-                        titleEl.innerText = selectedText.title;
-                        subtitleEl.innerText = selectedText.subtitle;
-
-                        // Fade in trigger
-                        requestAnimationFrame(() => {
-                            titleEl.classList.remove('opacity-0');
-                            subtitleEl.classList.remove('opacity-0');
-                        });
-                    </script>
-
-                    <!-- Grounding Paragraph -->
-                    <div class="pt-8 max-w-2xl mx-auto text-neutral-500 font-light text-lg leading-relaxed space-y-4">
-                        <p>
-                            A small experiment born from curiosity. Runs once a day to generate a new desktop wallpaper.
-                            Uses minimal text and visual context. Designed to be subtle and ignorable.
-                        </p>
-
+                        <div class="mt-6 flex flex-col items-center text-sm md:text-base font-mono space-y-2">
+                            <p class="text-neutral-500 text-center">
+                                Runs locally by default. Optional AI providers can be enabled.
+                            </p>
+                        </div>
                     </div>
                 </header>
-            </div>
 
-        </div>
+                <!-- Divider -->
+                <div class="w-full max-w-2xl mx-auto h-[1px] bg-neutral-900 border-b border-white/5 my-8"></div>
 
+                <!-- Static Tagline -->
+                <div class="min-h-[160px] flex flex-col justify-center">
+                    <p id="hero-title"
+                        class="text-3xl sm:text-4xl md:text-5xl font-light text-neutral-400 leading-relaxed max-w-2xl mx-auto transition-opacity duration-500 opacity-0">
+                        <!-- content loaded via js -->
+                    </p>
+                    <p id="hero-subtitle"
+                        class="text-base md:text-lg text-neutral-600 font-mono pt-6 transition-opacity duration-500 delay-200 opacity-0">
+                        <!-- content loaded via js -->
+                    </p>
+                </div>
 
+                <script>
+                    const heroTexts = [
+                        {
+                            title: "You already look at your desktop all day.",
+                            subtitle: "What if it worked for you?"
+                        },
+                        {
+                            title: "Nothing to click.",
+                            subtitle: "Nothing to check."
+                        },
+                        {
+                            title: "An experiment in ambient focus.",
+                            subtitle: "One small change, once a day."
+                        },
+                        {
+                            title: "Motivation apps scream.",
+                            subtitle: "This one whispers."
+                        },
+                        {
+                            title: "Your environment is already teaching you.",
+                            subtitle: "You just haven’t been listening."
+                        },
+                        {
+                            title: "Attention follows what surrounds it.",
+                            subtitle: "Change the surroundings."
+                        },
+                        {
+                            title: "I wondered if subtle cues work better than reminders.",
+                            subtitle: "So I tried it."
+                        },
+                        {
+                            title: "What you see every day matters.",
+                            subtitle: "Even if you don’t notice it."
+                        }
+                    ];
 
-        <!-- Install Command (Centered) -->
-        <div class="max-w-4xl mx-auto px-4 mb-8 mt-12 animate-fade-in-up delay-300">
-            <div onclick="copyCommand()"
-                class="group relative flex items-center justify-between gap-4 rounded-lg border border-neutral-800 bg-card px-8 py-6 font-mono text-sm sm:text-lg md:text-xl transition-colors hover:border-neutral-700 cursor-pointer shadow-lg">
-                <code class="text-accent break-all">curl -sL https://gen-wal.laptopserver.dev/install | bash</code>
-                <button
-                    class="shrink-0 rounded bg-white/5 px-6 py-3 text-sm font-medium text-muted transition-colors hover:bg-white/10 hover:text-white border border-white/10 group-hover:border-white/20">
-                    Copy
-                </button>
-            </div>
+                    const randomIndex = Math.floor(Math.random() * heroTexts.length);
+                    const selectedText = heroTexts[randomIndex];
 
-            <div class="mt-8 flex flex-row flex-wrap items-center justify-center gap-6 text-sm md:text-base font-mono">
-                <p class="text-neutral-500 max-w-2xl text-center mx-auto">
-                    Local daemon. No accounts. No tracking. <br class="hidden sm:block">
-                    Generation providers are configurable (local or remote).
-                </p>
-                <span class="hidden sm:inline text-neutral-800">|</span>
-                <div class="flex justify-center gap-6">
-                    <a href="documentation.html#how-it-works"
-                        class="text-neutral-400 hover:text-accent transition-colors border-b border-transparent hover:border-accent">How
-                        it works</a>
-                    <a href="documentation.html#customization"
-                        class="text-neutral-400 hover:text-accent transition-colors border-b border-transparent hover:border-accent">Customization</a>
+                    const titleEl = document.getElementById('hero-title');
+                    const subtitleEl = document.getElementById('hero-subtitle');
+
+                    titleEl.innerText = selectedText.title;
+                    subtitleEl.innerText = selectedText.subtitle;
+
+                    // Fade in trigger
+                    requestAnimationFrame(() => {
+                        titleEl.classList.remove('opacity-0');
+                        subtitleEl.classList.remove('opacity-0');
+                    });
+                </script>
+
+                <!-- Grounding Paragraph -->
+                <div class="pt-8 max-w-2xl mx-auto text-neutral-500 font-light text-lg leading-relaxed space-y-4">
+                    <p>
+                        A small experiment born from curiosity. Runs once a day to generate a new desktop wallpaper.
+                        Uses minimal text and visual context. Designed to be subtle and ignorable.
+                    </p>
                 </div>
             </div>
+        </div>
+
+        <!-- Examples Section -->
+        <div class="pt-8 pb-12 md:pb-24 animate-fade-in-up delay-[200ms] w-full">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 font-orbitron text-center text-neutral-300">
+                Examples
+            </h2>
+            <div id="examples-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl mx-auto px-4 mt-12 w-full">
+                <!-- Populated via JavaScript -->
+            </div>
+            
+            <script>
+                const providers = ["mesh", "flow", "voronoi", "reaction", "waves", "aurora", "gradient", "noise", "ribbons", "pollinations"];
+                const grid = document.getElementById('examples-grid');
+                grid.innerHTML = providers.map(p => `
+                    <div class="flex flex-col gap-3 group">
+                        <img src="images/carousel/${p}.jpg" alt="${p}" class="w-full aspect-[16/10] object-cover rounded-xl border border-neutral-800 shadow-lg group-hover:border-neutral-600 transition-colors">
+                        <span class="text-xs text-neutral-500 font-mono text-center uppercase tracking-widest">${p}</span>
+                    </div>
+                `).join('');
+            </script>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="pb-12 md:pb-24 animate-fade-in-up delay-[300ms] w-full">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 font-orbitron text-center text-neutral-300">
+                How It Works
+            </h2>
+            <div class="max-w-5xl mx-auto flex flex-col items-center px-4 w-full">
+                <!-- Using flex-col on small screens, flex-row on larger screens. Elements stacked. -->
+                <div class="flex flex-col lg:flex-row items-center justify-center text-neutral-400 font-mono text-sm sm:text-base w-full items-stretch lg:items-center">
+                    
+                    <div class="bg-card border border-neutral-800 px-6 py-4 rounded-lg w-full lg:w-48 text-center shadow-lg my-2 lg:my-0 flex-shrink-0">Theme</div>
+                    
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 hidden lg:block flex-shrink-0">→</div>
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 lg:hidden text-center flex-shrink-0">↓</div>
+                    
+                    <div class="bg-card border border-neutral-800 px-6 py-4 rounded-lg w-full lg:w-48 text-center shadow-lg my-2 lg:my-0 flex-shrink-0">Quote Provider</div>
+                    
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 hidden lg:block flex-shrink-0">→</div>
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 lg:hidden text-center flex-shrink-0">↓</div>
+                    
+                    <div class="bg-card border border-neutral-800 px-6 py-4 rounded-lg w-full lg:w-48 text-center shadow-lg my-2 lg:my-0 flex-shrink-0">Image Provider</div>
+                    
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 hidden lg:block flex-shrink-0">→</div>
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 lg:hidden text-center flex-shrink-0">↓</div>
+                    
+                    <div class="bg-card border border-neutral-800 px-6 py-4 rounded-lg w-full lg:w-48 text-center shadow-lg my-2 lg:my-0 flex-shrink-0">Renderer</div>
+                    
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 hidden lg:block flex-shrink-0">→</div>
+                    <div class="text-neutral-700 py-2 lg:py-0 lg:px-4 lg:hidden text-center flex-shrink-0">↓</div>
+                    
+                    <div class="bg-neutral-800 border-2 border-neutral-600 px-6 py-4 rounded-lg w-full lg:w-48 text-center text-white shadow-lg my-2 lg:my-0 mx-auto flex-shrink-0">Wallpaper</div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- CLI & Customization Section -->
+        <div class="pb-12 md:pb-24 max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in-up delay-[400ms] w-full">
+            
+            <!-- CLI Examples -->
+            <div class="flex flex-col">
+                <h2 class="text-3xl font-bold mb-8 font-orbitron text-neutral-300">
+                    CLI
+                </h2>
+                <div class="bg-card border border-neutral-800 rounded-xl p-8 font-mono text-sm sm:text-base space-y-5 text-neutral-400 shadow-xl overflow-x-auto h-full">
+                    <div class="flex items-center gap-4">
+                        <span class="text-neutral-600 select-none">$</span>
+                        <code class="text-neutral-300">genwal preview</code>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-neutral-600 select-none">$</span>
+                        <code class="text-neutral-300">genwal preview --provider flow</code>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-neutral-600 select-none">$</span>
+                        <code class="text-neutral-300">genwal theme use stoic</code>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-neutral-600 select-none">$</span>
+                        <code class="text-neutral-300">genwal schedule set 06:30</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customization & Plugins -->
+            <div class="flex flex-col gap-8">
+                <!-- Customization -->
+                <div class="p-8 rounded-xl border border-neutral-800 bg-card shadow-lg text-left">
+                    <h3 class="text-2xl font-bold text-neutral-300 mb-4 font-orbitron">Customization</h3>
+                    <p class="text-neutral-400 mb-6 font-light leading-relaxed text-lg">
+                        Gen-Wal can generate wallpapers using:
+                    </p>
+                    <ul class="space-y-4 text-neutral-400 font-light text-base md:text-lg">
+                        <li class="flex gap-3 items-start"><span class="text-neutral-600 mt-1">•</span> Procedural algorithms (mesh, flow, voronoi, waves)</li>
+                        <li class="flex gap-3 items-start"><span class="text-neutral-600 mt-1">•</span> Your own generator plugins</li>
+                        <li class="flex gap-3 items-start"><span class="text-neutral-600 mt-1">•</span> AI models (OpenAI, Ollama, LMStudio, Gemini)</li>
+                    </ul>
+                </div>
+
+                <!-- Plugins -->
+                <div class="p-8 rounded-xl border border-neutral-800 bg-card shadow-lg text-left">
+                    <h3 class="text-2xl font-bold text-neutral-300 mb-4 font-orbitron">Plugins</h3>
+                    <p class="text-neutral-400 font-light leading-relaxed text-lg mb-2">
+                        Bring your own generator.
+                    </p>
+                    <p class="text-neutral-500 font-light leading-relaxed mb-4">
+                        Drop a Python file into:
+                    </p>
+                    <div class="bg-neutral-900 border border-neutral-800 rounded-lg p-4 font-mono text-sm text-neutral-300 overflow-x-auto whitespace-nowrap">
+                        ~/.local/share/genwal/providers/images/
+                    </div>
+                    <p class="text-neutral-500 font-light leading-relaxed mt-4">
+                        Gen-Wal will automatically discover it.
+                    </p>
+                </div>
+            </div>
+
         </div>
 
         <!-- Visual Archetypes Gallery -->
@@ -394,8 +510,7 @@
                 <div
                     class="p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:border-pink-500/40 transition-colors">
                     <h3 class="text-2xl font-semibold mb-3 text-pink-400">🌍 Marketplace</h3>
-                    <p class="text-base text-gray-400">Share, vote, and download community created reference frames
-                        directly from the CLI.</p>
+                    <p class="text-base text-gray-400">Browse, copy, and paste community-created reference frames directly from our static online gallery list.</p>
                 </div>
             </div>
 
